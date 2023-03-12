@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>電腦活動製作精靈</title>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.js"
+      integrity="sha512-2zwx0mkoR2cxZY0humPK79YhJYgoX5lT+WNqkgTcV7qhVm3+msjlmOgoXnN1cW2r9qqbZez3XhnLZsyW3k8Wtg=="
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <button
+        class="btn"
+        @click="page = value"
+        :class="{active:page === value}"
+        v-for="value,key in pages"
+      >
+        {{key}}
+      </button>
+      <section v-show="page === 0">
+        <h1>選擇版型</h1>
+        <div class="layouts">
+          <div
+            class="layout"
+            v-for="layout,index in layouts"
+            @click="selectlayoutIndex = index"
+            :class="{active:index === selectlayoutIndex}"
+          >
+            <div v-for="key,keyIndex in layout">{{layoutData[key]}}</div>
+          </div>
+        </div>
+      </section>
+      <section v-show="page === 1">
+        <h1>填寫資料</h1>
+        <div>
+          <label>電競名稱：</label><input type="text" v-model="payload.name" />
+        </div>
+        <div><label>圖片：</label><input type="file" @change="onUpload" /></div>
+        <div>
+          <label>電競活動簡介：</label
+          ><input type="text" v-model="payload.udesc" />
+        </div>
+        <div>
+          <label>活動新聞連結：</label
+          ><input type="text" v-model="payload.link" />
+        </div>
+        <div>
+          <label>報名：</label><input type="text" v-model="payload.signUp" />
+        </div>
+        <div>
+          <label>競賽日期：</label><input type="date" v-model="payload.date" />
+        </div>
+      </section>
+      <section v-show="page === 2">
+        <h1>預覽</h1>
+        <div class="layouts">
+          <div class="layout">
+            <div
+              v-for="key in layouts[selectlayoutIndex]"
+              v-html="preview(key)"
+            ></div>
+          </div>
+        </div>
+      </section>
+      <section v-show="page === 3">
+        <h1>確定送出</h1>
+        <button class="btn" @click="onSubmit">送出</button>
+      </section>
+    </div>
+    <script src="./js/script.js"></script>
+  </body>
+</html>
