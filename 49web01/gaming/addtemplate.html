@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>新增模版</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.js"></script>
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <div class="layouts">
+        <div
+          class="layout"
+          v-for="layout,index in layouts"
+          :key="index"
+          @click="selectlayoutIndex = index"
+          :class="{active:index === selectlayoutIndex}"
+        >
+          <div
+            v-for="key,keyIndex in layout"
+            :key="key"
+            :data-index="index"
+            :data-key="keyIndex"
+            draggable="true"
+            @dragstart="dragStart"
+            @dragover.prevent=""
+            @drop="onDrop"
+          >
+            {{layoutData[key]}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../js/script.js"></script>
+  </body>
+</html>

@@ -1,6 +1,11 @@
 const app = Vue.createApp({
   data() {
     return {
+      grids: [],
+      userIndex: [],
+      userValue: [],
+      gridOver: [],
+
       file: "",
       page: 0,
       pages: {
@@ -28,12 +33,97 @@ const app = Vue.createApp({
         image: "",
         link: "",
         signUp: "",
-        template: "",
+        template_id: "",
       },
+      dragIndex: 0,
+      dragKey: 0,
       selectlayoutIndex: 0,
+      symbol: false,
     };
   },
+  mounted() {
+    this.setGrid();
+  },
+
+  computed: {
+    az() {
+      let ary = [];
+      for (let i = 0; i < 26; i++) {
+        ary.push(String.fromCharCode(i + 65));
+      }
+      return ary;
+    },
+  },
+
   methods: {
+    allToggle() {
+      grids = document.querySelectorAll(".grid>div");
+      grids.forEach((element) => {
+        element.classList.toggle("active");
+      });
+    },
+
+    setGrid() {
+      let ary = [];
+
+      while (ary.length < 3) {
+        let num = this.az[Math.floor(Math.random() * this.az.length)];
+        if (!ary.includes(num)) {
+          ary.push(num);
+        }
+      }
+      this.grids = ["E", "E", ...ary, ...ary];
+      // this.grids.sort();
+      this.grids.sort(() => 0.5 - Math.random());
+    },
+
+    gridMod(e) {
+      e.target.classList.add("active");
+
+      if (!this.gridOver.includes(e.target.dataset.index)) {
+        this.userIndex.push(e.target.dataset.index);
+        this.userValue.push(e.target.dataset.value);
+      }
+
+      console.log(this.userIndex);
+      console.log(this.userValue);
+
+      if (this.userValue.length >= 2) {
+        if (this.userValue[0] !== this.userValue[1]) {
+          setTimeout(() => {
+            for (let i = 0; i < 2; i++) {
+              let div = document.querySelector(
+                `.grid>div[data-index='${this.userIndex[i]}']`
+              );
+              div.classList.remove("active");
+            }
+            this.userIndex = [];
+            this.userValue = [];
+          }, 30);
+        } else {
+          this.gridOver.push(...this.userValue);
+          this.userIndex = [];
+          this.userValue = [];
+        }
+      }
+    },
+
+    getlayouts() {
+      fetch("getTempalte.php", {
+        method: "GET",
+      })
+        .then((res) => {
+          return res.json;
+        })
+        .then((result) => {
+          console.log(result);
+        });
+    },
+    dragStart(e) {
+      this.dragIndex = e.target.dataset.index;
+      this.dragKey = e.targeet.dataset.key;
+    },
+    onDrop(e) {},
     onUpload(e) {
       const file = e.target.files[0];
       this.file = file;
@@ -53,21 +143,30 @@ const app = Vue.createApp({
       }
     },
 
+    login() {
+      if (this.gridOver.length === 8 || this.gridOver.includes("E")) {
+        alert("yes");
+      } else {
+        alert("no");
+      }
+    },
+
     onSubmit() {
       this.payload.image = this.file;
-      this.payload.template = JSON.stringify(this.layouts[this.selectlayoutIndex]);
+      this.payload.template_id = this.selectlayoutIndex;
       const formData = new FormData();
       for (let key in this.payload) {
+        // console.log(key, this.payload[key]);
         formData.append(key, this.payload[key]);
       }
-      console.log(formData['name']);
-      // fetch("api.php?do=insertActive", {
-      //   method: "POST",
-      //   body: formData,
-      // }).then(() => {
-      //   alert("新增成功");
-      //   location.href = "./";
-      // });
+
+      fetch("insertActive.php", {
+        method: "POST",
+        body: formData,
+      }).then(() => {
+        alert("新增成功");
+        location.href = ".././";
+      });
     },
   },
 }).mount("#app");

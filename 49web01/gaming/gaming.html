@@ -5,15 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>電腦活動製作精靈</title>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.js"
-      integrity="sha512-2zwx0mkoR2cxZY0humPK79YhJYgoX5lT+WNqkgTcV7qhVm3+msjlmOgoXnN1cW2r9qqbZez3XhnLZsyW3k8Wtg=="
-      crossorigin="anonymous"
-    ></script>
-    <link rel="stylesheet" href="./css/style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.js"></script>
+    <link rel="stylesheet" href="../css/style.css" />
   </head>
   <body>
     <div id="app">
+      <h1>電腦活動製作精靈</h1>
+      <p>
+        <a href="./addtemplate.html">新增模版</a>
+      </p>
+      <p>
+        <a href="./addtemplate.html">管理模版</a>
+      </p>
       <button
         class="btn"
         @click="page = value"
@@ -38,22 +41,28 @@
       <section v-show="page === 1">
         <h1>填寫資料</h1>
         <div>
-          <label>電競名稱：</label><input type="text" v-model="payload.name" />
+          <label>電競名稱：</label
+          ><input type="text" name="name" v-model="payload.name" />
         </div>
-        <div><label>圖片：</label><input type="file" @change="onUpload" /></div>
+        <div>
+          <label>圖片：</label
+          ><input type="file" name="image" @change="onUpload" />
+        </div>
         <div>
           <label>電競活動簡介：</label
-          ><input type="text" v-model="payload.udesc" />
+          ><input type="text" name="udesc" v-model="payload.udesc" />
         </div>
         <div>
           <label>活動新聞連結：</label
-          ><input type="text" v-model="payload.link" />
+          ><input type="text" name="link" v-model="payload.link" />
         </div>
         <div>
-          <label>報名：</label><input type="text" v-model="payload.signUp" />
+          <label>報名：</label
+          ><input type="text" name="signUp" v-model="payload.signUp" />
         </div>
         <div>
-          <label>競賽日期：</label><input type="date" v-model="payload.date" />
+          <label>競賽日期：</label
+          ><input type="date" name="date" v-model="payload.date" />
         </div>
       </section>
       <section v-show="page === 2">
@@ -72,6 +81,6 @@
         <button class="btn" @click="onSubmit">送出</button>
       </section>
     </div>
-    <script src="./js/script.js"></script>
+    <script src="../js/script.js"></script>
   </body>
 </html>

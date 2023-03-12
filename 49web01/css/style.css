@@ -17,9 +17,13 @@ img {
 }
 
 a {
-  text-decoration: none;
-  color: #333;
+  color: #008cff;
   font-weight: bold;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 nav {
@@ -73,7 +77,22 @@ nav {
 .btn.active {
   background: #bbb;
 }
-
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+.grid > div {
+  height: 100px;
+  border: 1px solid #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 38px;
+  color: rgba(0, 0, 0, 0);
+}
+.grid > div.active {
+  color: #000;
+}
 .userContainer > div {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -131,7 +150,7 @@ section {
 }
 .layouts {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
 }
 
 .layout,
