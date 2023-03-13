@@ -19,7 +19,7 @@ function err($key){
     }
     echo "<script>alert('登入失敗 {$key}錯誤');location.href='record.php'</script>";
 }
-if($_POST['ans'] !== $_POST['captcha']){
+if($_POST['ans'] != $_POST['user_answer']){
     err('驗證碼');
 }elseif(!$query){
     err('帳號');

@@ -15,7 +15,7 @@
     
     @$key = $_GET['key'];
     @$order = $_GET['order'];
-    if($key <> ''){
+    if($key != ''){
         $sql .= " and account like '%$key%'";
     }
     if($order){
@@ -31,11 +31,11 @@
     </section>
 
     <form action="user.php" method="get">
-        <button class="btn"><a href="./userMod.php">新增使用者</a></button>
-        <button class="btn"><a href="./viewrecord.php">登入登出記錄</a></button>
-        <br><br>
+        <a href="./userMod.php">新增使用者</a><br>
+        <a href="./viewrecord.php">登入登出記錄</a>
+        <br><br>    
         <input type="text" class='time' value='60'><button class="btn">重新計時</button>
-        <br><br>
+        <br><br>    
 
         <input type="text" name="key" placeholder='請輸入關鍵字'>
         <br>
@@ -53,7 +53,7 @@
     </form>
     <div class='userContainer'>
         <div>
-            <div>ID</div>
+            <div>使用者編號</div>
             <div>姓名</div>
             <div>帳號</div>
             <div>密碼</div>
@@ -61,26 +61,35 @@
             <div>操作</div>
         </div>
     <?php
+        $role1 = 0;
+        $role2 = 1;
     foreach($query as $data){
+
+        if($data['role'] === '管理員'){
+            $dataId = 'u' . str_pad($role1,4,'0',STR_PAD_LEFT);
+            $role1 ++ ;
+        }else{
+            $dataId = 'a' . str_pad($role2,4,'0',STR_PAD_LEFT);
+            $role2 ++ ;
+        }
+
         ?>
         <div>
-            <div><?php echo $data['user_id']?></div>
+            <div><?php echo $dataId?></div>
             <div><?php echo $data['name']?></div>
             <div><?php echo $data['account']?></div>
             <div><?php echo $data['password']?></div>
             <div><?php echo $data['role']?></div>
             <div>
-                <?php if($data['user_id'] !== 'u0001'){?>
                 <a href="userMod.php?id=<?php echo $data['id'] ?>">修改</a>
                 <a href="destroy.php?id=<?php echo $data['id'] ?>">刪除</a>
-                <?php } ?>
             </div>
         </div>
     <?php
     }
     ?>
     </div>
-    <script>
+    <!-- <script>
         let count;
         let time = document.querySelector('.time');
         let timeOutBox = document.querySelector('.timeOutBox');
@@ -101,6 +110,6 @@
             fs_count()
         }
         fs_count()
-    </script>
+    </script> -->
 </body>
 </html>

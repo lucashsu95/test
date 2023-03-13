@@ -35,13 +35,14 @@ const app = Vue.createApp({
         signUp: "",
         template_id: "",
       },
-      dragIndex: 0,
-      dragKey: 0,
+      dragIndex: "",
+      dragKey: "",
       selectlayoutIndex: 0,
       symbol: false,
     };
   },
   mounted() {
+    this.getlayouts();
     this.setGrid();
   },
 
@@ -109,21 +110,46 @@ const app = Vue.createApp({
     },
 
     getlayouts() {
-      fetch("getTempalte.php", {
+      fetch("getTemplate.php", {
         method: "GET",
       })
         .then((res) => {
-          return res.json;
+          return res.json();
         })
-        .then((result) => {
-          console.log(result);
+        .then((json) => {
+          this.layouts = json.map((x) => JSON.parse(x.template));
+          console.log(this.layouts);
         });
     },
-    dragStart(e) {
-      this.dragIndex = e.target.dataset.index;
-      this.dragKey = e.targeet.dataset.key;
+    getActive() {
+      fetch("getProduct.php")
+        .then((res) => {
+          return res.json();
+        })
+        .then((json) => {
+          this.layouts = json.map((x) => JSON.parse(x.template));
+          console.log(this.layouts);
+        });
     },
-    onDrop(e) {},
+    onDragstart(e) {
+      this.dragIndex = e.target.dataset.index;
+      this.dragKey = e.target.dataset.key;
+    },
+    onDrop(e) {
+      const dropIndex = e.target.dataset.index;
+      const dropKey = e.target.dataset.key;
+
+      if (this.dragIndex === dropIndex) {
+        [
+          this.layouts[this.dragIndex][this.dragKey],
+          this.layouts[dropIndex][dropKey],
+        ] = [
+          this.layouts[dropIndex][dropKey],
+          this.layouts[this.dragIndex][this.dragKey],
+        ];
+        JSON.stringify;
+      }
+    },
     onUpload(e) {
       const file = e.target.files[0];
       this.file = file;
@@ -154,9 +180,10 @@ const app = Vue.createApp({
     onSubmit() {
       this.payload.image = this.file;
       this.payload.template_id = this.selectlayoutIndex;
+      
       const formData = new FormData();
       for (let key in this.payload) {
-        // console.log(key, this.payload[key]);
+        console.log(key, this.payload[key]);
         formData.append(key, this.payload[key]);
       }
 
