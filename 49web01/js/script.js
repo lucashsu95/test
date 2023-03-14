@@ -1,11 +1,6 @@
 const app = Vue.createApp({
   data() {
     return {
-      grids: [],
-      userIndex: [],
-      userValue: [],
-      gridOver: [],
-
       file: "",
       page: 0,
       pages: {
@@ -43,9 +38,7 @@ const app = Vue.createApp({
   },
   mounted() {
     this.getlayouts();
-    this.setGrid();
   },
-
   computed: {
     az() {
       let ary = [];
@@ -57,58 +50,6 @@ const app = Vue.createApp({
   },
 
   methods: {
-    allToggle() {
-      grids = document.querySelectorAll(".grid>div");
-      grids.forEach((element) => {
-        element.classList.toggle("active");
-      });
-    },
-
-    setGrid() {
-      let ary = [];
-
-      while (ary.length < 3) {
-        let num = this.az[Math.floor(Math.random() * this.az.length)];
-        if (!ary.includes(num)) {
-          ary.push(num);
-        }
-      }
-      this.grids = ["E", "E", ...ary, ...ary];
-      // this.grids.sort();
-      this.grids.sort(() => 0.5 - Math.random());
-    },
-
-    gridMod(e) {
-      e.target.classList.add("active");
-
-      if (!this.gridOver.includes(e.target.dataset.index)) {
-        this.userIndex.push(e.target.dataset.index);
-        this.userValue.push(e.target.dataset.value);
-      }
-
-      console.log(this.userIndex);
-      console.log(this.userValue);
-
-      if (this.userValue.length >= 2) {
-        if (this.userValue[0] !== this.userValue[1]) {
-          setTimeout(() => {
-            for (let i = 0; i < 2; i++) {
-              let div = document.querySelector(
-                `.grid>div[data-index='${this.userIndex[i]}']`
-              );
-              div.classList.remove("active");
-            }
-            this.userIndex = [];
-            this.userValue = [];
-          }, 30);
-        } else {
-          this.gridOver.push(...this.userValue);
-          this.userIndex = [];
-          this.userValue = [];
-        }
-      }
-    },
-
     getlayouts() {
       fetch("getTemplate.php", {
         method: "GET",
@@ -164,36 +105,38 @@ const app = Vue.createApp({
     preview(key) {
       if (key === "image") {
         return `<div><img src=${this.payload[key]} alt="img"></div>`;
+      } else if (key === "udesc" && this.payload[key].length > 10) {
+        return `${this.payload[key].substr(1, 9)}<button onclick='udescMore("${
+          this.payload[key]
+        }")'>more...</button>`;
       } else {
         return `<div>${this.payload[key]}</div>`;
       }
     },
-
-    login() {
-      if (this.gridOver.length === 8 || this.gridOver.includes("E")) {
-        alert("yes");
-      } else {
-        alert("no");
-      }
-    },
-
     onSubmit() {
-      this.payload.image = this.file;
-      this.payload.template_id = this.selectlayoutIndex;
-      
-      const formData = new FormData();
-      for (let key in this.payload) {
-        console.log(key, this.payload[key]);
-        formData.append(key, this.payload[key]);
-      }
+      if (confirm("確認是否送出?")) {
+        this.payload.image = this.file;
+        this.payload.template_id = this.selectlayoutIndex;
 
-      fetch("insertActive.php", {
-        method: "POST",
-        body: formData,
-      }).then(() => {
-        alert("新增成功");
-        location.href = ".././";
-      });
+        const formData = new FormData();
+        for (let key in this.payload) {
+          // console.log(key, this.payload[key]);
+          formData.append(key, this.payload[key]);
+        }
+
+        fetch("addActiveprocess.php", {
+          method: "POST",
+          body: formData,
+        }).then(() => {
+          alert("新增成功");
+          location.href = "./manage.php";
+        });
+      }
     },
   },
 }).mount("#app");
+
+function udescMore(x) {
+  document.querySelector(".udesc").innerText = x;
+  // console.log(x);
+}

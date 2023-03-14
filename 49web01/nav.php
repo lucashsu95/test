@@ -10,7 +10,7 @@
                 if($_SESSION['user']['role'] === '管理員'){
             ?>
             <li><a href="/test/49web01/user/user.php">會員管理</a></li>
-            <li><a href="/test/49web01/gaming/gaming.html">電腦活動管理精靈</a></li>
+            <li><a href="/test/49web01/gaming/manage.php">電腦活動管理精靈</a></li>
             <?php }  ?>
             <li><a href="/test/49web01/logout.php">登出</a></li>
         </ul>

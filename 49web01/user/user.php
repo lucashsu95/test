@@ -23,6 +23,7 @@
     }
     $query = $db->query($sql)->fetchAll();
     ?>
+    <h1>會員管理</h1>
     <section class='timeOutBox'>
         <h1>是否還繼續操作?</h1>
         <br><br>

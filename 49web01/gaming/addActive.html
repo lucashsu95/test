@@ -11,12 +11,6 @@
   <body>
     <div id="app">
       <h1>電腦活動製作精靈</h1>
-      <p>
-        <a href="./addtemplate.html">新增模版</a>
-      </p>
-      <p>
-        <a href="./addtemplate.html">管理模版</a>
-      </p>
       <button
         class="btn"
         @click="page = value"
@@ -71,6 +65,7 @@
           <div class="layout">
             <div
               v-for="key in layouts[selectlayoutIndex]"
+              :class="key"
               v-html="preview(key)"
             ></div>
           </div>

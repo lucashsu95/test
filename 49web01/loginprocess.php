@@ -8,8 +8,6 @@ $query = $sql->fetch();
 $_SESSION['account'] = $_POST['account'];
 $_SESSION['action'] = '登入';
 
-
-
 function err($key){
     $_SESSION['utype'] = '失敗';
     $_SESSION['err']++;
@@ -19,14 +17,23 @@ function err($key){
     }
     echo "<script>alert('登入失敗 {$key}錯誤');location.href='record.php'</script>";
 }
+
+
 if($_POST['ans'] != $_POST['user_answer']){
     err('驗證碼');
 }elseif(!$query){
     err('帳號');
 }elseif($query['password'] != $_POST['password']){
     err('密碼');
+}elseif($query['account'] === 'admin'){
+    $_SESSION['err'] = 0;
+    $_SESSION['tempUser'] = $query;
+    header('location:login2.php');
 }else{
+    $_SESSION['err'] = 0;
     $_SESSION['user'] = $query;
     $_SESSION['utype'] = '成功';
-    header('location:record.php');
+    header('location:./');
 }
+
+

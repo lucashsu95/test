@@ -15,7 +15,6 @@
 img {
   width: 100%;
 }
-
 a {
   color: #008cff;
   font-weight: bold;
@@ -149,18 +148,37 @@ section {
   border: 1px solid #aaa;
 }
 .layouts {
+  width: 100%;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .layout,
 .layout > div {
-  margin: 10px;
-  padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  text-align: center;
+  padding: 10px 15px;
+  margin: 10px;
 }
+
+.layout > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+
+.name {
+  font-weight: bold;
+  background: #39f;
+  color: #fff;
+}
+
 .layout.active {
   background: #bbb;
 }

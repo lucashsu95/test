@@ -27,7 +27,7 @@
             <img  v-for="num in captcha2" :src="'captcha.php?num='+num" draggable="true" />
         </div>
         從大到小排列:
-        <button @click.prevent="renderCaptcha">重新產生驗證碼</button>
+        <button @click.prevent="renderCaptcha" class='btn'>重新產生驗證碼</button>
         <button type="submit" class='btn'>送出</button>
         <button type="reset" class='btn'>重設</button>
         <input type="hidden" name="ans" :value="calcuateAnswer">
@@ -48,15 +48,21 @@
                 }
             },
             computed:{
+                
                 calcuateAnswer() {
                     const c1 = parseInt(this.captcha1.join(''));
                     const c2 = parseInt(this.captcha2.join(''));
 
                     return this.symbol ? c1 + c2 : c1 - c2;
                 }
+                
             },
             methods: {
+
                 renderCaptcha() {
+                    this.captcha1 = [];
+                    this.captcha2 = [];
+                    
                     let captcha = [];
                     this.symbol = Math.round(Math.random() * 1);
 
@@ -70,14 +76,17 @@
                         this.captcha2.push(this.nums[random]);
                     }
                 },
-                dragStart(event) {
-                    const ele = event.target.cloneNode(true);
+
+                dragStart(e) {
+                    const ele = e.target.cloneNode(true);
                     this.dragingDom = ele;
                 },
-                hello(event) {
-                    event.target.appendChild(this.dragingDom);
+
+                hello(e) {
+                    e.target.appendChild(this.dragingDom);
                     this.userAns.push(this.dragingDom.dataset.value);
                 },
+
             },
             mounted() {
                 this.renderCaptcha();

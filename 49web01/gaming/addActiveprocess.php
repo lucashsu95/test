@@ -1,15 +1,15 @@
 <?php
-include './share.php';
+include '../link.php';
 
 $sql = 'select * from template limit 1 offset ' . $_POST['template_id'];
-$templateAry = $db->query($sql)->fetch(PDO::FETCH_ASSOC);
+$templateAry = $db->query($sql)->fetch();
 
 $sql = $db->prepare('insert into active(name,udesc,image,link,date,signUp,template_id) values(:name,:udesc,:image,:link,:date,:signUp,:template_id)');
 
 $fileName = date('YmdHis');
 $pathOfFile = "../img/{$fileName}.jpg";
 move_uploaded_file($_FILES['image']['tmp_name'],$pathOfFile);
-$pathOfFile = "./img/{$fileName}.jpg";
+$pathOfFile = "img/{$fileName}.jpg";
 
 $sql->bindValue('name',$_POST['name']);
 $sql->bindValue('udesc',$_POST['udesc']);
