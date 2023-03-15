@@ -50,7 +50,7 @@ form button {
   width: 400px;
   height: 400px;
   border: 1px solid #ccc;
-  border-radius:25px;
+  border-radius: 25px;
   box-shadow: 2px 2px 5px black;
   background: #fff;
   padding: 25px;
@@ -60,6 +60,11 @@ form button {
   align-items: center;
 
   position: absolute;
-  top:50%;
+  top: 50%;
   left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+}
+
+.timeOut.active{
+  transform: translate(-50%, -50%) scale(1);
 }

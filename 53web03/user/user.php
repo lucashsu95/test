@@ -21,7 +21,10 @@
         $sql .= " order by {$_GET['order']} {$_GET['sort']}";
     }
     $users = $db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+
+    $time = $db->query('select time from timeCount where id=1')->fetch();
     ?>
+    <div id="app">
     <p>
         <a href="../">上一頁</a>
     </p>
@@ -29,6 +32,11 @@
         <a href="./adduser.html">新增使用者</a>
     </p>
     <form action="./user.php" method="get">
+        <p>
+            <input type="text" name="time" value='<?php echo $time['time'] ?>' ref='time'>
+            <button type='button' @click='setTime'>重新設定</button>
+
+        </p>
         <p>
             <input type="text" name="key" placeholder='請輸入關鍵字'>
         </p>
@@ -44,7 +52,6 @@
         <button type="submit">查詢</button>
         <button type="reset">重設</button>
     </form>
-    <div id="app">
         <div class='users'>
             <div>使用者編號</div>
             <div>姓名</div>
@@ -62,20 +69,58 @@
                 <a :href="'./destroy.php?id=' + user['id']">刪除</a>
             </div>
         </div>
+        <section class='timeOut' ref='timeOut'>
+            <h1>是否還繼續操作?</h1>
+            <button @click='fs_timeClose'>YES</button>
+            <button @click="location.href='logout.php'">NO</button>
+        </section>
     </div>
 
-    <section class='timeOut'>
-        <h1>是否還繼續操作?</h1>
-        <button>YES</button>
-        <button>NO</button>
-    </section>
     <script>
         const app = Vue.createApp({
             data(){
                 return{
                     users:<?php echo json_encode($users) ?>,
+                    timeCount:null,
+                    timeOut:null,
+
+                }
+            },
+            mounted(){
+                this.fs_timeCount();
+            },
+            methods:{
+                fs_timeCount(){
+                    console.log('fs_timeCount');
+                    const time = this.$refs.time;
+                    this.timeCount = setTimeout(() => {
+                        // console.log('timeOut!')
+                        this.$refs.timeOut.classList.add('active');
+                        this.fs_timeOut();
+                    }, time.value * 1000)
+                },
+
+                fs_timeOut(){
+                    console.log('fs_timeOut');
+                    this.timeOut = setTimeout(() => {
+                        location.href='logout.php';
+                    }, 5000);
+                },
+
+                fs_timeClose(){
+                    this.$refs.timeOut.classList.remove('active');
+                    console.log('fs_timeClose');
+                    clearTimeout(this.timeCount);
+                    clearTimeout(this.timeOut);
+                    this.fs_timeCount();
+                },
+
+                setTime(){
+                    const time = this.$refs.time;
+                    location.href = 'setTime.php?time=' + time.value;
                 }
             }
+            
         }).mount('#app');
     </script>
 </body>
