@@ -3,13 +3,17 @@
   padding: 0;
   font-family: Arial, Helvetica, sans-serif;
 }
-
 input,
-button {
+button,
+select {
   padding: 10px;
   margin: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+}
+
+p {
+  margin: 10px 0;
 }
 
 button {
@@ -28,4 +32,34 @@ form {
 
 form button {
   margin: auto;
+}
+
+.users {
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  justify-items: center;
+  align-items: center;
+}
+
+.timeOut {
+  width: 400px;
+  height: 400px;
+  border: 1px solid #ccc;
+  border-radius:25px;
+  box-shadow: 2px 2px 5px black;
+  background: #fff;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  position: absolute;
+  top:50%;
+  left: 50%;
 }
