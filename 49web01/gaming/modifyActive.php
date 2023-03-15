@@ -116,7 +116,7 @@
                 name: "<?php echo $active['name'] ?>",
                 udesc: "<?php echo $active['udesc'] ?>",
                 date: "<?php echo $active['date'] ?>",
-                image: "<?php echo $active['image'] ?>",
+                image: "../<?php echo $active['image'] ?>",
                 link: "<?php echo $active['link'] ?>",
                 signUp: "<?php echo $active['signUp'] ?>",
                 template_id: "<?php echo $active['template_id'] ?>",

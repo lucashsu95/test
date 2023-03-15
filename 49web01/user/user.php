@@ -12,6 +12,7 @@
     include '../link.php';
     include '../nav.php';
     $sql = 'select * from users where 1=1';
+    $timeCount = $db->query("select * from timeCount where id=1")->fetch();
     
     @$key = $_GET['key'];
     @$order = $_GET['order'];
@@ -35,7 +36,7 @@
         <a href="./userMod.php">新增使用者</a><br>
         <a href="./viewrecord.php">登入登出記錄</a>
         <br><br>    
-        <input type="text" class='time' value='60'><button class="btn">重新計時</button>
+        <input type="text" class='time' value='<?php echo $timeCount['time']; ?>'><button type='button' class="btn" onclick='setTimoCount()'>重新計時</button>
         <br><br>    
 
         <input type="text" name="key" placeholder='請輸入關鍵字'>
@@ -62,21 +63,10 @@
             <div>操作</div>
         </div>
     <?php
-        $role1 = 0;
-        $role2 = 1;
     foreach($query as $data){
-
-        if($data['role'] === '管理員'){
-            $dataId = 'u' . str_pad($role1,4,'0',STR_PAD_LEFT);
-            $role1 ++ ;
-        }else{
-            $dataId = 'a' . str_pad($role2,4,'0',STR_PAD_LEFT);
-            $role2 ++ ;
-        }
-
         ?>
         <div>
-            <div><?php echo $dataId?></div>
+            <div><?php echo $data['rec_id']?></div>
             <div><?php echo $data['name']?></div>
             <div><?php echo $data['account']?></div>
             <div><?php echo $data['password']?></div>
@@ -90,7 +80,7 @@
     }
     ?>
     </div>
-    <!-- <script>
+    <script>
         let count;
         let time = document.querySelector('.time');
         let timeOutBox = document.querySelector('.timeOutBox');
@@ -110,7 +100,11 @@
             timeOutBox.classList.remove('active');
             fs_count()
         }
+        
         fs_count()
-    </script> -->
+        function setTimoCount(){
+            location.href = 'setTimeCount.php?timeCount=' + time.value;            
+        }
+    </script>
 </body>
 </html>

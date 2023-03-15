@@ -28,7 +28,7 @@ if($_POST['ans'] != $_POST['user_answer']){
 }elseif($query['account'] === 'admin'){
     $_SESSION['err'] = 0;
     $_SESSION['tempUser'] = $query;
-    header('location:login2.php');
+    header('location:login2.html');
 }else{
     $_SESSION['err'] = 0;
     $_SESSION['user'] = $query;

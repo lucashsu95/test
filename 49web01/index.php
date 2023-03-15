@@ -28,8 +28,9 @@
         if($hasDateEnd){
             $sql .= " and date<'{$_GET['dateEnd']}'";
         }
-
-        $sql .= ' order by date';
+        $sql .= ' and isShow=0';
+        $sql .= ' order by isTop desc ,date desc';
+        
 
         $activeAry = $db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 
@@ -65,7 +66,7 @@
 
 <?php
     }else{
-        header('location:login.php');
+        header('location:login.html');
         } ?>
 </div>
     <script>

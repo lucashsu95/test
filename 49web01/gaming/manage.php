@@ -40,7 +40,7 @@
                                 <a :href="'./modifyActive.php?id=' + active['id']">修改</a><br>
                                 <a :href="'./destroyActive.php?id=' + active['id']">刪除</a><br>
                                 <a :href="'./setTop.php?id=' + active['id']">置頂</a><br>
-                                <a :href="'./setShow.php?id=' + active['id'] + '&isShow=' + !active['isShow']">{{active['isShow'] ? '隱藏' : '顯示'}}</a><br>
+                                <a :href="'./setShow.php?id=' + active['id'] + '&isShow=' + (active['isShow']==='1' ? 0 : 1)">{{active['isShow']==='1' ? '顯示' : '隱藏'}}</a><br>
                             <div v-for='key in templates[j]' :class='key' v-html='preview(key,i)'></div>
                         </div>
                     </template>
