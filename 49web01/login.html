@@ -16,7 +16,7 @@
         <p>account:<input type="text" name="account"></p>
         <p>password:<input type="password" name="password"></p>
         <p>圖片驗證碼:
-            <div class='userInput' @dragover.prevent="" @drop="hello"></div>
+            <div class='userInput' @dragover.prevent="" @drop="onDrop"></div>
         </p>
         <div class="user-select">
             <img v-for="num in nums" @dragstart="dragStart" :data-value="num" :src="'captcha.php?num='+num" draggable="true" />
@@ -82,7 +82,7 @@
                     this.dragingDom = ele;
                 },
 
-                hello(e) {
+                onDrop(e) {
                     e.target.appendChild(this.dragingDom);
                     this.userAns.push(this.dragingDom.dataset.value);
                 },

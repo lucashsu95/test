@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>二次驗證證</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.js"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <form action="./loginprocess2.php" method="post" ref="formData">
+        <div class="container">
+          <h1>{{symbol}}</h1>
+          <div class="grids">
+            <div
+              v-for="i in 4"
+              class="grid"
+              :data-value="i"
+              @click="e => e.target.classList.toggle('active')"
+            ></div>
+          </div>
+          <button type="button" @click="onSubmit">送出</button>
+          <input type="hidden" name="ans" ref="ans" />
+        </div>
+      </form>
+    </div>
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            msg: "null",
+            wins: {
+              垂直: ["13", "24"],
+              水平: ["12", "34"],
+            },
+          };
+        },
+        computed: {
+          symbol() {
+            return Math.round(Math.random() * 1) ? "水平" : "垂直";
+          },
+        },
+        methods: {
+          onSubmit() {
+            grids = [...document.querySelectorAll(".active")]
+              .map((x) => x.dataset.value)
+              .join("");
+
+            // console.log(this.wins[this.symbol].includes(grids));
+            this.$refs.ans.value = this.wins[this.symbol].includes(grids);
+            setTimeout(() => {
+              this.$refs.formData.submit();
+            });
+          },
+        },
+      }).mount("#app");
+    </script>
+  </body>
+</html>

@@ -5,10 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>登入</title>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.js"
+      integrity="sha512-2zwx0mkoR2cxZY0humPK79YhJYgoX5lT+WNqkgTcV7qhVm3+msjlmOgoXnN1cW2r9qqbZez3XhnLZsyW3k8Wtg=="
+      crossorigin="anonymous"
+    ></script>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <form action="./loginprocess.php" method="post">
+    <form action="./loginprocess.php" method="post" id="app">
       <h1>咖啡商品展示系統</h1>
       <p>
         account:<input type="text" name="account" placeholder="請輸入帳號" />
@@ -20,8 +25,98 @@
           placeholder="請輸入密碼"
         />
       </p>
+      captcha:
+      <div
+        class="user-input"
+        ref="userInput"
+        @drop="onDrop"
+        @dragover.prevent=""
+      ></div>
+      <div class="images">
+        <img
+          v-for="num in captcha"
+          :src="'./captcha.php?num=' + num"
+          :data-value="num"
+          alt="num"
+          draggable="true"
+          @dragstart="dragStart"
+        />
+      </div>
+      <button type="button" @click="renderCaptcha">重新產生驗證碼</button>
+
+      答案:{{ans}}
+      <div>{{ symbol ? '從小到大排序' : '從大到小排序'}}</div>
+      <input type="hidden" name="ans" :value="ans" />
+      <input type="hidden" name="userAns" :value="userAns" />
       <button type="submit">登入</button>
       <button type="reset">重設</button>
     </form>
+
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            captcha: [],
+            userAns: "",
+            ans: [],
+            draginDom: null,
+            symbol: false,
+          };
+        },
+        mounted() {
+          this.renderCaptcha();
+        },
+
+        computed: {
+          nums() {
+            nums = [];
+            for (let i = 0; i < 26; i++) {
+              nums.push(String.fromCharCode(i + 65));
+              nums.push(String.fromCharCode(i + 97));
+            }
+            return nums;
+          },
+        },
+
+        methods: {
+          renderCaptcha() {
+            this.$refs.userInput.innerHTML = "";
+            this.userAns = "";
+
+            this.symbol = Math.round(Math.random() * 2);
+
+            captcha = "";
+            for (let i = 0; i < 4; i++) {
+              num = this.nums[Math.floor(Math.random() * this.nums.length)];
+              captcha += num;
+            }
+
+            this.captcha = captcha.split("");
+
+            ans = captcha.split("");
+            if (this.symbol) {
+              ans.sort((a, b) => {
+                return a.charCodeAt() - b.charCodeAt();
+              });
+            } else {
+              ans.sort((a, b) => {
+                return b.charCodeAt() - a.charCodeAt();
+              });
+            }
+            this.ans = ans.join("");
+          },
+
+          dragStart(e) {
+            const ele = e.target.cloneNode(true);
+            this.draginDom = ele;
+          },
+
+          onDrop(e) {
+            this.userAns += this.draginDom.dataset.value;
+            e.target.appendChild(this.draginDom);
+          },
+        },
+      }).mount("#app");
+    </script>
   </body>
 </html>

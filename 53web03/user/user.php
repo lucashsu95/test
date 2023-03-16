@@ -11,6 +11,7 @@
 <body>
     <?php
     include '../link.php';
+    include '../nav.php';
     $sql = 'select * from users where 1=1';
     $hasKey = $_GET['key'] ?? false;
     $hasOrder = $_GET['order'] ?? false;
@@ -25,13 +26,14 @@
     $time = $db->query('select time from timeCount where id=1')->fetch();
     ?>
     <div id="app">
-    <p>
-        <a href="../">上一頁</a>
-    </p>
-    <p>
-        <a href="./adduser.html">新增使用者</a>
-    </p>
+    
     <form action="./user.php" method="get">
+        <p>
+            <a href="../">上一頁</a>
+        </p>
+        <p>
+            <a href="./adduser.html">新增使用者</a>
+        </p>
         <p>
             <input type="text" name="time" value='<?php echo $time['time'] ?>' ref='time'>
             <button type='button' @click='setTime'>重新設定</button>
@@ -72,7 +74,7 @@
         <section class='timeOut' ref='timeOut'>
             <h1>是否還繼續操作?</h1>
             <button @click='fs_timeClose'>YES</button>
-            <button @click="location.href='logout.php'">NO</button>
+            <button @click="location.href='../logout.php'">NO</button>
         </section>
     </div>
 
@@ -103,7 +105,7 @@
                 fs_timeOut(){
                     console.log('fs_timeOut');
                     this.timeOut = setTimeout(() => {
-                        location.href='logout.php';
+                        location.href='../logout.php';
                     }, 5000);
                 },
 

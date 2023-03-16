@@ -11,15 +11,7 @@
     <?php
     include './link.php';
     if(isset($_SESSION['user'])){
-        ?>
-        <nav>
-            <div class="nav-left"></div>
-            <div class="nav-right">
-                <a href="./user/user.php">會員管理</a>
-                <a href="./logout.php">登出</a>
-            </div>
-        </nav>
-        <?php
+        include './nav.php';
     }else{
         header('location:login.html');   
     }?>
