@@ -10,7 +10,7 @@
       integrity="sha512-2zwx0mkoR2cxZY0humPK79YhJYgoX5lT+WNqkgTcV7qhVm3+msjlmOgoXnN1cW2r9qqbZez3XhnLZsyW3k8Wtg=="
       crossorigin="anonymous"
     ></script>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
     <form action="./loginprocess.php" method="post" id="app">
@@ -37,6 +37,7 @@
           v-for="num in captcha"
           :src="'./captcha.php?num=' + num"
           :data-value="num"
+          class="captcha_img"
           alt="num"
           draggable="true"
           @dragstart="dragStart"

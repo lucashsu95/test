@@ -86,6 +86,10 @@ nav .nav-right a:hover {
   align-items: center;
 }
 
+.captcha_img {
+  width: 30px;
+}
+
 .timeOut {
   width: 400px;
   height: 400px;
@@ -110,7 +114,7 @@ nav .nav-right a:hover {
 }
 
 .user-input {
-  width: 100%;
+  width: 160px;
   height: 33px;
   margin-bottom: 10px;
   border: 1px solid #39f;
