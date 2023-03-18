@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.js"></script>
+    <title>新增模版</title>
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <h1>新增模版</h1>
+      <section v-show="page === 0" class="page">
+        <h1>選擇版型</h1>
+        <div class="layouts">
+          <div
+            v-for="layout,index in layouts"
+            :key="index"
+            class="layout"
+            :class="{active:selectedlayout === index}"
+            @click="selectedlayout = index"
+          >
+            <div
+              v-for="key,keyIndex in layout"
+              :key="key"
+              :class="key"
+              :data-index="index"
+              :data-key="keyIndex"
+              draggable="true"
+              @dragstart="onDragstart"
+              @dragover.prevent=""
+              @drop="onDrop"
+            >
+              {{layoutData[key]}}
+            </div>
+          </div>
+        </div>
+      </section>
+      <form action="./addtemplateprocess.php" method="post">
+        <input
+          type="hidden"
+          name="template"
+          :value="JSON.stringify(layouts[selectedlayout])"
+        />
+        <button>新增</button>
+      </form>
+    </div>
+
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            page: 0,
+            pages: {
+              選擇版型: 0,
+              填寫資料: 1,
+              預覽: 2,
+              確任送出: 3,
+            },
+            layoutData: {
+              name: "商品名稱",
+              image: "圖片",
+              date: "日期",
+              link: "相關連結",
+              price: "費用:0000",
+              udesc: "商品簡介",
+            },
+            layouts: [
+              ["name", "price", "image", "link", "udesc", "date"],
+              ["image", "name", "price", "link", "udesc", "date"],
+              ["price", "date", "udesc", "link", "name", "image"],
+            ],
+            payload: {
+              name: "",
+              image: "",
+              price: "",
+              link: "",
+              date: this.toDay(),
+              udesc: "",
+            },
+            selectedlayout: 0,
+            dragIndex: "",
+            dragkey: "",
+          };
+        },
+        mounted() {
+          this.setLayouts();
+        },
+        methods: {
+          setLayouts() {
+            fetch("getlayouts.php")
+              .then((res) => res.json())
+              .then((json) => {
+                this.layouts = json.map((x) => JSON.parse(x["layout"]));
+              });
+          },
+
+          onDragstart(e) {
+            console.log(e);
+            this.dragIndex = e.target.dataset.index;
+            this.dragkey = e.target.dataset.key;
+          },
+
+          onDrop(e) {
+            const dropIndex = e.target.dataset.index;
+            const dropkey = e.target.dataset.key;
+
+            if (dropIndex === this.dragIndex) {
+              console.log("change!");
+              [
+                this.layouts[this.dragIndex][this.dragkey],
+                this.layouts[dropIndex][dropkey],
+              ] = [
+                this.layouts[dropIndex][dropkey],
+                this.layouts[this.dragIndex][this.dragkey],
+              ];
+            }
+          },
+
+          toDay() {
+            const now = new Date();
+
+            const year = now.getFullYear();
+            const month = now.getMonth() + 1; // 注意：需要加 1
+            const date = now.getDate();
+            return `${year}-${month}-${date}`;
+          },
+          onUpload(e) {
+            const file = e.target.files[0];
+            this.file = file;
+            const render = new FileReader();
+            render.readAsDataURL(file);
+            render.onload = () => {
+              this.payload.image = render.result;
+            };
+            // console.log(file);
+          },
+          preview(key) {
+            if (key === "image") {
+              return `<img src='${this.payload[key]}'>`;
+            }
+            return this.payload[key];
+          },
+        },
+      }).mount("#app");
+    </script>
+  </body>
+</html>

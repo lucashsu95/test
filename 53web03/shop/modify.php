@@ -13,8 +13,14 @@
     <link rel="stylesheet" href="../style.css" />
   </head>
   <body>
+        <?php
+            include '../link.php';
+            $query = $db->query('select * from product where id=' . $_GET['id'])->fetch();
+            
+        ?>
     <div id="app">
-      <div class="control-pages">
+      <h1>修改商品</h1>
+      <div class="control-box">
         <button
           v-for="value,key in pages"
           @click="page = value"
@@ -42,7 +48,7 @@
         </div>
       </section>
       <form
-        action="./addtemplateprocess.php"
+        action="./modifyprocess.php"
         method="post"
         enctype="multipart/form-data"
       >
@@ -58,6 +64,8 @@
           ><input type="text" name="price" v-model="payload.price" />
           <label>相關連結</label
           ><input type="text" name="link" v-model="payload.link" />
+          <input type="hidden" name="id" value='<?php echo $query['id'] ?>'>
+          <input type="hidden" name="date" :value="payload.date" />
           <input type="hidden" name="template_id" :value="selectedlayout" />
         </section>
 
@@ -103,17 +111,32 @@
               ["price", "date", "udesc", "link", "name", "image"],
             ],
             payload: {
-              name: "",
-              image: "",
-              price: "",
-              link: "",
+              name: "<?php echo $query['name'] ?>",
+              image: "../<?php echo $query['image'] ?>",
+              price: "<?php echo $query['price'] ?>",
+              link: "<?php echo $query['link'] ?>",
+              udesc: "<?php echo $query['udesc'] ?>",
               date: this.toDay(),
-              udesc: "",
             },
             selectedlayout: 0,
           };
         },
+        mounted() {
+          this.setLayouts();
+        },
         methods: {
+          setLayouts() {
+            fetch("getlayouts.php")
+              .then((res) => res.json())
+              .then((json) => {
+                this.layouts = json.map((x) => JSON.parse(x["layout"]));
+                json.forEach((element,i) => {
+                    if(element['id'] === '<?php echo $query['template_id']; ?>'){
+                        this.selectedlayout = i;
+                    }
+                });
+          })
+        },
           toDay() {
             const now = new Date();
 

@@ -5,7 +5,7 @@
         if($_SESSION['user']['role'] === '管理員'){
             ?>
             <a href="/test/53web03/user/user.php">會員管理</a>
-            <a href="/test/53web03/show/show.php">上架商品</a>
+            <a href="/test/53web03/shop/shop.php">上架商品</a>
         <?php
         }
         ?>

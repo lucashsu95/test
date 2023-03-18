@@ -70,6 +70,10 @@ nav a:hover {
   text-shadow: 5px 5px 15px rgb(255, 70, 70);
 }
 
+nav .nav-right a:hover {
+  font-size: 23px;
+}
+
 .users {
   margin: 10px;
   padding: 20px 15px;
@@ -112,7 +116,7 @@ nav a:hover {
   border: 1px solid #39f;
 }
 
-.control-pages {
+.control-box {
   margin: 20px 0;
   width: 100%;
   display: flex;
