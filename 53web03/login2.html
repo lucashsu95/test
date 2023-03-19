@@ -35,12 +35,8 @@
               垂直: ["13", "24"],
               水平: ["12", "34"],
             },
+            symbol: Math.round(Math.random() * 1) ? "水平" : "垂直",
           };
-        },
-        computed: {
-          symbol() {
-            return Math.round(Math.random() * 1) ? "水平" : "垂直";
-          },
         },
         methods: {
           onSubmit() {
