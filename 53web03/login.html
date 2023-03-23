@@ -6,10 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>登入</title>
     <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.js"
-      integrity="sha512-2zwx0mkoR2cxZY0humPK79YhJYgoX5lT+WNqkgTcV7qhVm3+msjlmOgoXnN1cW2r9qqbZez3XhnLZsyW3k8Wtg=="
-      crossorigin="anonymous"
-    ></script>
+      src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.js"></script>
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
@@ -38,7 +35,6 @@
           :src="'./captcha.php?num=' + num"
           :data-value="num"
           class="captcha_img"
-          alt="num"
           draggable="true"
           @dragstart="dragStart"
         />

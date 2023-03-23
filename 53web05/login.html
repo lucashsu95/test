@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>登入</title>
+    <script src="./vue.js"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <form action="loginprocess.php" method="post">
+        <p><input type="text" name="account" /></p>
+        <p><input type="password" name="password" /></p>
+        {{symbol? '從小到大排序':'從大到小排序'}}
+        {{captcha}}
+        {{ans}} 
+        <button type="submit">登入</button>
+        <button type="reset">重設</button>
+      </form>
+    </div>
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            captcha: [],
+            ans: [],
+            userInput: [],
+            symbol: false,
+          };
+        },
+        mounted() {
+          this.renderCaptcha();
+        },
+        methods: {
+          renderCaptcha() {
+            this.symbol = Math.round(Math.random());
+
+            let nums = [];
+            for (let i = 0; i < 26; i++) {
+              nums.push(String.fromCharCode(i + 65));
+              nums.push(String.fromCharCode(i + 97));
+            }
+
+            let captcha = "";
+            for (let i = 0; i < 4; i++) {
+              captcha += nums[Math.floor(Math.random() * nums.length)];
+            }
+
+            this.captcha = captcha.split("");
+            let ary = captcha.split("");
+            if (this.symbol) {
+              ary.sort();
+            } else {
+              ary.sort().reverse();
+            }
+            this.ans = ary.join("");
+            console.log(captcha);
+            console.log("ans:" + this.ans);
+          },
+        },
+      }).mount("#app");
+
+      // const app = Vue.createApp({
+      //     data(){
+      //         return{
+
+      //         }
+      //     },
+      //     methods:{
+
+      //     }
+      // }).mount('#app');
+    </script>
+  </body>
+</html>
