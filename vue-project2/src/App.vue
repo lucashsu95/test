@@ -121,29 +121,8 @@ const usd = computed({
 </template>
 
 <style scoped>
-*{
-    box-sizing: border-box;
-}
 
-button,
-input {
-  margin: 10px;
-  padding: 10px 15px;
-  font-size: 20px;
-  font-weight: bold;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-button{
-  cursor: pointer;
-}
-
-button.active{
-  background: #bbb;
-  border:2px solid #fda;
-  color:#fea;
-}.container>div {
+.container>div {
   padding: 10px;
   margin: 10px;
   border-radius: 10px;
