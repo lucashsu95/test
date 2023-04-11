@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.js' integrity='sha512-2zwx0mkoR2cxZY0humPK79YhJYgoX5lT+WNqkgTcV7qhVm3+msjlmOgoXnN1cW2r9qqbZez3XhnLZsyW3k8Wtg==' crossorigin='anonymous'></script>
+</head>
+<body>
+    <div id="app">
+        <input type="file" name="file" @change='onUpload'>
+        <canvas ref='cvs' @mousedown='onMouseDown' @mousemove='onMouseMove' @mouseup='onMouseUp'></canvas>
+        <button @click='onSubmit'>{{crop}}</button>
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data(){
+                return{
+                    crop:'crop',
+                    image:null,
+                    ctx:null,
+                    x1:0,
+                    x2:0,
+                    y1:0,
+                    y2:0,
+                    flag:false,
+                    fileName:null,
+                }
+            },
+            mounted(){
+                this.ctx = this.$refs.cvs.getContext('2d');
+            },
+            methods:{
+                onUpload(e){
+                    const file = e.target.files[0];
+                    this.fileName = file.name;
+                    
+                    
+                    const fr = new FileReader();
+                    fr.readAsDataURL(file);
+                    fr.onload = (e) => {
+                        const url = e.target.result;
+                        this.image = new Image();
+                        this.image.src = url
+
+                        this.image.onload = () =>{
+                            this.$refs.cvs.width = this.image.width;
+                            this.$refs.cvs.height = this.image.height;
+                            this.ctx.drawImage(this.image,0,0);
+                        }
+                    }
+                },
+
+                onMouseDown(e){
+                    console.log('onMouseDown',e);
+                    this.flag = true;
+                    this.x1 = e.offsetX;
+                    this.y1 = e.offsetY;
+                    this.x2 = e.offsetX;
+                    this.y2 = e.offsetY;
+                },
+
+                onMouseMove(e){
+                    if(this.flag){
+                        console.log('onMouseMove',e);
+                        this.x2 += e.movementX
+                        this.y2 += e.movementY
+
+                        this.ctx.drawImage(this.image,0,0);
+                        const minY = Math.min(this.y1,this.y2);
+                        const maxY = Math.max(this.y1,this.y2);
+                        const minX = Math.min(this.x1,this.x2);
+                        const maxX = Math.max(this.x1,this.x2);
+
+                        const w = maxX - minX;
+                        const h = maxY - minY;
+
+                        this.ctx.setLineDash([4,2]);
+                        this.ctx.strokeRect(minX,minY,w,h);
+                    }
+                },
+
+                onMouseUp(e){
+                    this.flag = false;
+                },
+
+                onSubmit(){
+                    if(this.crop == 'crop'){
+                        this.crop = 'download';
+                        const minY = Math.min(this.y1,this.y2);
+                        const maxY = Math.max(this.y1,this.y2);
+                        const minX = Math.min(this.x1,this.x2);
+                        const maxX = Math.max(this.x1,this.x2);
+
+                        const w = maxX - minX;
+                        const h = maxY - minY;
+                        
+                        this.$refs.cvs.width = w;
+                        this.$refs.cvs.height = h;
+                        this.ctx.drawImage(this.image,minX,minY,w,h,0,0,w,h);
+
+                    }else{
+                        const a = document.createElement('a');
+                        a.href = this.$refs.cvs.toDataURL();
+                        a.download = `crop_${this.fileName}`;
+                        a.click();
+
+                        
+                    }                 
+                }
+
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .container{
+            width: 350px;
+            height: 250px;
+            outline: 1px solid #faa;
+
+            display:grid;
+            grid-auto-columns: 1fr;
+            grid-auto-rows: 1fr;
+            grid-gap: 3px;
+        }
+
+        .site-title{
+            grid-area: 1 / 1 / 2 / 3;
+            background-color: #eda;
+        }
+
+        nav{
+            grid-area: 1 / 3 / 2 / 5;
+            display:grid;
+            grid-auto-columns: 1fr;
+            grid-auto-rows: 1fr;
+            grid-gap: 3px;
+        }
+
+        .nav-1{
+            background-color: #faf;
+            grid-area: 1 / 1 / 2 / 2;
+        }
+        .nav-2{
+            background-color: #faf;
+            grid-area: 1 / 2 / 2 / 3;
+        }
+        .nav-3{
+            background-color: #faf;
+            grid-area: 1 / 3 / 2 / 4;
+        }
+
+        .post-title{
+            grid-area: 2 / 1 / 3 / 4;
+            background-color: #bbf;
+        }
+
+        .side-bar{
+            background-color: tomato;
+            grid-area: 2 / 4 / 4 / 5;
+        }
+
+        .post-meta{
+            background-color: yellowgreen;
+            grid-area: 3 / 1 / 8 / 2;
+        }
+
+        .main-content{
+            grid-area: 3 / 2 / 5 / 4;
+            background-color: #ddd;
+        }
+        .main-content-image{
+            grid-area: 5 / 2 / 8 / 4;
+            background-color: yellow;
+        }
+
+        .ads{
+            grid-area: 4 / 4 / 6 / 5;
+            background-color: green;
+        }
+
+        .other-stuffs{
+            grid-area: 6 / 4 / 8 / 5;
+            background-color:#bad;
+        }
+
+        footer{
+            background-color: #aaa;
+            grid-area: 8 / 1 / 9 / 5;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="site-title">site-title</div>
+        <nav>
+            <div class="nav-1">nav-1</div>
+            <div class="nav-2">nav-2</div>
+            <div class="nav-3">nav-3</div>
+        </nav>
+        <div class="post-title">post-title</div>
+        <div class="side-bar">side-bar</div>
+        <div class="post-meta">post-meta</div>
+        <div class="main-content">main-content</div>
+        <div class="ads">ads</div>
+        <div class="main-content-image">main-content-image</div>
+        <div class="other-stuffs">other-stuffs</div>
+        <footer>@2018 footer</footer>
+    </div>
+</body>
+</html>
