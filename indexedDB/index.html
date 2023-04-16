@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>indexedDB-TodoList</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <section>
+        <p>
+            <label for="title">標題</label><input type="text" name="title" id="title" placeholder="請輸入標題">
+        </p>
+        <p>
+            <label for="content">內容</label><input type="text" name="content" id="content" placeholder="請輸入內容">
+        </p>
+        <p>
+            類別
+            <select name="Lclass" id="Lclass">
+                <option value="資二智">資二智</option>
+                <option value="資二仁">資二仁</option>
+            </select>
+        </p>
+        <button onclick="addData()">新增</button>
+    </section>
+
+    <hr />
+
+    <h1>TodoList</h1>
+    <div class="search">
+        <img src="./images/search.png" alt="search-img">
+        <input type="text" name="keyWord" placeholder="搜尋">
+    </div>
+    <section>
+        <div class="todoList">
+            <ul>
+                <li>
+                    <div>#</div>
+                    <div class="title">標題</div>
+                    <div class="content">內容</div>
+                    <div class="Lclass">類別</div>
+                    <div>操作</div>
+                </li>
+            </ul>
+        </div>
+
+        <form class="editTodo">
+            <h2 class="title">編輯</h2>
+            <p>
+                <label for="title_modify">標題</label><input type="text" name="title_modify" id="title_modify"
+                    placeholder="請輸入標題">
+            </p>
+            <p>
+                <label for="content_modify">內容</label><input type="text" name="content_modify" id="content_modify"
+                    placeholder="請輸入內容">
+            </p>
+            <p>
+                類別
+                <select name="Lclass_modify" id="Lclass_modify">
+                    <option value="資二智">資二智</option>
+                    <option value="資二仁">資二仁</option>
+                </select>
+            </p>
+            <button type="submit" onclick="modifyDataprocess()">儲存</button>
+            <button type="button" onclick="close_editTodo()">取消</button>
+        </form>
+
+    </section>
+    <script src="./app.js"></script>
+</body>
+
+</html>
