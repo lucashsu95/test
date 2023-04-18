@@ -12,6 +12,10 @@ const onUpload = (e) => {
     }
 }
 
+const onSubmit = () => {
+    alert('儲存成功')
+}
+
 const props = defineProps({
     toggleDialog: {
         type: Boolean,
@@ -58,8 +62,8 @@ const props = defineProps({
                 備註: <input type="text" name="note" id="">
             </p>
             <span></span>
-            <button class="close">取消</button>
-            <button class="submit">儲存</button>
+            <button type="button" class="close" @click="toggleDialog = false">取消</button>
+            <button type="button" class="submit" @click="onSubmit">儲存</button>
 
         </form>
     </div>

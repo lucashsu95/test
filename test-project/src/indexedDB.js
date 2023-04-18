@@ -23,18 +23,22 @@ export function openDatabase(name, version) {
 }
 
 // 向对象存储中写入数据
-export function addData(db, storeName, data) {
+export function addData(data) {
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction(storeName, "readwrite");
-    const store = transaction.objectStore(storeName);
-    const request = store.add(data);
+    const request = indexedDB.open('myDatabase', 1);
+    request.onsuccess = (e) => {
+      const db = e.target.result;
+      const transaction = db.transaction("myData", "readwrite");
+      const store = transaction.objectStore("myData");
+      const request = store.add(data);
 
-    request.onsuccess = () => {
-      resolve();
-    };
+      request.onsuccess = () => {
+        resolve();
+      };
 
-    request.onerror = () => {
-      reject("Failed to add data");
+      request.onerror = () => {
+        reject("Failed to add data");
+      };
     };
   });
 }
