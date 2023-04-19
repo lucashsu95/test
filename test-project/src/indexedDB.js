@@ -3,14 +3,6 @@ export function openDatabase(name, version) {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(name, version);
 
-    request.onerror = () => {
-      reject("Failed to open database");
-    };
-
-    request.onsuccess = () => {
-      resolve(request.result);
-    };
-
     request.onupgradeneeded = (event) => {
       const db = event.target.result;
       let objectStore = db.createObjectStore("myData", { keyPath: "id" });
@@ -23,13 +15,19 @@ export function openDatabase(name, version) {
 }
 
 // 向对象存储中写入数据
-export function addData(data) {
+export function addData() {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open('myDatabase', 1);
+    const request = indexedDB.open("myDatabase", 1);
     request.onsuccess = (e) => {
       const db = e.target.result;
       const transaction = db.transaction("myData", "readwrite");
       const store = transaction.objectStore("myData");
+      const data = {
+        id: new Date(),
+        Lclass: "資二智",
+        title: "會開心",
+        content: "香蕉",
+      };
       const request = store.add(data);
 
       request.onsuccess = () => {

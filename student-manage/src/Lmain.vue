@@ -1,24 +1,16 @@
 <script setup>
 import student from './components/student.vue';
-let db;
+import { openDatabase, getStudent } from './indexedDB.js';
+import { onMounted, ref } from 'vue';
+const studentData = ref(null);
 
-const request = indexedDB.open("myDatabase", 1);
-
-request.onupgradeneeded = function (event) {
-    db = event.target.result;
-    console.log("onupgradeneeded success", db);
-    let objectStore = db.createObjectStore("todos", { keyPath: "id" });
-    // 添加索引
-    objectStore.createIndex("Lclass", "Lclass", { unique: false });
-    objectStore.createIndex("title", "title", { unique: false });
-    objectStore.createIndex("content", "content", { unique: false });
-};
-
-request.onsuccess = function (event) {
-    db = event.target.result;
-    console.log("Database opened successfully");
-};
-
+onMounted(() => {
+    openDatabase();
+    getStudent().then((data) => {
+        studentData.value = data;
+        console.log(studentData.value);
+    })
+})
 </script>
 
 <template>
@@ -40,7 +32,9 @@ request.onsuccess = function (event) {
                 </article>
 
             </div>
-            <student></student>
+            <template v-for="student, i in studentData">
+                <student :n="student"></student>
+            </template>
         </div>
     </div>
 </template>
@@ -49,6 +43,8 @@ request.onsuccess = function (event) {
 #main {
     grid-area: main;
 }
+
+
 
 .student {
     display: grid;

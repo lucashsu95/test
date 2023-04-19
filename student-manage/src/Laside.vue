@@ -7,10 +7,14 @@ const itemFlag = ref(-1);
 
 const toggleDialog = ref(false);
 
+const closeDialog = (val) => {
+    toggleDialog.value = val
+}
+
 </script>
 
 <template>
-    <addStudent :toggle-dialog="toggleDialog"></addStudent>
+    <addStudent :toggle-dialog="toggleDialog" @closeDialog="closeDialog"></addStudent>
     <aside id="aside">
         <button id="addStudent" @click="toggleDialog = !toggleDialog">
             <span class="icon"><img src="./assets/images/add.png" alt="123" /></span>

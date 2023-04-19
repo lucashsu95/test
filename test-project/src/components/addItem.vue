@@ -1,10 +1,17 @@
 <template>
-    <div>
-        <button
-            @click="addData({ id: new Date, Lclass: Math.round(Math.random()) ? '資二仁' : '資二智', title: Math.round(Math.random()) ? '維生素C' : '會開心', content: Math.round(Math.random()) ? '蘋果' : '香蕉' })">+</button>
-    </div>
+    <button @click="butFn">改变page值:{{ page }}</button>
 </template>
-
+  
 <script setup>
-import { addData } from '../indexedDB.js';
+const props = defineProps({
+    page: {
+        type: String,
+    }
+});
+
+const emit = defineEmits(["toggleDialog"]);   //定义一个变量来接收父组件传来的方法
+
+const butFn = () => {
+    emit("toggleDialog", 5)
+}
 </script>

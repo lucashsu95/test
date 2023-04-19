@@ -2,6 +2,7 @@
 import Lheader from './Lheader.vue';
 import Laside from './Laside.vue';
 import Lmain from './Lmain.vue';
+
 </script>
 
 <template>

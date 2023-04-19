@@ -12,7 +12,7 @@ li {
   list-style: none;
 }
 
-input,
+
 button,
 select {
   margin: 10px;
@@ -20,6 +20,10 @@ select {
   border: 1px solid #ccc;
   border-radius: 5px;
   outline: none;
+}
+
+form button,select {
+  box-shadow: 0 0 5px #ddd;
 }
 
 button {
@@ -65,8 +69,6 @@ button {
   justify-content: center;
   align-items: center;
 }
-
-
 
 .due {
   width: 4px;
