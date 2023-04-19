@@ -63,7 +63,7 @@ export function getStudent() {
   });
 }
 
-export function removeStudent(id) {
+export function deleteStudent(id) {
   return new Promise(() => {
     const request = indexedDB.open("53web", 1);
     request.onsuccess = () => {

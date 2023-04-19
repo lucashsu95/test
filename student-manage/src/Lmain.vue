@@ -2,15 +2,20 @@
 import student from './components/student.vue';
 import { openDatabase, getStudent } from './indexedDB.js';
 import { onMounted, ref } from 'vue';
+
 const studentData = ref(null);
 
 onMounted(() => {
+    renderView();
+})
+
+const renderView = () => {
     openDatabase();
     getStudent().then((data) => {
         studentData.value = data;
         console.log(studentData.value);
     })
-})
+}
 </script>
 
 <template>

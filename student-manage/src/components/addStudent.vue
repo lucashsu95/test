@@ -8,15 +8,11 @@ const props = defineProps({
     }
 })
 
-function getRandomNum() {
-    const min = 100000;
-    const max = 999999;
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
+const hasImage = ref(true);
+const emit = defineEmits(['closeDialog'])
 const payload = ref({
     id: new Date(),
-    avatar: '../assets/images/人員000.png',
+    avatar: '',
     last_name: '',
     first_name: '',
     student_id: getRandomNum(),
@@ -27,37 +23,41 @@ const payload = ref({
     note: '',
 })
 
+
+function getRandomNum() {
+    const min = 100000;
+    const max = 999999;
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 const onUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-
         const render = new FileReader();
         render.readAsDataURL(file);
         render.onload = () => {
+            hasImage.value = false;
             payload.value.avatar = render.result;
         }
     }
 }
-const emit = defineEmits(['closeDialog'])
 
 const onSubmit = () => {
     if (confirm('確定送出嗎?')) {
         addStudent(JSON.stringify(payload.value));
-        emit('closeDialog',false);
+        emit('closeDialog', false);
         alert('儲存成功');
     }
 }
-
 </script>
 
 <template>
-    {{ toggleDialog }}
-
     <div id="dialog" :class="{ show: toggleDialog }">
         <h1>新增學生</h1>
         <hr>
         <form class="newStudent">
-            <img :src="payload.avatar" class='avatar' alt="img">
+            <img src="../assets/images/人員000.png" class='avatar' v-show="hasImage" alt="">
+            <img :src="payload.avatar" class='avatar' alt="" v-show="!hasImage">
             <input type="file" @change="onUpload" class='avatar_preview' placeholder="大頭貼">
 
             <input type="text" name="last_name" v-model="payload.last_name" placeholder="姓氏">

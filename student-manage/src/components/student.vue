@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue';
+import { deleteStudent } from '../indexedDB.js';
 
 const studentMouseIndex = ref(null);
 const props = defineProps({
@@ -12,14 +13,18 @@ const showButtons = (index) => {
     studentMouseIndex.value = index;
 }
 
+const fs_test = (e) => {
+    deleteStudent(e.target.dataset.id);
+}
+
 </script>
 
 
 <template>
-    <div class="student" data-id="1" @mouseover="showButtons(0)" @mouseleave="studentMouseIndex = null">
+    <div class="student" @mouseover="showButtons(0)" @mouseleave="studentMouseIndex = null">
         <img :src="n.avatar" alt="avatar" class="avatar" />
         <div class="fullname">{{ n.last_name + n.first_name }}</div>
-        <div class="student_id">{{ n.id }}</div>
+        <div class="student_id">{{ n.student_id }}</div>
         <div class="email">{{ n.email }}</div>
         <div class="phone">{{ n.phone }}</div>
         <div class="tag">
@@ -29,7 +34,7 @@ const showButtons = (index) => {
         <div class="address">{{ n.address }}</div>
         <div class="actions" v-show="studentMouseIndex === 0">
             <div class="edit">編輯</div>
-            <div class="delete">刪除</div>
+            <div class="delete" @click="fs_test" :data-id="n.id">刪除</div>
         </div>
     </div>
 </template>
