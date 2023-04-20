@@ -1,14 +1,14 @@
 <script setup>
-import { ref } from 'vue';
+import { inject, ref } from 'vue';
 import { addStudent } from '../indexedDB.js';
 
-const props = defineProps({
-    toggleDialog: {
-        type: Boolean
-    }
+defineProps({
+    toggleDialogFlag: Boolean,
 })
 
 const hasImage = ref(true);
+
+const LclassData = inject('LclassData');
 
 const getRandomNum = () => {
     const min = 100000;
@@ -25,23 +25,10 @@ const payload = ref({
     email: '',
     phone: '',
     address: '',
-    class: '資二智',
-    note: '',
+    class: LclassData.value[0].class_name,
 })
 
-const payload2 = ref({
-    id: new Date(),
-    avatar: '',
-    last_name: '',
-    first_name: '',
-    student_id: getRandomNum(),
-    email: '',
-    phone: '',
-    address: '',
-    class: '資二智',
-    note: '',
-})
-
+console.log();
 
 const onUpload = (e) => {
     const file = e.target.files[0];
@@ -59,17 +46,34 @@ const onUpload = (e) => {
 const onSubmit = () => {
     if (confirm('確定送出嗎?')) {
         addStudent(JSON.stringify(payload.value));
-        // emit('closeDialog', false);
-        close_dialog();
-        payload.value = payload2.value;
+        closeDialog();
+        payload.value = ref({
+            id: new Date(),
+            avatar: '',
+            last_name: '',
+            first_name: '',
+            student_id: getRandomNum(),
+            email: '',
+            phone: '',
+            address: '',
+            class: '資二智',
+            note: '',
+        })
         alert('儲存成功');
     }
 }
 
+const emit = defineEmits(['close-dialog']);
+
+const closeDialog = () => {
+    emit('close-dialog');
+}
+
+
 </script>
 
 <template>
-    <div id="dialog" :class="{ show: toggleDialog }">
+    <div id="dialog" :class="{ show: toggleDialogFlag }">
         <h1>新增學生</h1>
         <hr>
         <form class="newStudent">
@@ -92,15 +96,14 @@ const onSubmit = () => {
 
             <img src="../assets/images/tag.png" alt="tag-icon">
             <select name="class" v-model="payload.class">
-                <option value="資二智" selected>資二智</option>
-                <option value="資二仁">資二仁</option>
+                <option v-for='Lclass in LclassData' :value="Lclass.class_name">{{ Lclass.class_name }}</option>
             </select>
 
             <img src="../assets/images/note.png" alt="note-icon">
             <input type="text" name="note" v-model="payload.note" placeholder="備註">
 
             <p class="control-box">
-                <button type="button" class="close" @click="$emit('closeDialog',false)">取消</button>
+                <button type="button" class="close" @click="closeDialog">取消</button>
                 <button type="button" class="submit" @click="onSubmit">儲存</button>
             </p>
 
@@ -153,25 +156,6 @@ hr {
 
 .control-box {
     grid-area: 7 / 7 / 8 / 11;
-}
-
-.control-box button {
-    padding: 10px 25px;
-    margin: 0 5px;
-    border: none;
-    outline: none;
-    background: none;
-    box-shadow: none;
-    font-weight: bold;
-    color: #39f;
-    border-radius: 20px;
-    transition: .3s;
-}
-
-.control-box button:hover {
-    letter-spacing: 5px;
-    color: #fff;
-    background: #39f;
 }
 
 .newStudent input {

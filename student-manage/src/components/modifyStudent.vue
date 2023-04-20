@@ -1,10 +1,10 @@
 <script setup>
-import { ref } from 'vue';
+import { inject, ref } from 'vue';
 import { updateStudent } from '../indexedDB.js';
 
-defineProps({
-    payload: Object,
+const props = defineProps({
     toggleFlag: Boolean,
+    student_index: Number,
 })
 
 const hasImage = ref(true);
@@ -15,61 +15,62 @@ const onUpload = (e) => {
         const render = new FileReader();
         render.readAsDataURL(file);
         render.onload = () => {
-            hasImage.value = false;
-            payload.value.avatar = render.result;
+            console.log(payload.value[props.student_index]);
+            payload.value[props.student_index].avatar = render.result;
         }
     }
 };
 
-const emit = defineEmits(['close-dialog'])
+const payload = inject('payload');
+
+const emit = defineEmits(['close-dialog']);
 
 const onSubmit = () => {
     if (confirm('確定送出嗎?')) {
-        // updateStudent(JSON.stringify(payload.value));
-        closeDialogModify()
+        updateStudent(JSON.stringify(payload.value[props.student_index]));
+        closeDialog();
         alert('儲存成功');
     }
 }
 
-const closeDialogModify = () => {
+const closeDialog = () => {
     emit('close-dialog');
 }
 
 </script>
 
 <template>
-    {{ toggleFlag }}
     <div id="dialog" :class="{ show: toggleFlag }">
         <h1>修改學生</h1>
         <hr>
         <form class="newStudent">
-            <img :src="payload.avatar" class='avatar' alt="" v-show="!hasImage">
+            <img :src="payload[student_index].avatar" class='avatar'>
             <input type="file" @change="onUpload" class='avatar_preview' placeholder="大頭貼">
 
-            <input type="text" name="last_name" v-model="payload.last_name" placeholder="姓氏">
-            <input type="text" name="first_name" v-model="payload.first_name" placeholder="名字">
+            <input type="text" name="last_name" v-model="payload[student_index].last_name" placeholder="姓氏">
+            <input type="text" name="first_name" v-model="payload[student_index].first_name" placeholder="名字">
 
 
             <img src="../assets/images/email.png" alt="email-icon">
-            <input type="email" name="email" v-model="payload.email" placeholder="電子郵件">
+            <input type="email" name="email" v-model="payload[student_index].email" placeholder="電子郵件">
 
-            <input type="text" name="address" v-model="payload.address" placeholder="地址">
+            <input type="text" name="address" v-model="payload[student_index].address" placeholder="地址">
 
             <img src="../assets/images/phone.png" alt="phone-icon">
-            <input type="tel" name="phone[]" v-model="payload.phone" placeholder="電話">
+            <input type="tel" name="phone[]" v-model="payload[student_index].phone" placeholder="電話">
 
 
             <img src="../assets/images/tag.png" alt="tag-icon">
-            <select name="class" v-model="payload.class">
+            <select name="class" v-model="payload[student_index].class">
                 <option value="資二智" selected>資二智</option>
                 <option value="資二仁">資二仁</option>
             </select>
 
             <img src="../assets/images/note.png" alt="note-icon">
-            <input type="text" name="note" v-model="payload.note" placeholder="備註">
+            <input type="text" name="note" v-model="payload[student_index].note" placeholder="備註">
 
             <p class="control-box">
-                <button type="button" class="close" @click="closeDialogModify">取消</button>
+                <button type="button" class="close" @click="closeDialog">取消</button>
                 <button type="button" class="submit" @click="onSubmit">儲存</button>
             </p>
 

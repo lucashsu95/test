@@ -76,3 +76,24 @@ button {
   background-color: #000;
   border-radius: 50%;
 }
+
+
+
+.control-box button {
+  padding: 10px 25px;
+  margin: 0 5px;
+  border: none;
+  outline: none;
+  background: none;
+  box-shadow: none;
+  font-weight: bold;
+  color: #39f;
+  border-radius: 20px;
+  transition: .3s;
+}
+
+.control-box button:hover {
+  letter-spacing: 5px;
+  color: #fff;
+  background: #39f;
+}

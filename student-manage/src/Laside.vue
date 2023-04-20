@@ -1,23 +1,47 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, provide, ref } from 'vue';
+import { getClass } from './class.js';
 import Lclass from './components/Lclass.vue';
 import addStudent from './components/addStudent.vue';
+import createClass from './components/createClass.vue';
 
 const itemFlag = ref(-1);
 
-const toggleDialogAdd = ref(false);
+const toggleDialogFlag = ref(false);
 
-const close_dialog = (val) => {
-    toggleDialogAdd.value = val
+const toggleDialogClassFlag = ref(false);
+
+const toggleDialog = () => {
+    toggleDialogFlag.value = !toggleDialogFlag.value;
 }
+
+const toggleDialogClass = () => {
+    itemFlag.value = -2;
+    toggleDialogClassFlag.value = !toggleDialogClassFlag.value;
+}
+
+const LclassData = ref(null);
+
+const renderView = () => {
+    getClass().then((data) => {
+        LclassData.value = data;
+    })
+}
+
+onMounted(() => {
+    renderView();
+})
+
+provide('LclassData',LclassData);
 
 </script>
 
 <template>
-    <addStudent :toggle-dialog="toggleDialogAdd" @closeDialog="close_dialog"></addStudent>
+    <createClass :toggle-dialog-flag="toggleDialogClassFlag" @close-dialog="toggleDialogClass"></createClass>
+    <addStudent :toggle-dialog-flag="toggleDialogFlag" @close-dialog="toggleDialog"></addStudent>
     <aside id="aside">
-        <button id="addStudent" @click="toggleDialogAdd = !toggleDialogAdd">
-            <span class="icon"><img src="./assets/images/add.png" alt="123" /></span>
+        <button id="addStudent" @click="toggleDialog">
+            <span class="icon"><img src="./assets/images/add.png" alt="add.png" /></span>
             <h2>新增學生</h2>
         </button>
 
@@ -30,16 +54,13 @@ const close_dialog = (val) => {
         </ul>
 
         <ul id="classList" class="list">
-            <li :class="{ current: itemFlag === 0 }" class="item" @click="itemFlag = 0">
-                <Lclass></Lclass>
+            <li v-for="classItem, i in LclassData" :key="classItem.id" class="item" :class="{ current: itemFlag === i }"
+                @click="itemFlag = i">
+                <Lclass>
+                    {{ classItem.class_name }}
+                </Lclass>
             </li>
-            <li :class="{ current: itemFlag === 1 }" class="item" @click="itemFlag = 1">
-                <Lclass></Lclass>
-            </li>
-            <li :class="{ current: itemFlag === 2 }" class="item" @click="itemFlag = 2">
-                <Lclass></Lclass>
-            </li>
-            <li :class="{ current: itemFlag === -2 }" id="addClass" class="item" @click="itemFlag = -2">
+            <li @click="toggleDialogClass" :class="{ current: itemFlag === -2 }" id="addClass" class="item">
                 <span class="icon"><img src="./assets/images/add.png" alt="123" /></span>
                 建立班級
             </li>

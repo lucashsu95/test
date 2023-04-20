@@ -1,7 +1,7 @@
-// 打开或创建一个名为 "53web" 的数据库
+// 打开或创建一个名为 "53web-student-manage" 的数据库
 export function openDatabase() {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open("53web", 1);
+    const request = indexedDB.open("53web-student-manage", 1);
 
     request.onupgradeneeded = (event) => {
       const db = event.target.result;
@@ -25,7 +25,7 @@ export function openDatabase() {
 // 向对象存储中写入数据
 export function addStudent(data) {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open("53web", 1);
+    const request = indexedDB.open("53web-student-manage", 1);
     request.onsuccess = (e) => {
       const db = e.target.result;
       const transaction = db.transaction(["student-manage"], "readwrite");
@@ -49,7 +49,7 @@ export function addStudent(data) {
 // 从对象存储中读取数据
 export function getStudent() {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open("53web", 1);
+    const request = indexedDB.open("53web-student-manage", 1);
     request.onsuccess = () => {
       const db = request.result;
       const transaction = db.transaction("student-manage");
@@ -63,29 +63,15 @@ export function getStudent() {
   });
 }
 
-export function modifyView(id) {
-  return new Promise((resolve) => {
-    const request = indexedDB.open("53web", 1);
-    request.onsuccess = () => {
-      const db = request.result;
-      const transaction = db.transaction(["student-manage"], "readwrite");
-      const objectStore = transaction.objectStore("student-manage");
-      objectStore.get(id).onsuccess = (e) => {
-        const data = e.target.result;
-        resolve(data);
-      };
-    };
-  });
-}
-
-export function updateStudent(id) {
+export function updateStudent(data) {
   return new Promise(() => {
-    const request = indexedDB.open("53web", 1);
+    const request = indexedDB.open("53web-student-manage", 1);
     request.onsuccess = () => {
       const db = request.result;
       const transaction = db.transaction(["student-manage"], "readwrite");
       const objectStore = transaction.objectStore("student-manage");
-      const query = objectStore.put(id);
+      data = JSON.parse(data);
+      const query = objectStore.put(data);
       query.onsuccess = () => {
         console.log("Data 修改成功");
       };
@@ -95,7 +81,7 @@ export function updateStudent(id) {
 
 export function deleteStudent(id) {
   return new Promise(() => {
-    const request = indexedDB.open("53web", 1);
+    const request = indexedDB.open("53web-student-manage", 1);
     request.onsuccess = () => {
       const db = request.result;
       const transaction = db.transaction(["student-manage"], "readwrite");

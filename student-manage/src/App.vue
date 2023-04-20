@@ -10,5 +10,3 @@ import Lmain from './Lmain.vue';
   <Laside></Laside>
   <Lmain></Lmain>
 </template>
-
-<style scoped></style>

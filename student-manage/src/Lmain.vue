@@ -1,7 +1,7 @@
 <script setup>
 import student from './components/student.vue';
 import { openDatabase, getStudent } from './indexedDB.js';
-import { onMounted, ref } from 'vue';
+import { onMounted, provide, ref } from 'vue';
 
 const students = ref(null);
 
@@ -9,16 +9,14 @@ const renderView = () => {
     openDatabase();
     getStudent().then((data) => {
         students.value = data;
-        // console.log students.value);
     })
 }
 
 onMounted(() => {
-    renderView()
-    setInterval(() => {
-        renderView();
-    }, 2000)
+    renderView();
 })
+
+provide('payload', students)
 
 </script>
 
@@ -31,7 +29,7 @@ onMounted(() => {
                 <div class="student_id">學號</div>
                 <div class="email">電子郵件</div>
                 <div class="phone">電話號碼</div>
-                <div class="class">標號</div>
+                <div class="class">班級</div>
                 <div class="address">地址</div>
 
                 <article class="student_tool">
@@ -41,7 +39,7 @@ onMounted(() => {
                 </article>
 
             </div>
-            <student v-for="student in students" :studentData="student"></student>
+            <student v-for="student, i in students" :studentIndex="i" :studentData="student"></student>
         </div>
     </div>
 </template>
@@ -51,11 +49,9 @@ onMounted(() => {
     grid-area: main;
 }
 
-
-
 .student {
     display: grid;
-    grid-template-columns: 0.6fr repeat(2, 1fr) 2fr 2fr 0.5fr 1fr;
+    grid-template-columns: 0.6fr repeat(2, 1fr) 2fr 2fr 1fr 1fr;
     align-items: center;
     padding: 10px;
     position: relative;
