@@ -5,18 +5,18 @@ import addStudent from './components/addStudent.vue';
 
 const itemFlag = ref(-1);
 
-const toggleDialog = ref(false);
+const toggleDialogAdd = ref(false);
 
-const closeDialog = (val) => {
-    toggleDialog.value = val
+const close_dialog = (val) => {
+    toggleDialogAdd.value = val
 }
 
 </script>
 
 <template>
-    <addStudent :toggle-dialog="toggleDialog" @closeDialog="closeDialog"></addStudent>
+    <addStudent :toggle-dialog="toggleDialogAdd" @closeDialog="close_dialog"></addStudent>
     <aside id="aside">
-        <button id="addStudent" @click="toggleDialog = !toggleDialog">
+        <button id="addStudent" @click="toggleDialogAdd = !toggleDialogAdd">
             <span class="icon"><img src="./assets/images/add.png" alt="123" /></span>
             <h2>新增學生</h2>
         </button>

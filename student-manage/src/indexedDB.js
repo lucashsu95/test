@@ -63,6 +63,36 @@ export function getStudent() {
   });
 }
 
+export function modifyView(id) {
+  return new Promise((resolve) => {
+    const request = indexedDB.open("53web", 1);
+    request.onsuccess = () => {
+      const db = request.result;
+      const transaction = db.transaction(["student-manage"], "readwrite");
+      const objectStore = transaction.objectStore("student-manage");
+      objectStore.get(id).onsuccess = (e) => {
+        const data = e.target.result;
+        resolve(data);
+      };
+    };
+  });
+}
+
+export function updateStudent(id) {
+  return new Promise(() => {
+    const request = indexedDB.open("53web", 1);
+    request.onsuccess = () => {
+      const db = request.result;
+      const transaction = db.transaction(["student-manage"], "readwrite");
+      const objectStore = transaction.objectStore("student-manage");
+      const query = objectStore.put(id);
+      query.onsuccess = () => {
+        console.log("Data 修改成功");
+      };
+    };
+  });
+}
+
 export function deleteStudent(id) {
   return new Promise(() => {
     const request = indexedDB.open("53web", 1);

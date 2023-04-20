@@ -3,19 +3,23 @@ import student from './components/student.vue';
 import { openDatabase, getStudent } from './indexedDB.js';
 import { onMounted, ref } from 'vue';
 
-const studentData = ref(null);
-
-onMounted(() => {
-    renderView();
-})
+const students = ref(null);
 
 const renderView = () => {
     openDatabase();
     getStudent().then((data) => {
-        studentData.value = data;
-        console.log(studentData.value);
+        students.value = data;
+        // console.log students.value);
     })
 }
+
+onMounted(() => {
+    renderView()
+    setInterval(() => {
+        renderView();
+    }, 2000)
+})
+
 </script>
 
 <template>
@@ -37,9 +41,7 @@ const renderView = () => {
                 </article>
 
             </div>
-            <template v-for="student, i in studentData">
-                <student :n="student"></student>
-            </template>
+            <student v-for="student in students" :studentData="student"></student>
         </div>
     </div>
 </template>

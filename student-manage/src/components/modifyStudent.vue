@@ -1,47 +1,13 @@
 <script setup>
 import { ref } from 'vue';
-import { addStudent } from '../indexedDB.js';
+import { updateStudent } from '../indexedDB.js';
 
-const props = defineProps({
-    toggleDialog: {
-        type: Boolean
-    }
+defineProps({
+    payload: Object,
+    toggleFlag: Boolean,
 })
 
 const hasImage = ref(true);
-
-const getRandomNum = () => {
-    const min = 100000;
-    const max = 999999;
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-const payload = ref({
-    id: new Date(),
-    avatar: '',
-    last_name: '',
-    first_name: '',
-    student_id: getRandomNum(),
-    email: '',
-    phone: '',
-    address: '',
-    class: '資二智',
-    note: '',
-})
-
-const payload2 = ref({
-    id: new Date(),
-    avatar: '',
-    last_name: '',
-    first_name: '',
-    student_id: getRandomNum(),
-    email: '',
-    phone: '',
-    address: '',
-    class: '資二智',
-    note: '',
-})
-
 
 const onUpload = (e) => {
     const file = e.target.files[0];
@@ -53,28 +19,31 @@ const onUpload = (e) => {
             payload.value.avatar = render.result;
         }
     }
-}
+};
 
+const emit = defineEmits(['close-dialog'])
 
 const onSubmit = () => {
     if (confirm('確定送出嗎?')) {
-        addStudent(JSON.stringify(payload.value));
-        // emit('closeDialog', false);
-        close_dialog();
-        payload.value = payload2.value;
+        // updateStudent(JSON.stringify(payload.value));
+        closeDialogModify()
         alert('儲存成功');
     }
+}
+
+const closeDialogModify = () => {
+    emit('close-dialog');
 }
 
 </script>
 
 <template>
-    <div id="dialog" :class="{ show: toggleDialog }">
-        <h1>新增學生</h1>
+    {{ toggleFlag }}
+    <div id="dialog" :class="{ show: toggleFlag }">
+        <h1>修改學生</h1>
         <hr>
         <form class="newStudent">
-            <img src="../assets/images/人員000.png" class='avatar' v-show="hasImage" alt="">
-            <img :src="payload.avatar" class='avatar' v-show="!hasImage">
+            <img :src="payload.avatar" class='avatar' alt="" v-show="!hasImage">
             <input type="file" @change="onUpload" class='avatar_preview' placeholder="大頭貼">
 
             <input type="text" name="last_name" v-model="payload.last_name" placeholder="姓氏">
@@ -100,13 +69,14 @@ const onSubmit = () => {
             <input type="text" name="note" v-model="payload.note" placeholder="備註">
 
             <p class="control-box">
-                <button type="button" class="close" @click="$emit('closeDialog',false)">取消</button>
+                <button type="button" class="close" @click="closeDialogModify">取消</button>
                 <button type="button" class="submit" @click="onSubmit">儲存</button>
             </p>
 
         </form>
     </div>
 </template>
+
 
 <style scoped>
 img {

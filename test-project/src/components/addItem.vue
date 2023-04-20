@@ -1,17 +1,19 @@
-<template>
-    <button @click="butFn">改变page值:{{ page }}</button>
-</template>
-  
 <script setup>
-const props = defineProps({
-    page: {
-        type: String,
-    }
-});
+defineProps({
+    title: String,
+})
 
-const emit = defineEmits(["toggleDialog"]);   //定义一个变量来接收父组件传来的方法
+const emit = defineEmits(['enlarge-text']);
 
-const butFn = () => {
-    emit("toggleDialog", 5)
+const fs_test = () => {
+    emit('enlarge-text')
 }
+
 </script>
+
+<template>
+    <div class="blog-post">
+        <h4>title:{{ title }}</h4>
+        <button @click="fs_test">Enlarge text</button>
+    </div>
+</template>

@@ -1,40 +1,46 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import { deleteStudent } from '../indexedDB.js';
+import modifyStudent from './modifyStudent.vue';
 
 const studentMouseIndex = ref(null);
+
 const props = defineProps({
-    n: {
-        type: Object,
-        required: true,
-    }
+    studentData: Object,
 })
+
 const showButtons = (index) => {
     studentMouseIndex.value = index;
 }
+const delete_student = (e) => {
+    deleteStudent(e.target.dataset.id)
+}
 
-const fs_test = (e) => {
-    deleteStudent(e.target.dataset.id);
+const toggleFlag = ref(false);
+
+const toggleDialog = () => {
+    toggleFlag.value = !toggleFlag.value
 }
 
 </script>
 
-
 <template>
-    <div class="student" @mouseover="showButtons(0)" @mouseleave="studentMouseIndex = null">
-        <img :src="n.avatar" alt="avatar" class="avatar" />
-        <div class="fullname">{{ n.last_name + n.first_name }}</div>
-        <div class="student_id">{{ n.student_id }}</div>
-        <div class="email">{{ n.email }}</div>
-        <div class="phone">{{ n.phone }}</div>
+    <modifyStudent :payload="studentData" :toggle-flag="toggleFlag" @close-dialog="toggleDialog">
+    </modifyStudent>
+    <div class=" student" @mouseover="showButtons(0)" @mouseleave="studentMouseIndex = null">
+        <img :src="studentData.avatar" alt="avatar" class="avatar" />
+        <div class="fullname">{{ studentData.last_name + studentData.first_name }}</div>
+        <div class="student_id">{{ studentData.student_id }}</div>
+        <div class="email">{{ studentData.email }}</div>
+        <div class="phone">{{ studentData.phone }}</div>
         <div class="tag">
             <div>測試1</div>
             <div>測試2</div>
         </div>
-        <div class="address">{{ n.address }}</div>
+        <div class="address">{{ studentData.address }}</div>
         <div class="actions" v-show="studentMouseIndex === 0">
-            <div class="edit">編輯</div>
-            <div class="delete" @click="fs_test" :data-id="n.id">刪除</div>
+            <div class="edit" @click="toggleDialog" :data-id="studentData.id">編輯</div>
+            <div class="delete" @click="delete_student" :data-id="studentData.id">刪除</div>
         </div>
     </div>
 </template>
