@@ -22,22 +22,18 @@ const toggleDialogClass = () => {
 
 const LclassData = ref(null);
 
-const renderView = () => {
+onMounted(() => {
     getClass().then((data) => {
         LclassData.value = data;
+        provide('LclassData', LclassData)
     })
-}
-
-onMounted(() => {
-    renderView();
 })
-
-provide('LclassData',LclassData);
 
 </script>
 
 <template>
-    <createClass :toggle-dialog-flag="toggleDialogClassFlag" @close-dialog="toggleDialogClass"></createClass>
+    <createClass :toggle-dialog-flag="toggleDialogClassFlag" @close-dialog="toggleDialogClass" @render-view="renderView">
+    </createClass>
     <addStudent :toggle-dialog-flag="toggleDialogFlag" @close-dialog="toggleDialog"></addStudent>
     <aside id="aside">
         <button id="addStudent" @click="toggleDialog">

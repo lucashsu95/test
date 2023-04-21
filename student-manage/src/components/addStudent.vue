@@ -6,9 +6,9 @@ defineProps({
     toggleDialogFlag: Boolean,
 })
 
-const hasImage = ref(true);
-
 const LclassData = inject('LclassData');
+
+const hasImage = ref(true);
 
 const getRandomNum = () => {
     const min = 100000;
@@ -25,10 +25,9 @@ const payload = ref({
     email: '',
     phone: '',
     address: '',
-    class: LclassData.value[0].class_name,
+    class: '請選擇班級',
+    note: '',
 })
-
-console.log();
 
 const onUpload = (e) => {
     const file = e.target.files[0];
@@ -56,7 +55,7 @@ const onSubmit = () => {
             email: '',
             phone: '',
             address: '',
-            class: '資二智',
+            class: '請選擇',
             note: '',
         })
         alert('儲存成功');
@@ -68,7 +67,6 @@ const emit = defineEmits(['close-dialog']);
 const closeDialog = () => {
     emit('close-dialog');
 }
-
 
 </script>
 
@@ -96,6 +94,7 @@ const closeDialog = () => {
 
             <img src="../assets/images/tag.png" alt="tag-icon">
             <select name="class" v-model="payload.class">
+                <option value='請選擇班級' disabled selected>請選擇班級</option>
                 <option v-for='Lclass in LclassData' :value="Lclass.class_name">{{ Lclass.class_name }}</option>
             </select>
 

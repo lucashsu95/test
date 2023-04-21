@@ -1,19 +1,14 @@
-<script setup>
-import { defineProps,ref } from 'vue'
-
-defineProps({
-    myprop: {
-        type: String,
-        required: true
-    }
-})
-
-const myproref = ref(myprop);
-
-</script>
-
+<!-- c.vue -->
 <template>
     <div>
-        {{ myproref }}
+        <h2>我是子组件C</h2>
     </div>
 </template>
+  
+<script setup>
+const emits = defineEmits(['childMethod'])
+
+const childMethod = () => {
+    emits('childMethod')
+}
+</script>

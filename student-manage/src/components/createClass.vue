@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { openDatabase_class, addClass } from '../class.js';
+
 defineProps({
     toggleDialogFlag: Boolean,
 })
@@ -22,10 +23,6 @@ const onSubmit = () => {
     closeDialog();
     alert('儲存成功');
 }
-
-onMounted(() => {
-    openDatabase_class();
-})
 
 </script>
 

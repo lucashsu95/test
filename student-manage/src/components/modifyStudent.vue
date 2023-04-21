@@ -7,6 +7,8 @@ const props = defineProps({
     student_index: Number,
 })
 
+const LclassData = inject('LclassData');
+
 const hasImage = ref(true);
 
 const onUpload = (e) => {
@@ -22,6 +24,7 @@ const onUpload = (e) => {
 };
 
 const payload = inject('payload');
+
 
 const emit = defineEmits(['close-dialog']);
 
@@ -61,9 +64,9 @@ const closeDialog = () => {
 
 
             <img src="../assets/images/tag.png" alt="tag-icon">
+
             <select name="class" v-model="payload[student_index].class">
-                <option value="資二智" selected>資二智</option>
-                <option value="資二仁">資二仁</option>
+                <option v-for='Lclass in LclassData' :value="Lclass.class_name">{{ Lclass.class_name }}</option>
             </select>
 
             <img src="../assets/images/note.png" alt="note-icon">
