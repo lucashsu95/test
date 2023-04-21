@@ -1,15 +1,19 @@
 <script setup>
-import { onMounted, provide, ref } from 'vue';
-import { getClass } from './class.js';
+import { inject, ref } from 'vue';
 import Lclass from './components/Lclass.vue';
 import addStudent from './components/addStudent.vue';
 import createClass from './components/createClass.vue';
+import { updateStudent } from './indexedDB';
+
+const LclassData = inject('LclassData');
 
 const itemFlag = ref(-1);
 
 const toggleDialogFlag = ref(false);
 
 const toggleDialogClassFlag = ref(false);
+
+const emit = defineEmits(['update-student-flag']);
 
 const toggleDialog = () => {
     toggleDialogFlag.value = !toggleDialogFlag.value;
@@ -20,19 +24,15 @@ const toggleDialogClass = () => {
     toggleDialogClassFlag.value = !toggleDialogClassFlag.value;
 }
 
-const LclassData = ref(null);
-
-onMounted(() => {
-    getClass().then((data) => {
-        LclassData.value = data;
-        provide('LclassData', LclassData)
-    })
-})
+const updateFlag = (item, index) => {
+    itemFlag.value = index;
+    emit('update-student-flag', item);
+}
 
 </script>
 
 <template>
-    <createClass :toggle-dialog-flag="toggleDialogClassFlag" @close-dialog="toggleDialogClass" @render-view="renderView">
+    <createClass :toggle-dialog-flag="toggleDialogClassFlag" @close-dialog="toggleDialogClass">
     </createClass>
     <addStudent :toggle-dialog-flag="toggleDialogFlag" @close-dialog="toggleDialog"></addStudent>
     <aside id="aside">
@@ -42,7 +42,7 @@ onMounted(() => {
         </button>
 
         <ul id="studentList" class="list">
-            <li :class="{ current: itemFlag === -1 }" class="item" @click="itemFlag = -1">
+            <li :class="{ current: itemFlag === -1 }" class="item" @click="updateFlag('',-1)">
                 <span class="icon"><img src="./assets/images/person.png" alt="123" /></span>
                 所有學生
                 <div class="num">25</div>
@@ -51,7 +51,7 @@ onMounted(() => {
 
         <ul id="classList" class="list">
             <li v-for="classItem, i in LclassData" :key="classItem.id" class="item" :class="{ current: itemFlag === i }"
-                @click="itemFlag = i">
+                @click="updateFlag(classItem.class_name, i)">
                 <Lclass>
                     {{ classItem.class_name }}
                 </Lclass>
@@ -63,7 +63,7 @@ onMounted(() => {
         </ul>
 
         <ul id="trash" class="list">
-            <li :class="{ current: itemFlag === -3 }" class="item" @click="itemFlag = -3">
+            <li :class="{ current: itemFlag === -3 }" class="item" @click="updateFlag('trash', -3)">
                 <span class="icon"><img src="./assets/images/trash.png" alt="123" /></span>
                 垃圾桶
             </li>

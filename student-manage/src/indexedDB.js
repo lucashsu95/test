@@ -28,14 +28,12 @@ export function addStudent(data) {
     const request = indexedDB.open("53web-student-manage", 1);
     request.onsuccess = (e) => {
       const db = e.target.result;
-      const transaction = db.transaction(["student-manage"], "readwrite");
-      const objectStore = transaction.objectStore("student-manage");
-
       data = JSON.parse(data);
       console.log(data);
-      const request = objectStore.add(data);
-
-      request.onsuccess = () => {
+      db
+        .transaction(["student-manage"], "readwrite")
+        .objectStore("student-manage")
+        .add(data).onsuccess = () => {
         resolve();
       };
 
@@ -52,10 +50,10 @@ export function getStudent() {
     const request = indexedDB.open("53web-student-manage", 1);
     request.onsuccess = () => {
       const db = request.result;
-      const transaction = db.transaction("student-manage");
-      const objectStore = transaction.objectStore("student-manage");
-
-      objectStore.getAll().onsuccess = (e) => {
+      db
+        .transaction("student-manage")
+        .objectStore("student-manage")
+        .getAll().onsuccess = (e) => {
         const data = e.target.result;
         resolve(data);
       };
@@ -67,29 +65,49 @@ export function updateStudent(data) {
   return new Promise(() => {
     const request = indexedDB.open("53web-student-manage", 1);
     request.onsuccess = () => {
-      const db = request.result;
-      const transaction = db.transaction(["student-manage"], "readwrite");
-      const objectStore = transaction.objectStore("student-manage");
       data = JSON.parse(data);
-      const query = objectStore.put(data);
-      query.onsuccess = () => {
+      const db = request.result;
+      db
+        .transaction(["student-manage"], "readwrite")
+        .objectStore("student-manage")
+        .put(data).onsuccess = () => {
         console.log("Data 修改成功");
       };
     };
   });
 }
 
-export function deleteStudent(id) {
+export function deleteStudent(data) {
   return new Promise(() => {
     const request = indexedDB.open("53web-student-manage", 1);
     request.onsuccess = () => {
+      data = JSON.parse(data);
+      data.class = "trash";
+
       const db = request.result;
-      const transaction = db.transaction(["student-manage"], "readwrite");
-      const objectStore = transaction.objectStore("student-manage");
-      const query = objectStore.delete(id);
-      query.onsuccess = () => {
+      db
+        .transaction(["student-manage"], "readwrite")
+        .objectStore("student-manage")
+        .put(data).onsuccess = () => {
         console.log("Data 刪除成功");
       };
     };
   });
 }
+
+export function backDeleteStudent() {}
+
+// export function deleteStudent(id) {
+//   return new Promise(() => {
+//     const request = indexedDB.open("53web-student-manage", 1);
+//     request.onsuccess = () => {
+//       const db = request.result;
+//       const transaction = db.transaction(["student-manage"], "readwrite");
+//       const objectStore = transaction.objectStore("student-manage");
+//       const query = objectStore.delete(id);
+//       query.onsuccess = () => {
+//         console.log("Data 刪除成功");
+//       };
+//     };
+//   });
+// }

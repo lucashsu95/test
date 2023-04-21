@@ -6,6 +6,7 @@ defineProps({
     toggleDialogFlag: Boolean,
 })
 
+
 const LclassData = inject('LclassData');
 
 const hasImage = ref(true);

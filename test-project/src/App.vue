@@ -1,32 +1,52 @@
 <!-- a.vue -->
+<script setup>
+import Lheader from './components/Lheader.vue';
+import Lmain from './components/Lmain.vue';
+import addItem from './components/addItem.vue';
+import { openDatabase_class, getClass } from './function';
+import { ref, onMounted, provide } from 'vue'
+
+const classData = ref(null);
+
+const fetchData = async () => {
+  classData.value = await getClass();
+}
+
+const searchkey = () => {
+  console.log(key.value);
+}
+
+const liFlag = ref('');
+
+const updateSelect = (val) => {
+  liFlag.value = val;
+  console.log(liFlag.value);
+  provide('liFlag', liFlag)
+}
+
+provide('datas', classData);
+provide('liFlag', liFlag)
+
+onMounted(() => {
+  openDatabase_class();
+  fetchData();
+})
+
+</script>
+
 <template>
-  <div>
-    <c ref="childComponent"></c>
-    <button @click="callChildMethod">调用子组件方法</button>
+  <div id="main">
+    <Lheader></Lheader>
+    <Lmain></Lmain>
+    <addItem @update-select="updateSelect"></addItem>
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
-
-const childComponent = ref(null)
-
-const components = {
-  c: {
-    template: `
-      <div>
-        <h2>我是子组件C</h2>
-      </div>
-    `,
-    setup() {
-      const childMethod = () => {
-        console.log('子组件C的方法被调用了！')
-      }
-      return {
-        childMethod
-      }
-    }
-  }
+<style scoped>
+#main {
+  width: 100%;
+  height: 60vh;
+  padding: 25px 0;
+  background-color: #39f;
 }
-
-</script>
+</style>

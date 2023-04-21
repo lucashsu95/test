@@ -1,5 +1,5 @@
 <script setup>
-import { inject, ref } from 'vue';
+import { inject } from 'vue';
 import { updateStudent } from '../indexedDB.js';
 
 const props = defineProps({
@@ -9,7 +9,7 @@ const props = defineProps({
 
 const LclassData = inject('LclassData');
 
-const hasImage = ref(true);
+const payload = inject('studentData');
 
 const onUpload = (e) => {
     const file = e.target.files[0];
@@ -22,8 +22,6 @@ const onUpload = (e) => {
         }
     }
 };
-
-const payload = inject('payload');
 
 
 const emit = defineEmits(['close-dialog']);

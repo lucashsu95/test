@@ -1,29 +1,19 @@
 <script setup>
 import student from './components/student.vue';
-import { openDatabase, getStudent } from './indexedDB.js';
-import { onMounted, provide, ref } from 'vue';
+import { inject } from 'vue';
 
-const students = ref(null);
+const students = inject('studentData');
 
-const renderView = () => {
-    openDatabase();
-    getStudent().then((data) => {
-        students.value = data;
-    })
-}
-
-onMounted(() => {
-    renderView();
-})
-
-provide('payload', students)
+const studentFlag = inject('studentFlag');
 
 </script>
 
 <template>
     <div id="main">
         <div class="students">
+
             <div class="student">
+                
                 <div class="fullname">名稱</div>
                 <div></div>
                 <div class="student_id">學號</div>
@@ -39,7 +29,12 @@ provide('payload', students)
                 </article>
 
             </div>
-            <student v-for="student, i in students" :studentIndex="i" :studentData="student"></student>
+
+            <template v-for="student, i in students">
+                <student v-if="(student.class === studentFlag) || (studentFlag === '') && (studentFlag === '' && student.class !==
+                        'trash')" :studentIndex="i" :studentData="student"></student>
+            </template>
+
         </div>
     </div>
 </template>
