@@ -9,7 +9,7 @@ const props = defineProps({
 
 const LclassData = inject('LclassData');
 
-const payload = inject('studentData');
+const payload = {...inject('studentData').value[props.student_index]};
 
 const onUpload = (e) => {
     const file = e.target.files[0];
@@ -17,12 +17,10 @@ const onUpload = (e) => {
         const render = new FileReader();
         render.readAsDataURL(file);
         render.onload = () => {
-            console.log(payload.value[props.student_index]);
             payload.value[props.student_index].avatar = render.result;
         }
     }
 };
-
 
 const emit = defineEmits(['close-dialog']);
 
@@ -45,36 +43,35 @@ const closeDialog = () => {
         <h1>修改學生</h1>
         <hr>
         <form class="newStudent">
-            <img :src="payload[student_index].avatar" class='avatar'>
+            <img :src="payload.avatar" class='avatar'>
             <input type="file" @change="onUpload" class='avatar_preview' placeholder="大頭貼">
 
-            <input type="text" name="last_name" v-model="payload[student_index].last_name" placeholder="姓氏">
-            <input type="text" name="first_name" v-model="payload[student_index].first_name" placeholder="名字">
+            <input type="text" name="last_name" v-model="payload.last_name" placeholder="姓氏">
+            <input type="text" name="first_name" v-model="payload.first_name" placeholder="名字">
 
 
             <img src="../assets/images/email.png" alt="email-icon">
-            <input type="email" name="email" v-model="payload[student_index].email" placeholder="電子郵件">
+            <input type="email" name="email" v-model="payload.email" placeholder="電子郵件">
 
-            <input type="text" name="address" v-model="payload[student_index].address" placeholder="地址">
+            <input type="text" name="address" v-model="payload.address" placeholder="地址">
 
             <img src="../assets/images/phone.png" alt="phone-icon">
-            <input type="tel" name="phone[]" v-model="payload[student_index].phone" placeholder="電話">
+            <input type="tel" name="phone[]" v-model="payload.phone" placeholder="電話">
 
 
             <img src="../assets/images/tag.png" alt="tag-icon">
 
-            <select name="class" v-model="payload[student_index].class">
+            <select name="class" v-model="payload.class">
                 <option v-for='Lclass in LclassData' :value="Lclass.class_name">{{ Lclass.class_name }}</option>
             </select>
 
             <img src="../assets/images/note.png" alt="note-icon">
-            <input type="text" name="note" v-model="payload[student_index].note" placeholder="備註">
+            <input type="text" name="note" v-model="payload.note" placeholder="備註">
 
             <p class="control-box">
                 <button type="button" class="close" @click="closeDialog">取消</button>
                 <button type="button" class="submit" @click="onSubmit">儲存</button>
             </p>
-
         </form>
     </div>
 </template>

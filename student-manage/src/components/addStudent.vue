@@ -2,14 +2,13 @@
 import { inject, ref } from 'vue';
 import { addStudent } from '../indexedDB.js';
 
-defineProps({
+const props = defineProps({
     toggleDialogFlag: Boolean,
 })
 
-
 const LclassData = inject('LclassData');
 
-const hasImage = ref(true);
+const refreshStudentData = inject('fetchStudentData');
 
 const getRandomNum = () => {
     const min = 100000;
@@ -19,7 +18,7 @@ const getRandomNum = () => {
 
 const payload = ref({
     id: new Date(),
-    avatar: '',
+    avatar: '/src/assets/images/人員000.png',
     last_name: '',
     first_name: '',
     student_id: getRandomNum(),
@@ -32,13 +31,11 @@ const payload = ref({
 
 const onUpload = (e) => {
     const file = e.target.files[0];
-    if (file) {
-        const render = new FileReader();
-        render.readAsDataURL(file);
-        render.onload = () => {
-            hasImage.value = false;
-            payload.value.avatar = render.result;
-        }
+    console.log(file);
+    const render = new FileReader();
+    render.readAsDataURL(file);
+    render.onload = () => {
+        payload.value.avatar = render.result;
     }
 }
 
@@ -46,10 +43,13 @@ const onUpload = (e) => {
 const onSubmit = () => {
     if (confirm('確定送出嗎?')) {
         addStudent(JSON.stringify(payload.value));
+
+        refreshStudentData();
+
         closeDialog();
         payload.value = ref({
             id: new Date(),
-            avatar: '',
+            avatar: '/src/assets/images/人員000.png',
             last_name: '',
             first_name: '',
             student_id: getRandomNum(),
@@ -75,38 +75,36 @@ const closeDialog = () => {
     <div id="dialog" :class="{ show: toggleDialogFlag }">
         <h1>新增學生</h1>
         <hr>
-        <form class="newStudent">
-            <img src="../assets/images/人員000.png" class='avatar' v-show="hasImage" alt="">
-            <img :src="payload.avatar" class='avatar' v-show="!hasImage">
-            <input type="file" @change="onUpload" class='avatar_preview' placeholder="大頭貼">
+        <form class="newStudent" @submit.prevent="onSubmit">
+            <img :src="payload.avatar" class='avatar'>
+            <input type="file" accept="image/*" @change="onUpload" class='avatar_preview' placeholder="大頭貼">
 
-            <input type="text" name="last_name" v-model="payload.last_name" placeholder="姓氏">
-            <input type="text" name="first_name" v-model="payload.first_name" placeholder="名字">
+            <input type="text" name="last_name" v-model="payload.last_name" placeholder="姓氏" required>
+            <input type="text" name="first_name" v-model="payload.first_name" placeholder="名字" required>
 
 
             <img src="../assets/images/email.png" alt="email-icon">
-            <input type="email" name="email" v-model="payload.email" placeholder="電子郵件">
+            <input type="email" name="email[]" v-model="payload.email" placeholder="電子郵件" required>
 
-            <input type="text" name="address" v-model="payload.address" placeholder="地址">
+            <input type="text" name="address" v-model="payload.address" placeholder="地址" required>
 
             <img src="../assets/images/phone.png" alt="phone-icon">
-            <input type="tel" name="phone[]" v-model="payload.phone" placeholder="電話">
+            <input type="tel" name="phone[]" v-model="payload.phone" placeholder="電話" required>
 
 
             <img src="../assets/images/tag.png" alt="tag-icon">
-            <select name="class" v-model="payload.class">
+            <select name="class" v-model="payload.class" required>
                 <option value='請選擇班級' disabled selected>請選擇班級</option>
                 <option v-for='Lclass in LclassData' :value="Lclass.class_name">{{ Lclass.class_name }}</option>
             </select>
 
             <img src="../assets/images/note.png" alt="note-icon">
-            <input type="text" name="note" v-model="payload.note" placeholder="備註">
+            <input type="text" name="note" v-model="payload.note" placeholder="備註" required   >
 
             <p class="control-box">
                 <button type="button" class="close" @click="closeDialog">取消</button>
-                <button type="button" class="submit" @click="onSubmit">儲存</button>
+                <button type="submit" class="submit">儲存</button>
             </p>
-
         </form>
     </div>
 </template>
@@ -203,7 +201,7 @@ hr {
     grid-area: 2 / 1 / 3 / 2;
 }
 
-.newStudent input[name='email'] {
+.newStudent input[name='email[]'] {
     grid-area: 2 / 2 / 3 / 10;
 }
 

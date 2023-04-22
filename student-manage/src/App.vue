@@ -12,6 +12,8 @@ const studentData = ref(null);
 
 const studentFlag = ref('');
 
+const searchKey = ref('');
+
 const fetchClassData = async () => {
   LclassData.value = await getClass();
 }
@@ -24,9 +26,9 @@ const updateStudentFlag = (flag) => {
   studentFlag.value = flag;
 }
 
-provide('studentData', studentData);
-provide('LclassData', LclassData);
-provide('studentFlag', studentFlag);
+const setSearchKey = (val) => {
+  searchKey.value = val;
+}
 
 onMounted(() => {
   openDatabase();
@@ -35,8 +37,17 @@ onMounted(() => {
   fetchClassData();
   fetchStudentData();
 });
-</script>
 
+provide('studentData', studentData);
+provide('LclassData', LclassData);
+provide('studentFlag', studentFlag);
+provide('searchKey', searchKey);
+provide('setSearchKey', setSearchKey);
+provide('fetchStudentData', fetchStudentData);
+provide('fetchClassData', fetchClassData);
+
+
+</script>
 <template>
   <Lheader></Lheader>
   <Laside @update-student-flag="updateStudentFlag"></Laside>

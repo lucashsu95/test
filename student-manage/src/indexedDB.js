@@ -26,19 +26,31 @@ export function openDatabase() {
 export function addStudent(data) {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open("53web-student-manage", 1);
-    request.onsuccess = (e) => {
-      const db = e.target.result;
+    request.onsuccess = () => {
       data = JSON.parse(data);
       console.log(data);
+      const db = request.result;
       db
         .transaction(["student-manage"], "readwrite")
         .objectStore("student-manage")
         .add(data).onsuccess = () => {
-        resolve();
+        console.log("Data 新增成功");
       };
+    };
+  });
+}
 
-      request.onerror = () => {
-        reject("Failed to add data");
+export function updateStudent(data) {
+  return new Promise(() => {
+    const request = indexedDB.open("53web-student-manage", 1);
+    request.onsuccess = () => {
+      data = JSON.parse(data);
+      const db = request.result;
+      db
+        .transaction(["student-manage"], "readwrite")
+        .objectStore("student-manage")
+        .put(data).onsuccess = () => {
+        console.log("Data 修改成功");
       };
     };
   });
@@ -61,29 +73,12 @@ export function getStudent() {
   });
 }
 
-export function updateStudent(data) {
-  return new Promise(() => {
-    const request = indexedDB.open("53web-student-manage", 1);
-    request.onsuccess = () => {
-      data = JSON.parse(data);
-      const db = request.result;
-      db
-        .transaction(["student-manage"], "readwrite")
-        .objectStore("student-manage")
-        .put(data).onsuccess = () => {
-        console.log("Data 修改成功");
-      };
-    };
-  });
-}
-
 export function deleteStudent(data) {
   return new Promise(() => {
     const request = indexedDB.open("53web-student-manage", 1);
     request.onsuccess = () => {
       data = JSON.parse(data);
       data.class = "trash";
-
       const db = request.result;
       db
         .transaction(["student-manage"], "readwrite")
@@ -94,8 +89,6 @@ export function deleteStudent(data) {
     };
   });
 }
-
-export function backDeleteStudent() {}
 
 // export function deleteStudent(id) {
 //   return new Promise(() => {

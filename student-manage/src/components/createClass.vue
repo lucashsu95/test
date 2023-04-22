@@ -1,12 +1,14 @@
 <script setup>
-import { onMounted, ref } from 'vue';
-import { openDatabase_class, addClass } from '../class.js';
+import { inject, ref } from 'vue';
+import { addClass } from '../class.js';
 
 defineProps({
     toggleDialogFlag: Boolean,
 })
 
 const className = ref('');
+
+const refershClassData = inject('fetchClassData');
 
 const emit = defineEmits(['close-dialog']);
 
@@ -19,6 +21,7 @@ const onSubmit = () => {
         id: new Date(),
         class_name: className.value,
     }))
+    refershClassData();
     className.value = '';
     closeDialog();
     alert('儲存成功');

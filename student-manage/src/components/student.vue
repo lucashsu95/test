@@ -1,23 +1,27 @@
 <script setup>
 import { inject, ref } from 'vue';
-import { deleteStudent,backDeleteStudent } from '../indexedDB.js';
+import { deleteStudent } from '../indexedDB.js';
 import modifyStudent from './modifyStudent.vue';
 
-const studentMouseIndex = ref(null);
 
 const props = defineProps({
     studentData: Object,
     studentIndex: Number,
 })
 
-const showButtons = (index) => {
-    studentMouseIndex.value = index;
-}
-
 const toggleDialogFlag = ref(false);
+
+const studentMouseIndex = ref(false);
+
+const refreshStudentData = inject('fetchStudentData');
 
 const toggleDialog = () => {
     toggleDialogFlag.value = !toggleDialogFlag.value
+}
+
+const destroyStudent = (data) => {
+    deleteStudent(data);
+    refreshStudentData();
 }
 
 </script>
@@ -26,7 +30,7 @@ const toggleDialog = () => {
     <modifyStudent :student_index="studentIndex" :payload="studentData" :toggle-flag="toggleDialogFlag"
         @close-dialog="toggleDialog">
     </modifyStudent>
-    <div class="student" @mouseover="showButtons(0)" @mouseleave="studentMouseIndex = null">
+    <div class="student" @mouseover="studentMouseIndex = true" @mouseleave="studentMouseIndex = false">
         <img :src="studentData.avatar" alt="avatar" class="avatar" />
         <div class="fullname">{{ studentData.last_name + studentData.first_name }}</div>
         <div class="student_id">{{ studentData.student_id }}</div>
@@ -34,21 +38,16 @@ const toggleDialog = () => {
         <div class="phone">{{ studentData.phone }}</div>
         <div class="class">{{ studentData.class }}</div>
         <div class="address">{{ studentData.address }}</div>
-        <div class="actions" v-show="studentMouseIndex === 0">
+        <div class="actions" v-show="studentMouseIndex && studentData.class !== 'trash'">
             <div class="edit" @click="toggleDialog" :data-id="studentData.id">編輯</div>
-            <template v-if="studentData.class !== 'trash'">
-                <div class="delete" @click="deleteStudent(JSON.stringify(studentData))" :data-id="studentData.id">刪除</div>
-            </template>
-            <template v-else>
-                <div class="delete" @click="backDeleteStudent(JSON.stringify(studentData))" :data-id="studentData.id">復原</div>
-            </template>
+            <div class="delete" @click="destroyStudent(JSON.stringify(studentData))">刪除</div>
         </div>
     </div>
 </template>
 
 <style scoped>
 .student:hover {
-    background-color: #bbb;
+    background-color: #ddd;
 }
 
 .actions {

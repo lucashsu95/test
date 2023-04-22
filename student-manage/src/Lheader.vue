@@ -1,12 +1,26 @@
+<script setup>
+
+import { inject } from 'vue';
+
+const searchKey = inject('searchKey');
+
+const setSearchKey = inject('setSearchKey');
+
+const onSubmit = () => {
+    setSearchKey(searchKey.value);
+}
+ 
+</script>
+
 <template>
     <header id="header">
         <h1 id="logo">
             <span class="icon"><img src="./assets/images/menu.png" alt="123" /></span>
             學生資料
         </h1>
-        <form id="searchForm">
-            <span class="icon"><img src="./assets/images/search.png" alt="" /></span>
-            <input type="text" name="search" placeholder="搜尋" />
+        <form id="searchForm" @submit.prevent="onSubmit">
+            <span class="icon"><img src="./assets/images/search.png" alt="search" /></span>
+            <input type="text" name="search" v-model="searchKey" placeholder="搜尋" />
         </form>
     </header>
 </template>
@@ -25,8 +39,11 @@
 }
 
 #logo .icon img {
-    padding-right: 10px;
     width: 35px;
+}
+
+.icon img {
+    padding-right: 15px;
 }
 
 #searchForm {

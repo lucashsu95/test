@@ -1,47 +1,79 @@
-<!-- c.vue -->
 <script setup>
-import { inject } from 'vue';
-
-const datas = inject('datas');
-
-const keyword = inject('keyword', '');
-
-const liFlag = inject('liFlag');
-
-
+import item from './item.vue';
+import { ref } from 'vue';
+const items = ref([
+    {
+        name: 'cow',
+        kg: '65'
+        ,
+    },
+    {
+        name: 'pig',
+        kg: '80'
+        ,
+    },
+    {
+        name: 'dog',
+        kg: '11'
+        ,
+    },
+    {
+        name: 'cat',
+        kg: '5'
+        ,
+    },
+    {
+        name: 'fish',
+        kg: '3'
+        ,
+    },
+    {
+        name: 'chicken',
+        kg: '7'
+        ,
+    },
+    {
+        name: 'cow',
+        kg: '65'
+        ,
+    },
+    {
+        name: 'pig',
+        kg: '80'
+        ,
+    },
+    {
+        name: 'dog',
+        kg: '11'
+        ,
+    },
+    {
+        name: 'cat',
+        kg: '5'
+        ,
+    },
+    {
+        name: 'fish',
+        kg: '3'
+        ,
+    },
+    {
+        name: 'chicken',
+        kg: '7'
+        ,
+    },
+]);
 </script>
+
 <template>
-    <div id="list">
-        <h1>LIST</h1>
-        <hr>
-        <div v-for="data in datas">
-            {{ data.class_name }}
-            <template v-if="data.class_name == liFlag || liFlag === ''">
-                <p v-for="item in data">
-                    {{ item }}
-                </p>
-            </template>
-        </div>
+    <div id="main">
+        <item v-for="item in items" :item-name="item.name" :item-kg="item.kg"></item>
     </div>
 </template>
-  
 
-<style scoped>
-#list {
-    background-color: #dea;
-    color: #faa;
-    padding: 25px;
-}
-
-#list div {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    width: 80%;
-    border: 2px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    justify-items: center;
-    margin: 5px auto;
-    color: #39f;
+<style>
+#main{
+    overflow-y: auto;
+    grid-area: main;
 }
 </style>

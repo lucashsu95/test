@@ -1,0 +1,6 @@
+#app {
+  display: grid;
+  grid-template-areas: "aside main";
+  grid-template-columns: 1.5fr 4fr;
+  grid-template-rows: 75px calc(90vh - 150px);
+}

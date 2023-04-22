@@ -1,19 +1,20 @@
 <script setup>
-import student from './components/student.vue';
-import { inject } from 'vue';
+import student from "./components/student.vue";
+import { inject } from "vue";
 
-const students = inject('studentData');
+const students = inject("studentData");
 
-const studentFlag = inject('studentFlag');
+const studentFlag = inject("studentFlag");
+
+const searchKey = inject('searchKey');
+
 
 </script>
 
 <template>
     <div id="main">
         <div class="students">
-
             <div class="student">
-                
                 <div class="fullname">名稱</div>
                 <div></div>
                 <div class="student_id">學號</div>
@@ -22,19 +23,20 @@ const studentFlag = inject('studentFlag');
                 <div class="class">班級</div>
                 <div class="address">地址</div>
 
-                <article class="student_tool">
+                <article class="student_tool" @click="">
                     <div class="due"></div>
                     <div class="due"></div>
                     <div class="due"></div>
                 </article>
-
             </div>
-
-            <template v-for="student, i in students">
-                <student v-if="(student.class === studentFlag) || (studentFlag === '') && (studentFlag === '' && student.class !==
-                        'trash')" :studentIndex="i" :studentData="student"></student>
+            <template v-for="(student, i) in students">
+                <template v-if="student.class === studentFlag ||
+                    (studentFlag === '' && student.class !== 'trash') &&
+                    (searchKey === '')
+                    ">
+                    <student :studentIndex="i" :studentData="student"></student>
+                </template>
             </template>
-
         </div>
     </div>
 </template>
