@@ -5,11 +5,12 @@ import { updateStudent } from '../indexedDB.js';
 const props = defineProps({
     toggleFlag: Boolean,
     student_index: Number,
+    payload: Object,
 })
 
 const LclassData = inject('LclassData');
 
-const payload = {...inject('studentData').value[props.student_index]};
+const payload = { ...props.payload };
 
 const onUpload = (e) => {
     const file = e.target.files[0];
@@ -17,7 +18,7 @@ const onUpload = (e) => {
         const render = new FileReader();
         render.readAsDataURL(file);
         render.onload = () => {
-            payload.value[props.student_index].avatar = render.result;
+            payload.value.avatar = render.result;
         }
     }
 };
@@ -26,7 +27,7 @@ const emit = defineEmits(['close-dialog']);
 
 const onSubmit = () => {
     if (confirm('確定送出嗎?')) {
-        updateStudent(JSON.stringify(payload.value[props.student_index]));
+        updateStudent(JSON.stringify(payload.value));
         closeDialog();
         alert('儲存成功');
     }

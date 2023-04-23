@@ -42,72 +42,37 @@ const classLength = (Lclass) => {
 </script>
 
 <template>
-  <addStudent
-    :toggle-dialog-flag="toggleDialogFlag"
-    @close-dialog="toggleDialogFlag = !toggleDialogFlag"
-  ></addStudent>
-  <createClass
-    :toggle-dialog-flag="toggleDialogClassFlag"
-    @close-dialog="toggleDialogClass"
-  >
+  <addStudent :toggle-dialog-flag="toggleDialogFlag" @close-dialog="toggleDialogFlag = !toggleDialogFlag"></addStudent>
+  <createClass :toggle-dialog-flag="toggleDialogClassFlag" @close-dialog="toggleDialogClass">
   </createClass>
   <aside id="aside">
     <button id="addStudent" @click="toggleDialogFlag = !toggleDialogFlag">
-      <span class="icon"
-        ><img src="./assets/images/add.png" alt="add.png"
-      /></span>
+      <span class="icon"><img src="./assets/images/add.png" alt="add.png" /></span>
       <h2>新增學生</h2>
     </button>
 
     <ul id="studentList" class="list">
-      <li
-        :class="{ current: itemFlag === -1 }"
-        class="item"
-        @click="updateFlag('', -1)"
-      >
-        <span class="icon"
-          ><img src="./assets/images/person.png" alt="123"
-        /></span>
+      <li :class="{ current: itemFlag === -1 }" class="item" @click="updateFlag('', -1)">
+        <span class="icon"><img src="./assets/images/person.png" alt="123" /></span>
         所有學生
         <div class="num">{{ studentNumber }}</div>
       </li>
     </ul>
 
     <ul id="classList" class="list">
-      <li
-        v-for="(classItem, i) in LclassData"
-        :key="classItem.id"
-        class="item"
-        :class="{ current: itemFlag === i }"
-        @click="updateFlag(classItem.class_name, i)"
-      >
-        <Lclass
-          :class_name="classItem.class_name"
-          :num="classLength(classItem.class_name)"
-        ></Lclass>
+      <li v-for="(classItem, i) in LclassData" :key="classItem.id" class="item" :class="{ current: itemFlag === i }"
+        @click="updateFlag(classItem.class_name, i)">
+        <Lclass :class_name="classItem.class_name" :num="classLength(classItem.class_name)"></Lclass>
       </li>
-      <li
-        @click="toggleDialogClass"
-        :class="{ current: itemFlag === -2 }"
-        id="addClass"
-        class="item"
-      >
-        <span class="icon"
-          ><img src="./assets/images/add.png" alt="123"
-        /></span>
+      <li @click="toggleDialogClass" :class="{ current: itemFlag === -2 }" id="addClass" class="item">
+        <span class="icon"><img src="./assets/images/add.png" alt="123" /></span>
         建立班級
       </li>
     </ul>
 
     <ul id="trash" class="list">
-      <li
-        :class="{ current: itemFlag === -3 }"
-        class="item"
-        @click="updateFlag('trash', -3)"
-      >
-        <span class="icon"
-          ><img src="./assets/images/trash.png" alt="123"
-        /></span>
+      <li :class="{ current: itemFlag === -3 }" class="item" @click="updateFlag('trash', -3)">
+        <span class="icon"><img src="./assets/images/trash.png" alt="123" /></span>
         垃圾桶
       </li>
     </ul>
@@ -120,6 +85,7 @@ const classLength = (Lclass) => {
   display: flex;
   flex-direction: column;
 }
+
 
 #addStudent {
   width: 65%;
@@ -146,5 +112,25 @@ const classLength = (Lclass) => {
 
 #classList {
   border-bottom: 1px solid #ccc;
+  overflow-y: hidden;
 }
+
+#classList:hover {
+  padding-right: 0;
+  overflow-y: auto;
+}
+
+#classList::-webkit-scrollbar {
+  width: 10px;
+}
+
+#classList::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
+#classList::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 5px;
+}
+
 </style>

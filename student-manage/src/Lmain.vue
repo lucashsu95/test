@@ -1,6 +1,7 @@
 <script setup>
 import student from "./components/student.vue";
-import { inject } from "vue";
+import sort from "./components/sort.vue";
+import { computed, inject, ref } from "vue";
 
 const students = inject("studentData");
 
@@ -8,6 +9,18 @@ const studentFlag = inject("studentFlag");
 
 const searchKey = inject('searchKey');
 
+const toggleDialogFlag = ref(false);
+
+const filterStudents = computed(() => {
+    if (students.value) {
+        const data = students.value.filter(x => x.class === studentFlag.value || (studentFlag.value === '' && x.class !== 'trash'))
+        return data;
+    }
+})
+
+const toggleDialog = () => {
+    toggleDialogFlag.value = !toggleDialogFlag.value
+}
 
 </script>
 
@@ -18,25 +31,23 @@ const searchKey = inject('searchKey');
                 <div class="fullname">名稱</div>
                 <div></div>
                 <div class="student_id">學號</div>
-                <div class="email">電子郵件</div>
+                <div class="email">電子郵件{{ toggleDialogFlag }}</div>
                 <div class="phone">電話號碼</div>
                 <div class="class">班級</div>
                 <div class="address">地址</div>
 
-                <article class="student_tool" @click="">
+                <sort :toggle-dialog-flag="toggleDialogFlag" :update-dialog-flag="toggleDialog"></sort>
+
+                <article class="student_tool" @click="toggleDialog">
                     <div class="due"></div>
                     <div class="due"></div>
                     <div class="due"></div>
                 </article>
             </div>
-            <template v-for="(student, i) in students">
-                <template v-if="student.class === studentFlag ||
-                    (studentFlag === '' && student.class !== 'trash') &&
-                    (searchKey === '')
-                    ">
-                    <student :studentIndex="i" :studentData="student"></student>
-                </template>
+            <template v-for="(student) in filterStudents">
+                <student :studentData="student"></student>
             </template>
+            <div class="message" v-if="filterStudents == ''">目前沒有學生</div>
         </div>
     </div>
 </template>
@@ -44,6 +55,21 @@ const searchKey = inject('searchKey');
 <style>
 #main {
     grid-area: main;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#main::-webkit-scrollbar {
+    width: 10px;
+}
+
+#main::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+
+#main::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 5px;
 }
 
 .student {
@@ -81,5 +107,11 @@ const searchKey = inject('searchKey');
     border-radius: 50%;
     padding: 5px;
     transition: 300ms all;
+}
+
+.message {
+    font-size: 20px;
+    text-align: center;
+    margin: 10px;
 }
 </style>

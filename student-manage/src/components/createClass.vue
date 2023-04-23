@@ -32,11 +32,11 @@ const onSubmit = () => {
 <template>
     <div id="dialog" :class="{ show: toggleDialogFlag }">
         <h2 class="title">建立班級</h2>
-        <form class="newClass">
-            <input type="text" name="name" v-model="className" placeholder="請輸入班級名稱">
+        <form class="newClass" @submit.prevent="onSubmit">
+            <input type="text" name="name" v-model="className" placeholder="請輸入班級名稱" required>
             <div class="control-box">
                 <button type='button' class="close" @click="closeDialog">取消</button>
-                <button type='button' class="submit" @click="onSubmit">儲存</button>
+                <button type='submit' class="submit">儲存</button>
             </div>
         </form>
     </div>

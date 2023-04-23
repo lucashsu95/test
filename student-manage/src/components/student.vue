@@ -6,7 +6,6 @@ import modifyStudent from './modifyStudent.vue';
 
 const props = defineProps({
     studentData: Object,
-    studentIndex: Number,
 })
 
 const toggleDialogFlag = ref(false);
@@ -27,7 +26,7 @@ const destroyStudent = (data) => {
 </script>
 
 <template>
-    <modifyStudent :student_index="studentIndex" :payload="studentData" :toggle-flag="toggleDialogFlag"
+    <modifyStudent :payload="studentData" :toggle-flag="toggleDialogFlag"
         @close-dialog="toggleDialog">
     </modifyStudent>
     <div class="student" @mouseover="studentMouseIndex = true" @mouseleave="studentMouseIndex = false">
