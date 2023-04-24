@@ -1,16 +1,18 @@
 <script setup>
-import { inject } from 'vue';
+import { inject, ref } from 'vue';
 import { updateStudent } from '../indexedDB.js';
 
 const props = defineProps({
     toggleFlag: Boolean,
-    student_index: Number,
     payload: Object,
 })
-
 const LclassData = inject('LclassData');
 
-const payload = { ...props.payload };
+const payload = ref({ ...props.payload });
+
+const emailLength = ref(props.payload.email.length);
+
+const phoneLength = ref(props.payload.phone.length);
 
 const onUpload = (e) => {
     const file = e.target.files[0];
@@ -41,37 +43,57 @@ const closeDialog = () => {
 
 <template>
     <div id="dialog" :class="{ show: toggleFlag }">
-        <h1>修改學生</h1>
+        <h1>新增學生</h1>
         <hr>
-        <form class="newStudent">
+        <form class="newStudent" @submit.prevent="onSubmit">
             <img :src="payload.avatar" class='avatar'>
-            <input type="file" @change="onUpload" class='avatar_preview' placeholder="大頭貼">
+            <input type="file" accept="image/*" @change="onUpload" class='avatar_preview' placeholder="大頭貼">
 
-            <input type="text" name="last_name" v-model="payload.last_name" placeholder="姓氏">
-            <input type="text" name="first_name" v-model="payload.first_name" placeholder="名字">
+            <section class="name">
+                <input type="text" name="last_name" v-model="payload.last_name" placeholder="姓氏" required>
+                <input type="text" name="first_name" v-model="payload.first_name" placeholder="名字" required>
+            </section>
 
 
             <img src="../assets/images/email.png" alt="email-icon">
-            <input type="email" name="email" v-model="payload.email" placeholder="電子郵件">
+            <section class="length">
+                <input v-for='i in emailLength' type="email" name="email[]" v-model="payload.email[i - 1]"
+                    :placeholder="'電子郵件' + i" required>
+                <article>
+                    <button type="button" @click="emailLength++">+</button>
+                    <button type="button" @click="emailLength--">-</button>
+                </article>
+            </section>
 
-            <input type="text" name="address" v-model="payload.address" placeholder="地址">
+
+            <img src="../assets/images/home.png" alt="address-icon">
+            <input type="text" name="address" v-model="payload.address" placeholder="地址" required>
+
 
             <img src="../assets/images/phone.png" alt="phone-icon">
-            <input type="tel" name="phone[]" v-model="payload.phone" placeholder="電話">
-
+            <section class="length">
+                <input v-for='i in phoneLength' type="tel" name="phone[]" v-model="payload.phone[i - 1]"
+                    :placeholder="'電話' + i" required>
+                <article>
+                    <button type="button" @click="phoneLength++">+</button>
+                    <button type="button" @click="phoneLength--">-</button>
+                </article>
+            </section>
 
             <img src="../assets/images/tag.png" alt="tag-icon">
-
-            <select name="class" v-model="payload.class">
+            <select name="class" v-model="payload.class" required>
+                <option value='請選擇班級' disabled selected>請選擇班級</option>
                 <option v-for='Lclass in LclassData' :value="Lclass.class_name">{{ Lclass.class_name }}</option>
             </select>
 
             <img src="../assets/images/note.png" alt="note-icon">
-            <input type="text" name="note" v-model="payload.note" placeholder="備註">
+            <input type="text" name="note" v-model="payload.note" placeholder="備註" required>
 
+
+            <span></span>
             <p class="control-box">
                 <button type="button" class="close" @click="closeDialog">取消</button>
-                <button type="button" class="submit" @click="onSubmit">儲存</button>
+                <button type="submit" class="submit">儲存</button>
             </p>
         </form>
     </div>
@@ -86,10 +108,11 @@ img {
 
 #dialog {
     padding: 25px;
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     width: 700px;
+    height: auto;
     line-height: 50px;
 
 
@@ -102,63 +125,113 @@ img {
     transform: translate(-50%, -50%) scale(0);
 
     z-index: 3;
+    overflow-y: auto;
+
 }
 
 #dialog.show {
     transform: translate(-50%, -50%) scale(1);
 }
 
+#dialog::-webkit-scrollbar,
+section.length::-webkit-scrollbar {
+    width: 10px;
+}
+
+#dialog::-webkit-scrollbar-track,
+section.length::-webkit-scrollbar {
+    background-color: #f1f1f1;
+}
+
+#dialog::-webkit-scrollbar-thumb,
+section.length::-webkit-scrollbar {
+    background-color: #888;
+    border-radius: 5px;
+}
+
 .newStudent {
     display: grid;
-    grid-auto-columns: 1fr;
+    grid-template-columns: 1fr 10fr;
     grid-gap: 20px;
     position: relative;
     justify-items: center;
     align-items: center;
+    padding-right: 10px;
 }
 
 hr {
-    margin: 30px 0;
+    margin: 20px 0;
 }
 
-.control-box {
-    grid-area: 7 / 7 / 8 / 11;
+section {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 10px 25px;
+    position: relative;
 }
 
-.control-box button {
-    padding: 10px 25px;
-    margin: 0 5px;
-    border: none;
-    outline: none;
-    background: none;
+section.name {
+    display: flex;
+}
+
+section.length {
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 80px;
+}
+
+article {
+    background-color: #eee;
+    width: 70px;
+    height: 30px;
+    border-radius: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+article button {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    margin: 0;
+    font-size: 18px;
+    border-radius: 50%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: #777;
     box-shadow: none;
-    font-weight: bold;
-    color: #39f;
-    border-radius: 20px;
-    transition: .3s;
+    border: none;
 }
 
-.control-box button:hover {
-    letter-spacing: 5px;
-    color: #fff;
-    background: #39f;
+article button:hover {
+    background: #ddd;
 }
 
-.newStudent input {
+input {
     width: 100%;
     padding: 5px;
     margin: 0;
-    border: 0;
+    border: none;
     border-bottom: 1px solid #ccc;
     outline: none;
 }
 
-.newStudent input::placeholder {
+select {
+    margin: 0;
+    padding: 5px;
+    width: 90%;
+}
+
+input::placeholder {
     color: #bbb;
     font-size: 16px;
 }
 
-.newStudent .avatar_preview {
+.avatar_preview {
     width: 50px;
     height: 50px;
     position: absolute;
@@ -167,64 +240,23 @@ hr {
     opacity: 0;
 }
 
-.newStudent .avatar {
+.avatar {
     border-radius: 50%;
     width: 60px;
     height: 60px;
-    grid-area: 1 / 1 / 2 / 2;
     object-fit: cover;
 }
 
-.newStudent input[name='last_name'] {
-    grid-area: 1 / 2 / 2 / 6;
-}
-
-.newStudent input[name='first_name'] {
-    grid-area: 1 / 6 / 2 / 10;
-}
-
-.newStudent img[alt='email-icon'] {
-    width: auto;
-    zoom: 60%;
-    grid-area: 2 / 1 / 3 / 2;
-}
-
-.newStudent input[name='email'] {
-    grid-area: 2 / 2 / 3 / 10;
-}
-
-.newStudent input[name='address'] {
-    grid-area: 3 / 2 / 4 / 10;
-}
-
-.newStudent input[name='phone[]'] {
-    grid-area: 4 / 2 / 5 / 10;
-}
-
-.newStudent img[alt='phone-icon'] {
-    grid-area: 4 / 1 / 5 / 2;
+img[alt='phone-icon'],
+img[alt='tag-icon'],
+img[alt='note-icon'],
+img[alt='email-icon'] {
     width: auto;
     zoom: 80%;
 }
 
-.newStudent img[alt='tag-icon'] {
-    width: auto;
-    zoom: 60%;
-    grid-area: 5 / 1 / 6 / 2;
-}
-
-.newStudent select[name='class'] {
-    grid-area: 5 / 2 / 6 / 10;
-    margin: 0;
-}
-
-.newStudent input[name='note'] {
-    grid-area: 6 / 2 / 7 / 10;
-}
-
-.newStudent img[alt='note-icon'] {
-    grid-area: 6 / 1 / 7 / 2;
-    zoom: 70%;
-    width: auto;
+.control-box {
+    display: flex;
+    margin-left: auto;
 }
 </style>

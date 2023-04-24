@@ -82,8 +82,8 @@ const classLength = (Lclass) => {
 <style scoped>
 #aside {
   grid-area: aside;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: 1fr 1fr 5fr 1fr;
 }
 
 

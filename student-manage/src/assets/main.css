@@ -38,7 +38,7 @@ button {
     "header header"
     "aside main";
   grid-template-columns: 1.5fr 4fr;
-  grid-template-rows: 75px calc(90vh - 150px);
+  grid-template-rows: 10vh 85vh;
 }
 .list {
   padding: 10px;

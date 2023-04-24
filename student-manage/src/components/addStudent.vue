@@ -52,7 +52,6 @@ const onUpload = (e) => {
 
 
 const onSubmit = () => {
-
     if (payload.value.class == '請選擇班級') {
         alert('請選擇班級');
         return;
@@ -61,15 +60,9 @@ const onSubmit = () => {
     }
 
     if (confirm('確定送出嗎?')) {
-
-        // payload.value = payload.value.email.shift();
-        // payload.value = payload.value.phone.shift();
-
         addStudent(JSON.stringify(payload.value));
 
         refreshStudentData();
-
-        console.log(payload.value);
 
         emailLength.value = 1;
         phoneLength.value = 1;
@@ -101,7 +94,7 @@ const onSubmit = () => {
             <img :src="payload.avatar" class='avatar'>
             <input type="file" accept="image/*" @change="onUpload" class='avatar_preview' placeholder="大頭貼">
 
-            <section>
+            <section class="name">
                 <input type="text" name="last_name" v-model="payload.last_name" placeholder="姓氏" required>
                 <input type="text" name="first_name" v-model="payload.first_name" placeholder="名字" required>
             </section>
@@ -222,6 +215,10 @@ section {
     position: relative;
 }
 
+section.name {
+    display: flex;
+}
+
 section.length {
     overflow-x: hidden;
     overflow-y: auto;
@@ -303,7 +300,7 @@ img[alt='email-icon'] {
 }
 
 .control-box {
+    margin-left: auto;
     display: flex;
-    justify-content: flex-end;
 }
 </style>

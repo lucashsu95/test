@@ -33,8 +33,8 @@ const destroyStudent = (data) => {
         <img :src="studentData.avatar" alt="avatar" class="avatar" />
         <div class="fullname">{{ studentData.last_name + studentData.first_name }}</div>
         <div class="student_id">{{ studentData.student_id }}</div>
-        <div class="email">{{ studentData.email }}</div>
-        <div class="phone">{{ studentData.phone }}</div>
+        <div class="email">{{ studentData.email[0] }}<template v-if="studentData.email.length > 1">...</template></div>
+        <div class="phone">{{ studentData.phone[0] }}<template v-if="studentData.phone.length > 1">...</template></div>
         <div class="class">{{ studentData.class }}</div>
         <div class="address">{{ studentData.address }}</div>
         <div class="actions" v-show="studentMouseIndex && studentData.class !== 'trash'">

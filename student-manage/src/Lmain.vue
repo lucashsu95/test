@@ -16,12 +16,24 @@ const filterStudents = computed(() => {
         const data = students.value.filter(x => x.class === studentFlag.value || (studentFlag.value === '' && x.class !== 'trash'))
         return data;
     }
-})
+});
 
 const toggleDialog = () => {
-    toggleDialogFlag.value = !toggleDialogFlag.value
+    toggleDialogFlag.value = !toggleDialogFlag.value;
 }
 
+const orderBy = (order, direction) => {
+    const compareFunc = (x, y) => {
+        if (direction === 'asc') {
+            return x[order] - y[order];
+        } else {
+            return y[order] - x[order];
+        }
+    };
+    console.log(filterStudents.value);
+    filterStudents.value = filterStudents.value.sort(compareFunc);
+    // console.log(filterStudents.value, direction);
+}
 </script>
 
 <template>
@@ -31,12 +43,14 @@ const toggleDialog = () => {
                 <div class="fullname">名稱</div>
                 <div></div>
                 <div class="student_id">學號</div>
-                <div class="email">電子郵件{{ toggleDialogFlag }}</div>
+                <div class="email">電子郵件</div>
                 <div class="phone">電話號碼</div>
                 <div class="class">班級</div>
                 <div class="address">地址</div>
 
-                <sort :toggle-dialog-flag="toggleDialogFlag" :update-dialog-flag="toggleDialog"></sort>
+                <sort :toggle-dialog-flag="toggleDialogFlag" @update-order-sort="orderBy"
+                    @update-dialog-flag="toggleDialog">
+                </sort>
 
                 <article class="student_tool" @click="toggleDialog">
                     <div class="due"></div>
