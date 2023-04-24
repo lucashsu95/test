@@ -38,10 +38,7 @@ onMounted(() => {
   fetchStudentData();
 });
 
-provide('studentData', studentData);
 provide('LclassData', LclassData);
-provide('studentFlag', studentFlag);
-provide('searchKey', searchKey);
 provide('setSearchKey', setSearchKey);
 provide('fetchStudentData', fetchStudentData);
 provide('fetchClassData', fetchClassData);
@@ -50,6 +47,6 @@ provide('fetchClassData', fetchClassData);
 </script>
 <template>
   <Lheader></Lheader>
-  <Laside @update-student-flag="updateStudentFlag"></Laside>
-  <Lmain></Lmain>
+  <Laside :student-data="studentData" @update-student-flag="updateStudentFlag"></Laside>
+  <Lmain :student-data="studentData" :student-flag="studentFlag"></Lmain>
 </template>

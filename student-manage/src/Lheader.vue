@@ -1,15 +1,9 @@
 <script setup>
+import { ref } from 'vue';
 
-import { inject } from 'vue';
 
-const searchKey = inject('searchKey');
+const searchKey = ref('');
 
-const setSearchKey = inject('setSearchKey');
-
-const onSubmit = () => {
-    setSearchKey(searchKey.value);
-}
- 
 </script>
 
 <template>

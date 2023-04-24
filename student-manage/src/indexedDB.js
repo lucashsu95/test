@@ -1,6 +1,6 @@
 // 打开或创建一个名为 "53web-student-manage" 的数据库
 export function openDatabase() {
-  return new Promise((resolve, reject) => {
+  return new Promise(() => {
     const request = indexedDB.open("53web-student-manage", 1);
 
     request.onupgradeneeded = (event) => {
@@ -18,6 +18,7 @@ export function openDatabase() {
       objectStore.createIndex("address", "address", { unique: false });
       objectStore.createIndex("class", "class", { unique: false });
       objectStore.createIndex("note", "note", { unique: false });
+      objectStore.createIndex("note2", "note2", { unique: false });
     };
   });
 }

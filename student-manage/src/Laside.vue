@@ -4,7 +4,9 @@ import Lclass from "./components/Lclass.vue";
 import addStudent from "./components/addStudent.vue";
 import createClass from "./components/createClass.vue";
 
-const students = inject("studentData");
+const props = defineProps({
+  studentData: Object,
+})
 
 const LclassData = inject("LclassData");
 
@@ -17,8 +19,8 @@ const toggleDialogClassFlag = ref(false);
 const emit = defineEmits(["update-student-flag"]);
 
 const studentNumber = computed(() => {
-  if (students.value) {
-    const data = students.value.filter((x) => x.class !== "trash");
+  if (props.studentData) {
+    const data = props.studentData.filter((x) => x.class !== "trash");
     return data.length;
   }
 });
@@ -34,8 +36,8 @@ const updateFlag = (item, index) => {
 };
 
 const classLength = (Lclass) => {
-  if (students.value) {
-    const data = students.value.filter((x) => x.class === Lclass);
+  if (props.studentData) {
+    const data = props.studentData.filter((x) => x.class === Lclass);
     return data.length;
   }
 };
@@ -132,5 +134,4 @@ const classLength = (Lclass) => {
   background-color: #888;
   border-radius: 5px;
 }
-
 </style>

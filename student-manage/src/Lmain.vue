@@ -1,19 +1,18 @@
 <script setup>
 import student from "./components/student.vue";
 import sort from "./components/sort.vue";
-import { computed, inject, ref } from "vue";
+import { computed, ref } from "vue";
 
-const students = inject("studentData");
-
-const studentFlag = inject("studentFlag");
-
-const searchKey = inject('searchKey');
+const props = defineProps({
+    studentData: Object,
+    studentFlag: String,
+})
 
 const toggleDialogFlag = ref(false);
 
 const filterStudents = computed(() => {
-    if (students.value) {
-        const data = students.value.filter(x => x.class === studentFlag.value || (studentFlag.value === '' && x.class !== 'trash'))
+    if (props.studentData) {
+        const data = props.studentData.filter(x => x.class === props.studentFlag || (props.studentFlag === '' && x.note2 !== 'trash'))
         return data;
     }
 });
@@ -22,18 +21,17 @@ const toggleDialog = () => {
     toggleDialogFlag.value = !toggleDialogFlag.value;
 }
 
-const orderBy = (order, direction) => {
+const sortArray = (order, direction) => {
     const compareFunc = (x, y) => {
         if (direction === 'asc') {
-            return x[order] - y[order];
+            return x[order] > y[order] ? 1 : -1;
         } else {
-            return y[order] - x[order];
+            return x[order] < y[order] ? 1 : -1;
         }
     };
-    console.log(filterStudents.value);
-    filterStudents.value = filterStudents.value.sort(compareFunc);
-    // console.log(filterStudents.value, direction);
-}
+    filterStudents.value.sort(compareFunc);
+};
+
 </script>
 
 <template>
@@ -48,7 +46,7 @@ const orderBy = (order, direction) => {
                 <div class="class">班級</div>
                 <div class="address">地址</div>
 
-                <sort :toggle-dialog-flag="toggleDialogFlag" @update-order-sort="orderBy"
+                <sort :toggle-dialog-flag="toggleDialogFlag" @update-order-sort="sortArray"
                     @update-dialog-flag="toggleDialog">
                 </sort>
 
@@ -58,10 +56,12 @@ const orderBy = (order, direction) => {
                     <div class="due"></div>
                 </article>
             </div>
-            <template v-for="(student) in filterStudents">
+
+            <template v-for="student in filterStudents">
                 <student :studentData="student"></student>
             </template>
-            <div class="message" v-if="filterStudents == ''">目前沒有學生</div>
+
+            <div class="message" v-show="filterStudents == ''">目前沒有學生</div>
         </div>
     </div>
 </template>

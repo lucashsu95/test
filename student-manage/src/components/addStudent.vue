@@ -88,7 +88,7 @@ const onSubmit = () => {
 
 <template>
     <div id="dialog" :class="{ show: toggleDialogFlag }">
-        <h1>新增學生</h1>
+        <h2 class="title">新增學生</h2>
         <hr>
         <form class="newStudent" @submit.prevent="onSubmit">
             <img :src="payload.avatar" class='avatar'>

@@ -6,6 +6,9 @@ const props = defineProps({
     toggleFlag: Boolean,
     payload: Object,
 })
+
+const refreshStudentData = inject('fetchStudentData');
+
 const LclassData = inject('LclassData');
 
 const payload = ref({ ...props.payload });
@@ -30,6 +33,7 @@ const emit = defineEmits(['close-dialog']);
 const onSubmit = () => {
     if (confirm('確定送出嗎?')) {
         updateStudent(JSON.stringify(payload.value));
+        refreshStudentData();
         closeDialog();
         alert('儲存成功');
     }
@@ -43,7 +47,7 @@ const closeDialog = () => {
 
 <template>
     <div id="dialog" :class="{ show: toggleFlag }">
-        <h1>新增學生</h1>
+        <h2 class="title">修改學生</h2>
         <hr>
         <form class="newStudent" @submit.prevent="onSubmit">
             <img :src="payload.avatar" class='avatar'>

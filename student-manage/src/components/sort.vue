@@ -1,26 +1,26 @@
 <script setup>
 import { ref } from 'vue';
 
-defineProps({
-    toggleDialogFlag: Boolean,
+const props = defineProps({
+    toggleDialogFlag: Boolean
 })
 
 const emit = defineEmits(['update-dialog-flag', 'update-order-sort'])
 
-const order = ref('');
-
-const sort = ref('asc');
-
 const orderItemFlag = ref('');
 
 const sortItemFlag = ref(0);
+
+const Lorder = ref('');
+
+const Lsort = ref('asc');
 
 const closeDialog = () => {
     emit('update-dialog-flag');
 }
 
 const toggleSort = () => {
-    emit('update-order-sort', order.value, sort.value);
+    emit('update-order-sort', Lorder.value, Lsort.value);
     closeDialog();
 }
 
@@ -31,18 +31,18 @@ const toggleSort = () => {
         <h2>Sort排序</h2>
         <ul @change="toggleSort">
             <label for="name" @click="orderItemFlag = 0" :class="{ show: orderItemFlag === 0 }">姓名</label>
-            <li><input type="radio" name="order" id="name" v-model="order" value="last_name"></li>
+            <li><input type="radio" name="order" id="name" v-model="Lorder" value="last_name"></li>
             <label for="student_id" @click="orderItemFlag = 1" :class="{ show: orderItemFlag === 1 }">學號</label>
-            <li><input type="radio" name="order" id="student_id" v-model="order" value="student_id"></li>
+            <li><input type="radio" name="order" id="student_id" v-model="Lorder" value="student_id"></li>
             <label for="email" @click="orderItemFlag = 2" :class="{ show: orderItemFlag === 2 }">電子郵件</label>
-            <li><input type="radio" name="order" id="email" v-model="order" value="email[0]"></li>
+            <li><input type="radio" name="order" id="email" v-model="Lorder" value="email[0]"></li>
         </ul>
 
         <ul @change="toggleSort">
             <label for="asc" @click="sortItemFlag = 0" :class="{ show: sortItemFlag === 0 }">升冪</label>
-            <li><input type="radio" name="sort" id="asc" v-model="sort" value="asc"></li>
+            <li><input type="radio" name="sort" id="asc" v-model="Lsort" value="asc"></li>
             <label for="desc" @click="sortItemFlag = 1" :class="{ show: sortItemFlag === 1 }">降冪</label>
-            <li><input type="radio" name="sort" id="desc" v-model="sort" value="desc"></li>
+            <li><input type="radio" name="sort" id="desc" v-model="Lsort" value="desc"></li>
         </ul>
     </div>
 </template>
