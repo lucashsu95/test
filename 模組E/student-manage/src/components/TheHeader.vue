@@ -1,11 +1,17 @@
 <script setup>
+defineProps({
+    search: String,
+})
+
+defineEmits(['update:search'])
+
 </script>
 <template>
     <header id="header">
         <h1 id="logo"><img src="../assets/images/menu.png" alt="menu" class="icon">學生資料</h1>
         <form id="searchForm">
             <img src="../assets/images/search.png" alt="search" class="icon">
-            <input type="text" name="search" placeholder="搜尋">
+            <input type="text" name="search" placeholder="搜尋" :value="search" @input="$emit('update:search',$event.target.value)">
         </form>
     </header>
 </template>
@@ -17,7 +23,7 @@
     align-items: center;
 }
 
-#logo{
+#logo {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -25,7 +31,7 @@
 
 .icon {
     width: 25px;
-    margin:0 10px;
+    margin: 0 10px;
 }
 
 #searchForm {

@@ -1,41 +1,83 @@
 <script setup>
-import { ref } from 'vue';
 import TheDialog from './icons/TheDialog.vue';
+import { inject, ref } from 'vue';
+import { addStudent } from '../indexedDB';
 
+const emailLength = ref(1);
+
+const phoneLength = ref(1);
 
 const payload = ref({
     id: new Date(),
-    avatar: '',
+    avatar: '/src/assets/images/人員000.png',
     last_name: '',
     first_name: '',
-    student_id: '',
+    student_id: createStudentId(),
     address: '',
+    class: '請選擇班級',
     email: [],
     phone: [],
     note: '',
     note2: '',
 })
 
+function createStudentId() {
+    let studentId = '';
+    for (let i = 0; i < 8; i++) {
+        studentId += Math.floor(Math.random() * 10);
+    }
+    return studentId;
+}
+
 const onUpload = (e) => {
     const file = e.target.files[0];
     const render = new FileReader();
     render.readAsDataURL(file);
     render.onload = () => {
-        payload.value = render.result;
+        payload.value.avatar = render.result;
     }
+}
+
+const studentData = inject('studentData');
+
+const toggleDialog = inject('toggleDialogStudent');
+
+const onSubmit = () => {
+    addStudent(JSON.stringify(payload.value));
+    studentData.value.push(payload.value);
+    toggleDialog();
 }
 
 </script>
 
 <template>
-    <TheDialog flag="toggleDialogStudent">
+    <TheDialog flag="toggleDialogStudent" :payload="payload" :email-length="emailLength" :phone-length="phoneLength"
+        :onUpload='onUpload' :onSubmit="onSubmit">
         <template #header>新增學生</template>
-        <template #body>
-            <input type="file" class="avatar">
-            <img src="" alt="" class="avatar_preview" @change="onUpload">
-            <input type="text" name="last_name" v-model="payload.last_name">
-            <input type="text" name="first_name" v-model="payload.first_name">
-        </template>
-
     </TheDialog>
 </template>
+
+<style>
+.avatar {
+    display: none;
+}
+
+.icon {
+    width: 35px;
+}
+
+img[alt='phone'] {
+    zoom: 60%;
+}
+
+.avatar_preview {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.add {
+    zoom: 65%;
+}
+</style>

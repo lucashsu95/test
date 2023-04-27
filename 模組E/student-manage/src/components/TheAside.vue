@@ -1,20 +1,35 @@
 <script setup>
-import { provide, ref } from 'vue';
+import { computed, inject, provide, ref } from 'vue';
 import TheItem from './icons/TheItem.vue';
-import addStudent from './addStudent.vue'
+import addStudent from './addStudent.vue';
 import addClass from './addClass.vue';
 
-const itemFlag = ref(-1);
+const itemFlag = inject('filterFlag');
 
 const showAddStudent = ref(false);
 
 const showAddClass = ref(false);
 
-const toggleItemFlag = (flag) => {
-    itemFlag.value = flag;
-}
+const studentData = inject('studentData');
 
-const toggleDialogStudent = () => { showAddStudent.value = !showAddStudent.value }
+const classData = inject('classData');
+
+const AllstudentLength = computed(() => {
+    if (studentData.value) {
+        const data = studentData.value.filter((x) => x.note2 !== 'trash');
+        return data.length;
+    }
+})
+
+const studentLength = (flag) => {
+    if (studentData.value) {
+        return studentData.value.filter((x) => x.class == flag && x.note2 !== 'trash').length;
+    }
+};
+
+const toggleItemFlag = (flag) => itemFlag.value = flag;
+
+const toggleDialogStudent = () => showAddStudent.value = !showAddStudent.value;
 
 const toggleDialogClass = () => showAddClass.value = !showAddClass.value;
 
@@ -32,21 +47,21 @@ provide('toggleDialogClass', toggleDialogClass);
 
         <ul id="studentList" class="list">
             <TheItem :class="{ current: itemFlag === -1 }" @click="toggleItemFlag(-1)" url="/src/assets/images/person.png"
-                text="所有學生" num="16">
+                text="所有學生" :num="AllstudentLength">
                 所有學生
             </TheItem>
         </ul>
         <ul id="classList" class="list">
-            <TheItem :class="{ current: itemFlag === 0 }" @click="toggleItemFlag(0)" url="/src/assets/images/tag.png"
-                num="12">test1</TheItem>
-            <TheItem :class="{ current: itemFlag === 1 }" @click="toggleItemFlag(1)" url="/src/assets/images/tag.png"
-                num="4">test2</TheItem>
+            <TheItem v-for="i in classData" :class="{ current: itemFlag === i.class_name }"
+                @click="toggleItemFlag(i.class_name)" url="/src/assets/images/tag.png" :num="studentLength(i.class_name)">
+                {{ i.class_name }}
+            </TheItem>
             <TheItem @click="toggleDialogClass" url="/src/assets/images/add.png">創建班級
             </TheItem>
             <addClass v-if="showAddClass"></addClass>
         </ul>
         <ul id="trash" class="list">
-            <TheItem :class="{ current: itemFlag === -3 }" @click="toggleItemFlag(-3)" url="/src/assets/images/trash.png">
+            <TheItem :class="{ current: itemFlag === -2 }" @click="toggleItemFlag(-2)" url="/src/assets/images/trash.png">
                 垃圾桶
             </TheItem>
         </ul>
@@ -78,6 +93,7 @@ provide('toggleDialogClass', toggleDialogClass);
     align-items: center;
     justify-content: center;
 
+    color: #333;
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 25px;
@@ -85,6 +101,22 @@ provide('toggleDialogClass', toggleDialogClass);
     padding: 10px;
     cursor: pointer;
     box-shadow: 0 2px 5px #ddd;
+}
+
+#studentList{
+    padding-right:10px;
+}
+
+#classList {
+    overflow-y: auto;
+}
+
+#classList::-webkit-scrollbar{
+    width: 10px;
+}
+#classList::-webkit-scrollbar-thumb{
+    background: #ccc;
+    border-radius: 10px;
 }
 
 .icon {

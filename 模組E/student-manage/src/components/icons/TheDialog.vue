@@ -3,9 +3,17 @@ import { inject } from 'vue';
 
 const props = defineProps({
     flag: String,
+    payload: Object,
+    onSubmit: Function,
+
+    emailLength: Number,
+    phoneLength: Number,
+    onUpload: Function,
 })
 
 const toggleDialog = inject(props.flag);
+
+const classData = inject('classData');
 
 </script>
 
@@ -15,11 +23,63 @@ const toggleDialog = inject(props.flag);
             <slot name="header"></slot>
         </h2>
         <hr>
-        <div class="newStudent">
-            <slot name="body">
+        <form class="newStudent">
+            <template v-if="flag == 'toggleDialogStudent'">
+                <p>
+                    <label for="avatar">
+                        <img :src="payload.avatar" alt="avatar" class="avatar_preview">
+                    </label>
+                    <input type="file" class="avatar" id="avatar" @change="onUpload">
 
-            </slot>
-        </div>
+                    <i>
+                        <input type="text" name="first_name" v-model="payload.first_name" placeholder="姓氏" required>
+                        <input type="text" name="last_name" v-model="payload.last_name" placeholder="名子" required>
+                    </i>
+                </p>
+                <p>
+                    <img src="/src/assets/images/email.png" alt="" class="icon">
+                    <i>
+                        <input v-for="i in emailLength" type="email" name="email[]" v-model="payload.email[i - 1]"
+                            placeholder="電子郵件">
+                        <button class="add" type="button" @click="emailLength++">+</button>
+                    </i>
+                </p>
+                <p>
+                    <img src="/src/assets/images/home.png" alt="" class="icon">
+                    <input type="address" name="address" id="" placeholder="地址" v-model="payload.address">
+                </p>
+                <p>
+                    <img src="/src/assets/images/phone.png" alt="phone" class="icon">
+                    <i>
+                        <input v-for="i in phoneLength" type="tel" name="phone[]" v-model="payload.phone[i - 1]"
+                            placeholder="電話號碼">
+                        <button class="add" type="button" @click="phoneLength++">+</button>
+                    </i>
+                </p>
+                <p>
+                    <img src="/src/assets/images/tag.png" alt="" class="icon">
+                    <select name="class" id="" v-model="payload.class">
+                        <option value="請選擇班級" selected disabled>請選擇班級</option>
+                        <option v-for="data in classData" :value="data.class_name">{{ data.class_name }}</option>
+                    </select>
+                </p>
+                <p>
+                    <img src="/src/assets/images/note.png" alt="phone" class="icon">
+                    <input type="text" name="note" id="" placeholder="備註" v-model="payload.note">
+                </p>
+            </template>
+
+            <template v-if="flag == 'toggleDialogClass'">
+                <input type="text" name="name" placeholder="請輸入班級名稱" v-model="payload.class_name">
+            </template>
+            <template>
+
+            </template>
+            <div class="control">
+                <button type="reset" @click="toggleDialog" class="close">取消</button>
+                <button type="button" @click="onSubmit" class="submit">儲存</button>
+            </div>
+        </form>
     </div>
     <div class="bg" @click="toggleDialog"></div>
 </template>
@@ -38,7 +98,15 @@ const toggleDialog = inject(props.flag);
     padding: 25px;
     line-height: 35px;
     border-radius: 30px;
-    z-index: 3;
+    z-index: 4;
+}
+
+input {
+    border: none;
+    border-bottom: 1px solid #ccc;
+    outline: none;
+    width: 100%;
+    height: 30px;
 }
 
 .bg {
@@ -49,6 +117,86 @@ const toggleDialog = inject(props.flag);
     left: 0;
 
     background-color: #0000006d;
-    z-index: 2;
+    z-index:3;
+}
+
+.control {
+    margin-top: auto;
+    display: flex;
+    justify-content: end;
+}
+
+button {
+    padding: 10px 25px;
+    margin: 5px;
+    border: 0;
+    border-radius: 25px;
+    color: #39f;
+    background-color: #fff;
+    cursor: pointer;
+    transition: .5s;
+    font-size: 18px;
+}
+
+button:hover {
+    color: #fff;
+    background-color: #39f;
+}
+
+.newStudent {
+    position: relative;
+    display: grid;
+    grid-auto-rows: 1fr;
+    height: 95%;
+    width: 100%;
+    padding: 25px 5px;
+}
+
+p {
+    display: grid;
+    grid-template-columns: 1fr 7fr;
+    align-items: center;
+    justify-items: center;
+    grid-gap: 10px;
+}
+
+i {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-items: center;
+    grid-gap: 0 15px;
+}
+
+.content-icon {
+    display: grid;
+    grid-template-columns: 7fr 1fr;
+    justify-items: center;
+    align-items: center;
+}
+
+.avatar {
+    display: none;
+}
+
+.icon {
+    width: 35px;
+}
+
+img[alt='phone'] {
+    zoom: 60%;
+}
+
+.avatar_preview {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.add {
+    zoom: 65%;
 }
 </style>
