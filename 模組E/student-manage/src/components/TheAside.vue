@@ -3,12 +3,18 @@ import { computed, inject, provide, ref } from 'vue';
 import TheItem from './icons/TheItem.vue';
 import addStudent from './addStudent.vue';
 import addClass from './addClass.vue';
+import TheExport from './TheExport.vue';
+import TheImport from './TheImport.vue';
 
 const itemFlag = inject('filterFlag');
 
 const showAddStudent = ref(false);
 
 const showAddClass = ref(false);
+
+const showExport = ref(false);
+
+const showImport = ref(false);
 
 const studentData = inject('studentData');
 
@@ -33,8 +39,14 @@ const toggleDialogStudent = () => showAddStudent.value = !showAddStudent.value;
 
 const toggleDialogClass = () => showAddClass.value = !showAddClass.value;
 
+const toggleDialogImport = () => showImport.value = !showImport.value
+
+const toggleDialogExport = () => showExport.value = !showExport.value;;
+
 provide('toggleDialogStudent', toggleDialogStudent);
 provide('toggleDialogClass', toggleDialogClass);
+provide('toggleDialogExport', toggleDialogExport)
+provide('toggleDialogImport', toggleDialogImport)
 
 </script>
 
@@ -66,10 +78,12 @@ provide('toggleDialogClass', toggleDialogClass);
             </TheItem>
         </ul>
         <ul class="list">
-            <TheItem url="/src/assets/images/export.png">
-                下載資料</TheItem>
-            <TheItem url="/src/assets/images/import.png">
-                載入資料</TheItem>
+            <TheExport v-if="showExport"></TheExport>
+            <TheImport v-if="showImport"></TheImport>
+            <TheItem url="/src/assets/images/export.png" @click="toggleDialogExport">
+                滙出資料</TheItem>
+            <TheItem url="/src/assets/images/import.png" @click="toggleDialogImport">
+                滙入資料</TheItem>
         </ul>
     </aside>
 </template>
@@ -103,18 +117,19 @@ provide('toggleDialogClass', toggleDialogClass);
     box-shadow: 0 2px 5px #ddd;
 }
 
-#studentList{
-    padding-right:10px;
+#studentList {
+    padding-right: 10px;
 }
 
 #classList {
     overflow-y: auto;
 }
 
-#classList::-webkit-scrollbar{
+#classList::-webkit-scrollbar {
     width: 10px;
 }
-#classList::-webkit-scrollbar-thumb{
+
+#classList::-webkit-scrollbar-thumb {
     background: #ccc;
     border-radius: 10px;
 }

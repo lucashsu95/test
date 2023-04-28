@@ -152,3 +152,11 @@ export function getClass() {
     };
   });
 }
+
+export function createStudentId() {
+  let studentId = "";
+  for (let i = 0; i < 8; i++) {
+    studentId += Math.floor(Math.random() * 10);
+  }
+  return studentId;
+}

@@ -1,7 +1,7 @@
 <script setup>
 import TheDialog from './icons/TheDialog.vue';
 import { inject, ref } from 'vue';
-import { addStudent } from '../indexedDB';
+import { addStudent, createStudentId } from '../indexedDB';
 
 const emailLength = ref(1);
 
@@ -21,13 +21,6 @@ const payload = ref({
     note2: '',
 })
 
-function createStudentId() {
-    let studentId = '';
-    for (let i = 0; i < 8; i++) {
-        studentId += Math.floor(Math.random() * 10);
-    }
-    return studentId;
-}
 
 const onUpload = (e) => {
     const file = e.target.files[0];

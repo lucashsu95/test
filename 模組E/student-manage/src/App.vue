@@ -3,7 +3,7 @@ import TheMain from './components/TheMain.vue';
 import TheHeader from './components/TheHeader.vue';
 import TheAside from './components/TheAside.vue';
 import { getStudent, getClass, openDatabase, openDatabaseClass } from './indexedDB';
-import { onMounted, provide, ref, watch } from 'vue';
+import { onMounted, provide, ref } from 'vue';
 const classData = ref();
 const studentData = ref();
 const filterFlag = ref(-1);

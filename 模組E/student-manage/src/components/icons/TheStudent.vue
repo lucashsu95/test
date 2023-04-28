@@ -38,7 +38,7 @@ provide('toggleDialogStudent', toggleDialogStudent);
         <div class="phone">{{ studentData.phone[0] }}</div>
         <div class="class">{{ studentData.class }}</div>
         <div class="address">{{ studentData.address }}</div>
-        <div class="actions" v-show="studentMouseIndex">
+        <div class="actions" v-show="studentMouseIndex && titleData !== true">
             <button class="edit" @click='toggleDialogStudent'>編輯</button>
             <button class="delete" @click="destroyStudent(studentData)">刪除</button>
         </div>

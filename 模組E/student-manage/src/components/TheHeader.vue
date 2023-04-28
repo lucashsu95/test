@@ -39,7 +39,7 @@ defineEmits(['update:search'])
     height: 80%;
     display: flex;
     align-items: center;
-    background-color: #ddd;
+    background-color: #eee;
     border-radius: 10px;
     margin: 10px;
     padding: 10px 15px;

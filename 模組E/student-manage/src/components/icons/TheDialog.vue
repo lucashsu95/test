@@ -23,17 +23,17 @@ const classData = inject('classData');
             <slot name="header"></slot>
         </h2>
         <hr>
-        <form class="newStudent">
+        <form class="newStudent" @submit.prevent="onSubmit">
             <template v-if="flag == 'toggleDialogStudent'">
                 <p>
                     <label for="avatar">
                         <img :src="payload.avatar" alt="avatar" class="avatar_preview">
                     </label>
-                    <input type="file" class="avatar" id="avatar" @change="onUpload">
+                    <input type="file" accept=".jpeg,.jpg,.png" class="avatar" id="avatar" @change="onUpload">
 
                     <i>
-                        <input type="text" name="first_name" v-model="payload.first_name" placeholder="姓氏" required>
-                        <input type="text" name="last_name" v-model="payload.last_name" placeholder="名子" required>
+                        <input type="text" name="first_name" v-model="payload.first_name" placeholder="名字" required>
+                        <input type="text" name="last_name" v-model="payload.last_name" placeholder="姓氏" required>
                     </i>
                 </p>
                 <p>
@@ -70,14 +70,14 @@ const classData = inject('classData');
             </template>
 
             <template v-if="flag == 'toggleDialogClass'">
-                <input type="text" name="name" placeholder="請輸入班級名稱" v-model="payload.class_name">
+                <input type="text" name="name" placeholder="請輸入班級名稱" v-model="payload.class_name" required>
             </template>
-            <template>
+            <slot name="other"></slot>
 
-            </template>
             <div class="control">
                 <button type="reset" @click="toggleDialog" class="close">取消</button>
-                <button type="button" @click="onSubmit" class="submit">儲存</button>
+                <button v-show="flag !== 'toggleDialogImport' && flag !== 'toggleDialogExport'" class="submit">儲存</button>
+                <slot name="other-btn"></slot>
             </div>
         </form>
     </div>
@@ -117,7 +117,7 @@ input {
     left: 0;
 
     background-color: #0000006d;
-    z-index:3;
+    z-index: 3;
 }
 
 .control {

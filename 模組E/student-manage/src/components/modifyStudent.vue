@@ -7,16 +7,18 @@ const props = defineProps({
     payload: Object,
 })
 
-const emailLength = ref(1);
+const student = ref({ ...props.payload });
 
-const phoneLength = ref(1);
+const emailLength = ref(student.value.email.length);
+
+const phoneLength = ref(student.value.phone.length);
 
 const onUpload = (e) => {
     const file = e.target.files[0];
     const render = new FileReader();
     render.readAsDataURL(file);
     render.onload = () => {
-        payload.value.avatar = render.result;
+        student.value.avatar = render.result;
     }
 }
 
@@ -25,7 +27,7 @@ const toggleDialogStudent = inject('toggleDialogStudent');
 const fetchStudentData = inject('fetchStudentData');
 
 const onSubmit = () => {
-    updateStudent(JSON.stringify(props.payload));
+    updateStudent(JSON.stringify(student.value));
     fetchStudentData();
     toggleDialogStudent();
 }
@@ -33,7 +35,7 @@ const onSubmit = () => {
 </script>
 
 <template>
-    <TheDialog flag="toggleDialogStudent" :payload="payload" :email-length="emailLength" :phone-length="phoneLength"
+    <TheDialog flag="toggleDialogStudent" :payload="student" :email-length="emailLength" :phone-length="phoneLength"
         :onUpload='onUpload' :onSubmit="onSubmit">
         <template #header>修改學生</template>
     </TheDialog>
