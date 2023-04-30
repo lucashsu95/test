@@ -98,7 +98,7 @@ const classData = inject('classData');
     padding: 25px;
     line-height: 35px;
     border-radius: 30px;
-    z-index: 4;
+    z-index: 999;
 }
 
 input {

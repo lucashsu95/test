@@ -1,8 +1,8 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 
-const studentData = ref([
+const items = ref([
   {
     id: 1,
     name: 'John',
@@ -89,59 +89,52 @@ const studentData = ref([
   },
 ]);
 
-const itemStart = ref(0);
-
-const itemLength = 10;
-
-const itemCount = 3;
-
-const items = computed(() => { return studentData.value.splice(itemStart.value, itemLength) });
-
 const ul = ref();
+const viewSize = 10;
+const liHeight = 70;
+const startIndex = ref(0);
+const keepLi = ref();
+const scrollTop = ref(0);
+
+onMounted(() => {
+  ul.value.style.height = `${viewSize * liHeight}px`;
+  keepLi.value.style.height = `${(items.value.length - viewSize) * liHeight}px`;
+})
 
 const studentScroll = (e) => {
-  const scrollTop = e.target.scrollTop;
-  console.log(`scrollTop:${scrollTop}`);
+  scrollTop.value = e.target.scrollTop;
+  startIndex.value = Math.floor(scrollTop.value / liHeight);
+  // console.log(items.value);
 }
 
 </script>
 
 <template>
-  <div>
-    <section class="students" ref="ul" @scroll="studentScroll">
-      <div v-for="i in 10" class="student">
-        {{ items[itemStart + i - 1].id }}
-        {{ items[itemStart + i - 1].name }}
-      </div>
-    </section>
-    <hr>
-    <section>
-      <button @click="ul.scrollTop = 0">重製高度</button>
-    </section>
+  <section class="students" ref="ul" @scroll="studentScroll">
+    <div v-for="item in items.slice(startIndex, startIndex + viewSize)"
+      :style="{ transform: 'translateY(' + scrollTop + 'px)' }">
+      {{ item.id }}
+    </div>
+    <div ref="keepLi"></div>
 
-
-  </div>
+  </section>
 </template>
 
 
 <style scoped>
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
 .students {
-  width: 700px;
-  height: 500px;
-  overflow: auto;
-  background-color: #ddd;
-  border: 2px solid #f60;
+  width: 500px;
+  overflow-y: scroll;
   list-style-type: none;
 }
 
-.student {
-  display: flex;
-  justify-content: center;
-  padding: 23px;
-  outline: 1px solid #f90
+.students div{
+  padding: 23px 0;
 }
 </style>

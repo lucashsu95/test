@@ -11,7 +11,6 @@ const search = ref();
 
 const fetchStudentData = async () => {
   studentData.value = await getStudent();
-  console.log(studentData.value);
 }
 const fetchClassData = async () => {
   classData.value = await getClass();

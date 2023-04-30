@@ -6,6 +6,7 @@ import { deleteStudent } from '../../indexedDB';
 const props = defineProps({
     titleData: Boolean,
     studentData: Object,
+    studentStyle: Object,
 })
 
 const studentMouseIndex = ref(false);
@@ -29,7 +30,7 @@ provide('toggleDialogStudent', toggleDialogStudent);
 
 <template>
     <modifyStudent :payload="studentData" v-if="toggleDialogFlag"></modifyStudent>
-    <div class="student" @mouseover="studentMouseIndex = true" @mouseleave="studentMouseIndex = false">
+    <div class="student" @mouseover="studentMouseIndex = true" @mouseleave="studentMouseIndex = false" :style="studentStyle">
         <img :src="studentData.avatar" alt="" class="avatar" :class="{ noShow: titleData }">
         <span v-if='titleData'></span>
         <div class="fullname">{{ studentData.last_name + studentData.first_name }}</div>
@@ -53,7 +54,6 @@ provide('toggleDialogStudent', toggleDialogStudent);
     align-items: center;
     grid-template-columns: 0.6fr repeat(2, 1fr) repeat(2, 2fr) repeat(2, 1fr);
     padding: 10px 5px;
-    transition: .5s all;
     border-radius: 10px;
     position: relative;
 }

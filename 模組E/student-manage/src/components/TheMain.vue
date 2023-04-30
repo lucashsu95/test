@@ -1,10 +1,18 @@
 <script setup>
-import { computed, inject, ref } from 'vue';
+import { computed, inject, onMounted, provide, ref } from 'vue';
 import TheStudent from './icons/TheStudent.vue';
+import TheSort from './TheSort.vue';
 
 const props = defineProps({
     search: String,
 });
+
+const ul = ref();
+const keepLi = ref();
+const viewSize = 9;
+const liHeight = 70;
+const startIndex = ref(0);
+const scrollTop = ref(0);
 
 const studentData = inject('studentData');
 
@@ -30,6 +38,18 @@ const filterStudent = computed(() => {
     }
 })
 
+const filterStudentLength = computed(() => {
+    if (filterStudent.value) {
+        return filterStudent.value.length;
+    }
+})
+
+const studentCanView = computed(() => {
+    if (filterStudent.value) {
+        return filterStudent.value.slice(startIndex.value, startIndex.value + viewSize)
+    }
+})
+
 const title = ref({
     avatar: '',
     last_name: '',
@@ -41,14 +61,37 @@ const title = ref({
     phone: ['電話號碼']
 })
 
+const showTheSort = ref(false);
+
+const toggleDialogSort = () => showTheSort.value = !showTheSort.value;
+
+const studentScroll = (e) => {
+    scrollTop.value = e.target.scrollTop;
+    startIndex.value = Math.floor(scrollTop.value / liHeight);
+}
+
+onMounted(() => {
+    ul.value.style.height = `${viewSize * liHeight}px`;
+})
+
+provide('toggleDialogSort', toggleDialogSort)
+
 </script>
 
 <template>
     <main id="main">
-        <div class="students">
-            <TheStudent :student-data="title" :title-data="true"></TheStudent>
-            <hr>
-            <TheStudent v-for="student in filterStudent" :student-data="student"></TheStudent>
+        <TheStudent :student-data="title" :title-data="true"></TheStudent>
+        <div class="sort-box" @click="toggleDialogSort">
+            <div class="due"></div>
+            <div class="due"></div>
+            <div class="due"></div>
+        </div>
+        <TheSort v-if="showTheSort"></TheSort>
+        <hr>
+        <div class="students" ref="ul" @scroll="studentScroll">
+            <TheStudent v-for="student in studentCanView" :student-data="student"
+                :student-style="{ transform: 'translateY(' + scrollTop + 'px)' }"></TheStudent>
+            <div ref="keepLi" :style="{ 'height': (filterStudentLength - viewSize) * liHeight + 'px' }"></div>
         </div>
     </main>
 </template>
@@ -56,16 +99,45 @@ const title = ref({
 <style scoped>
 #main {
     grid-area: main;
-    overflow-y: auto;
 }
 
-#main::-webkit-scrollbar {
+.students {
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.students::-webkit-scrollbar {
     width: 10px;
 }
 
-#main::-webkit-scrollbar-thumb {
+.students::-webkit-scrollbar-thumb {
     background-color: #ccc;
     border-radius: 10px;
+}
 
+.sort-box {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: calc(10vh + 5px);
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+
+.sort-box:hover {
+    background-color: #aaa;
+}
+
+.due {
+    width: 2px;
+    height: 2px;
+    background-color: #333;
+    border-radius: 50%;
+    padding: 2px;
+    margin: 1.5px;
 }
 </style>
