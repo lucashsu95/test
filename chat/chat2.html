@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>按鈕式chat</title>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.3.2/vue.global.js"
+      integrity="sha512-KnhQ2qDDo4xtzMglIRUqBBGmUQjt55uMJV1lGsiYrVlh3DfJgrwxVVnJkqtOcFaq45INrDM8SD/BA4qHnRJeEg=="
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="chat">
+      <header>
+        <h1>New Chat</h1>
+      </header>
+      <main>
+        <!-- <div class="message myChat">
+          <div class="people-img"><img src="./L.jpg" alt="" /></div>
+          <div class="content">Hi ~</div>
+        </div>
+
+        <div class="message">
+          <div class="people-img"><img src="./R.jpg" alt="" /></div>
+          <div class="content">Hello ~</div>
+        </div> -->
+      </main>
+
+      <section class="message-input">
+        <button data-key="4月最強新番">4月最強新番</button>
+        <button data-key="戀愛類型動漫">戀愛類型動漫</button>
+        <button data-key="異世界爛大街中脫穎而出的">
+          異世界爛大街中脫穎而出的
+        </button>
+      </section>
+    </div>
+    <script>
+      const main = document.querySelector("main");
+      const btns = [...document.querySelectorAll("button")];
+
+      const robotMessage = (msg) => {
+        let data = "";
+        if (msg === "4月最強新番") {
+          data =
+            "「在演藝圈（這個世界）裡，謊言就是武器。」2023年4月最強廣世巨作「我推的孩子」";
+        } else if (msg === "戀愛類型動漫") {
+          data =
+            "最近有「我內心的糟糕念頭」是最甜最甜的純真戀愛動漫，保證甜死你!";
+        } else if (msg === "異世界爛大街中脫穎而出的") {
+          data =
+            "如果你問我，那我也只能說高橋李依最棒!不訪試試看「為美好的世界獻上爆焰」！";
+        }
+        main.innerHTML += `
+          <div class="message">
+            <div class="people-img"><img src="./L.jpg" alt="" /></div>
+            <div class="content">${data}</div>
+          </div>`;
+
+        main.scrollTop = main.scrollHeight;
+      };
+
+      const handleMessageSubmit = (e) => {
+        const msg = e.target.dataset.key;
+        main.innerHTML += `
+              <div class="message myChat">
+                  <div class="people-img"><img src="./R.jpg" alt="" /></div>
+                  <div class="content">${msg}</div>
+              </div>`;
+        setTimeout(() => {
+          robotMessage(msg);
+        }, 500);
+      };
+
+      for (btn of btns) {
+        btn.addEventListener("click", handleMessageSubmit);
+      }
+    </script>
+  </body>
+</html>
