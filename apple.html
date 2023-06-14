@@ -12,7 +12,7 @@
         font-weight: bold;
         user-select: none;
       }
-      
+
       @property --opacity {
         syntax: "<number>";
         inherits: false;
@@ -128,7 +128,7 @@
 
       .list2 li {
         opacity: var(--opacity);
-        transition: --opacity 0.5s;
+        transition: --opacity 0.3s;
       }
 
       .list2 li.active {
@@ -217,18 +217,18 @@
       const sticky2 = document.querySelector(".sticky2");
       addEventListener("scroll", () => {
         const scrollNow = document.documentElement.scrollTop;
-        // const diff = scrollNow - sticky.offsetTop;
+        const diff = scrollNow - sticky.offsetTop;
 
-        // lis.map((li) => {
-        //   const is = Math.abs(diff - li.offsetTop) / 100;
-        //   const opacity = is <= 1 ? Math.abs(1 - is) + 0.3 : 0;
-        //   return (li.style.opacity = opacity);
-        // });
+        lis.map((li) => {
+          const is = Math.abs(diff - li.offsetTop) / 100;
+          const opacity = is <= 1 ? Math.abs(1 - is) + 0.3 : 0;
+          return (li.style.opacity = opacity);
+        });
 
         const diff2 = scrollNow - sticky2.offsetTop;
         lis2.map((li) => li.classList.remove("active"));
         lis2.map((li) => {
-          if (diff2 > li.offsetTop) li.classList.add("active");
+          if (diff2 + 100 > li.offsetTop) li.classList.add("active");
         });
       });
     </script>
