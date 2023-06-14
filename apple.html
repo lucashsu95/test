@@ -12,6 +12,12 @@
         font-weight: bold;
         user-select: none;
       }
+      
+      @property --opacity {
+        syntax: "<number>";
+        inherits: false;
+        initial-value: 0;
+      }
 
       .wrap {
         & .box {
@@ -38,9 +44,9 @@
           background: 2px solid #fa0;
         }
 
-        @media (max-width:900px) {
+        @media (max-width: 900px) {
           & {
-            width:100%;
+            width: 100%;
           }
         }
       }
@@ -100,7 +106,8 @@
         position: absolute;
       }
 
-      .bg {
+      .bg,
+      .bg2 {
         position: sticky;
         top: 0;
         width: 100%;
@@ -117,6 +124,15 @@
         text-align: center;
         background: #fff;
         z-index: 999;
+      }
+
+      .list2 li {
+        opacity: var(--opacity);
+        transition: --opacity 0.5s;
+      }
+
+      .list2 li.active {
+        --opacity: 1;
       }
     </style>
   </head>
@@ -143,13 +159,13 @@
           </p>
         </article>
         <article>
-          <ul>
+          <ul class="list">
             <li>自大</li>
             <li>驕傲</li>
             <li>自負</li>
             <li>目中無人</li>
             <li>傲視一切</li>
-            <li>唯我独尊</li>
+            <li>唯我獨尊</li>
             <li>不可一世</li>
             <li>高高在上</li>
           </ul>
@@ -167,17 +183,52 @@
         neque error.
       </p>
     </section>
+    <section class="sticky sticky2">
+      <div class="box">
+        <article>
+          <h1>Title2</h1>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim non
+            obcaecati quaerat laudantium maiores. Fugiat, magnam illo a tenetur
+            unde laudantium, autem ullam minus atque quaerat voluptatibus vero
+            dolor suscipit?
+          </p>
+        </article>
+        <article>
+          <ul class="list2">
+            <li>謙遜的</li>
+            <li>謙虛的</li>
+            <li>謙恭的</li>
+            <li>謙卑的</li>
+            <li>謙和的</li>
+            <li>謙讓的</li>
+            <li>謙虛自省的</li>
+            <li>謙虛順從的</li>
+          </ul>
+        </article>
+      </div>
+
+      <img src="./bg2.jpg" alt="bg" class="bg" />
+    </section>
     <script>
+      const lis = [...document.querySelectorAll(".list > li")];
+      const lis2 = [...document.querySelectorAll(".list2 > li")];
+      const sticky = document.querySelector(".sticky");
+      const sticky2 = document.querySelector(".sticky2");
       addEventListener("scroll", () => {
         const scrollNow = document.documentElement.scrollTop;
-        const lis = [...document.querySelectorAll("li")];
-        const sticky = document.querySelector(".sticky");
-        const diff = scrollNow - sticky.offsetTop;
-        console.log(diff);
-        lis.map((li) => {
-          const is = Math.abs(diff - li.offsetTop) / 100;
-          const opacity = is <= 1 ? Math.abs(1 - is) : 0;
-          return (li.style.opacity = opacity);
+        // const diff = scrollNow - sticky.offsetTop;
+
+        // lis.map((li) => {
+        //   const is = Math.abs(diff - li.offsetTop) / 100;
+        //   const opacity = is <= 1 ? Math.abs(1 - is) + 0.3 : 0;
+        //   return (li.style.opacity = opacity);
+        // });
+
+        const diff2 = scrollNow - sticky2.offsetTop;
+        lis2.map((li) => li.classList.remove("active"));
+        lis2.map((li) => {
+          if (diff2 > li.offsetTop) li.classList.add("active");
         });
       });
     </script>
