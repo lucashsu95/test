@@ -7,7 +7,7 @@
       content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Document</title>
+    <title>bucket</title>
     <style>
       * {
         margin: 0;
@@ -18,59 +18,50 @@
       canvas {
         border: 1px solid #333;
       }
+
+      .color {
+        width: 50px;
+        height: 50px;
+        border: 1px solid #bbb;
+      }
     </style>
   </head>
   <body>
     <button>目前使用畫筆</button>
     <hr />
 
+    palette:
     <canvas id="palette" width="360" height="150"></canvas>
-    <canvas id="color"></canvas>
+    color:
+    <div class="color"></div>
+    pen:
     <canvas id="pen" width="500" height="500"></canvas>
-    <input type="range" id="pen-px" min="1" max="100" />
     <hr />
-    <button id="download-button">Download</button>
     <script>
       let isPaintBucket = false;
+      var color = [0, 0, 0];
+
       const button = document.querySelector("button");
       button.addEventListener("click", () => {
         isPaintBucket = !isPaintBucket;
-        if (isPaintBucket) {
-          button.textContent = "目前使用油漆桶";
-        } else {
-          button.textContent = "目前使用畫筆";
-        }
+        button.textContent = isPaintBucket ? "目前使用油漆桶" : "目前使用畫筆";
       });
 
-      for (let i = 0; i < 360; i++) {
-        const gradient = paletteCtx.createLinearGradient(
-          i,
-          0,
-          i + 1,
-          paletteCvs.height
-        );
-
-        gradient.addColorStop(0, "black");
-        gradient.addColorStop(0.5, `hsl(${i}, 100%, 50%)`);
-        gradient.addColorStop(1, "white");
-
-        paletteCtx.fillStyle = gradient;
-        paletteCtx.fillRect(i, 0, 1, paletteCvs.height);
-      }
-
-      const colorCvs = document.querySelector("#color");
-      const colorCtx = colorCvs.getContext("2d", { willReadFrequently: true });
-
       let isSelecting = false;
+      const penCvs = document.querySelector("#pen");
+      const penCtx = penCvs.getContext("2d", { willReadFrequently: true });
+      let ispening = false;
+      let penX = 0;
+      let penY = 0;
 
       penCvs.addEventListener("mousedown", (e) => {
         penX = e.offsetX;
         penY = e.offsetY;
 
         // start
+
         if (isPaintBucket) {
-          const colorImageData = colorCtx.getImageData(0, 0, 1, 1);
-          const newColor = colorImageData.data;
+          const newColor = color;
           const baseImageData = penCtx.getImageData(penX, penY, 1, 1);
           const baseColor = baseImageData.data;
 
@@ -104,15 +95,19 @@
           // End
         }
 
+        // Pen
+
         ispening = true;
         penCtx.beginPath();
       });
+
+      // MouseMove
 
       penCvs.addEventListener("mousemove", (e) => {
         if (ispening) {
           const x = e.offsetX;
           const y = e.offsetY;
-          penCtx.lineWidth = penPx.value;
+          penCtx.lineWidth = 30;
           penCtx.moveTo(penX, penY);
           penCtx.lineTo(x, y);
           penCtx.stroke();
@@ -121,25 +116,34 @@
         }
       });
 
+      // MouseUp
+
       window.addEventListener("mouseup", (e) => {
         ispening = false;
       });
 
-      const downloadButton = document.querySelector("#download-button");
-      downloadButton.addEventListener("click", () => {
-        const url = penCvs.toDataURL();
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "image.jpg";
-        a.click();
-      });
-
       // paletteCvs
-
       const paletteCvs = document.querySelector("#palette");
+      const colorDiv = document.querySelector(".color");
       const paletteCtx = paletteCvs.getContext("2d", {
         willReadFrequently: true,
       });
+
+      for (let i = 0; i < 360; i++) {
+        const gradient = paletteCtx.createLinearGradient(
+          i,
+          0,
+          i + 1,
+          paletteCvs.height
+        );
+
+        gradient.addColorStop(0, "black");
+        gradient.addColorStop(0.5, `hsl(${i}, 100%, 50%)`);
+        gradient.addColorStop(1, "white");
+
+        paletteCtx.fillStyle = gradient;
+        paletteCtx.fillRect(i, 0, 1, paletteCvs.height);
+      }
 
       paletteCvs.addEventListener("mousedown", (e) => {
         isSelecting = true;
@@ -147,9 +151,9 @@
         const y = e.offsetY;
         const imageData = paletteCtx.getImageData(x, y, 1, 1);
         const [r, g, b, a] = imageData.data;
-        colorCtx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
-        colorCtx.fillRect(0, 0, colorCvs.width, colorCvs.height);
+        color = imageData.data;
         penCtx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
+        colorDiv.style.background = `rgba(${r}, ${g}, ${b}, ${a})`;
       });
 
       paletteCvs.addEventListener("mousemove", (e) => {
@@ -158,9 +162,9 @@
           const y = e.offsetY;
           const imageData = paletteCtx.getImageData(x, y, 1, 1);
           const [r, g, b, a] = imageData.data;
-          colorCtx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
-          colorCtx.fillRect(0, 0, colorCvs.width, colorCvs.height);
+          color = imageData.data;
           penCtx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
+          colorDiv.style.background = `rgba(${r}, ${g}, ${b}, ${a})`;
         }
       });
 
@@ -168,17 +172,10 @@
         isSelecting = false;
       });
 
-      const penCvs = document.querySelector("#pen");
-      const penPx = document.querySelector("#pen-px");
-      const penCtx = penCvs.getContext("2d", { willReadFrequently: true });
       penCtx.fillStyle = "#fff";
       penCtx.fillRect(0, 0, penCvs.width, penCvs.height);
       penCtx.lineCap = "round";
       penCtx.lineJoin = "round";
-
-      let ispening = false;
-      let penX = 0;
-      let penY = 0;
     </script>
   </body>
 </html>
