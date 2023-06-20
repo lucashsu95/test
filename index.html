@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      .parallax {
+        height: 400px; /* 視差容器的高度 */
+        overflow: hidden; /* 確保視差元素不會溢出容器 */
+      }
+
+      .parallax-layer {
+        min-height: 100vh;
+        position: relative; /* 相對定位以便進行視差位移 */
+        height: 100%; /* 視差元素的高度，與視差容器相同 */
+        background-size: cover; /* 背景大小自適應容器 */
+        background-position: center; /* 背景位置居中 */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="parallax">
+      <div class="parallax-layer" data-speed="0.5">
+          <!-- 第一層視差元素的內容 -->
+        <img src="https://picsum.photos/id/237/200/300" alt="" />
+      </div>
+      <div class="parallax-layer" data-speed="1.0">
+          <!-- 第二層視差元素的內容 -->
+          <img src="https://picsum.photos/id/267/200/300" alt="" />
+      </div>
+      <div class="parallax-layer" data-speed="1.5">
+          <!-- 第三層視差元素的內容 -->
+          <img src="https://picsum.photos/id/237/1920/1080" alt="" />
+      </div>
+    </div>
+    <section style="height: 100vh">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veniam inventore
+      ut dolorem, facere totam aut expedita saepe repudiandae quam pariatur
+      veritatis? Tenetur quia dignissimos nisi eveniet numquam laborum tempora
+      nulla? Repellendus sint minus assumenda itaque, laboriosam totam tempore,
+      neque id sit ex rerum quidem? Eaque aliquam incidunt placeat, dignissimos
+      voluptatem illum asperiores nostrum ad, modi tempora officiis omnis minima
+      rerum. Dolorem ab rem reprehenderit id! Ipsa magnam corporis quibusdam
+      temporibus officia blanditiis ut dicta iste, repellendus tenetur, odit
+      animi sunt consectetur maiores ducimus quas sed! Nisi laboriosam nihil
+      amet dolore. Culpa laudantium, pariatur amet officia eaque labore sed quis
+      reprehenderit! Itaque, qui ab alias sint cum inventore repellat,
+      consequuntur impedit assumenda esse magni eum sequi! Architecto quo
+      ratione aperiam accusamus. Explicabo eius et, repellat repellendus earum
+      quae in at. Labore suscipit iusto, beatae totam libero est odio impedit,
+      quibusdam repellendus itaque mollitia ipsa aspernatur perferendis autem,
+      maxime voluptatem unde neque.
+    </section>
+    <script>
+      window.addEventListener("scroll", function () {
+        var parallaxLayers = document.querySelectorAll(".parallax-layer");
+
+        for (var i = 0; i < parallaxLayers.length; i++) {
+          var layer = parallaxLayers[i];
+          var speed = parseFloat(layer.getAttribute("data-speed"));
+          var yPos = -window.pageYOffset * speed;
+
+          layer.style.transform = "translateY(" + yPos + "px)";
+        }
+      });
+    </script>
+  </body>
+</html>
