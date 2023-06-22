@@ -50,6 +50,9 @@
         },
         mounted() {
           this.ctx = this.$refs.cvs.getContext("2d");
+          this.ctx.lineWidth = 20;
+          this.ctx.lineJoin = "round";
+          this.ctx.lineCap = "round";
         },
         watch: {
           color([r, g, b, a]) {
