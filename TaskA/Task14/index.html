@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>New-Vue</title>
+    <link rel="stylesheet" href="../bootstrap.min.css">
+    <script src="../vue.js"></script>
+    <style>
+        .box {
+            width: 300px;
+            height: 300px;
+            display: grid;
+            grid-template-columns: repeat(16, 1fr);
+            grid-template-rows: repeat(16, 1fr);
+        }
+
+        .box>div {
+            border: 1px solid #ccc;
+        }
+
+        .color {
+            width: 50px;
+            height: 50px;
+            margin: 20px;
+            border-radius: 50%;
+            outline: 4px solid #aaa;
+
+            &.active {
+                outline: 4px solid #ff0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id='app'>
+        <div class="box">
+            <div class="boxes" v-for="i in 16 * 16" @click="e => e.target.style.background = currentColor">
+
+            </div>
+        </div>
+        <div class="colors">
+            <div class="color" v-for="color in colors" :style="'background:' + color" @click="currentColor = color"
+                :class="{active:color === currentColor}"></div>
+        </div>
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    colors: ['#000', '#325', '#faa'],
+                    currentColor: "#000",
+                };
+            },
+            methods: {},
+        }).mount('#app');
+    </script>
+</body>
+
+</html>

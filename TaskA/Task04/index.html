@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+
+        header {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(to bottom, #ff0, #fa0);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+
+        .box {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform-origin: bottom;
+            animation: 3s rotate;
+        }
+
+        .sun {
+            width: 100px;
+            height: 100px;
+            background: #fff;
+            box-shadow: 0 0 100px #fff;
+            border-radius: 50%;
+        }
+
+        button {
+            padding: 10px 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            z-index: 999;
+        }
+
+        .left {
+            background: #333;
+            color: #fff;
+        }
+
+        header.active {
+            background: linear-gradient(to top, #000, rgb(65, 36, 65));
+
+            & .box {
+                animation: 3s rotate2;
+            }
+
+            & .left {
+                background: #fff;
+                color: #000;
+            }
+
+            & .right {
+                background: #333;
+                color: #fff;
+            }
+        }
+
+        @keyframes rotate {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes rotate2 {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header id="header">
+        <button onclick="header.classList.remove('active')" class="left">Day</button>
+        <div class="box">
+            <div class="sun"></div>
+        </div>
+        <button onclick="header.classList.add('active')" class="right">Night</button>
+    </header>
+</body>
+
+</html>
