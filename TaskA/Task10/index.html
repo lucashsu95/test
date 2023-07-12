@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>New-Vue</title>
+    <script src="../vue.js"></script>
+    <style>
+        .color {
+            position: absolute;
+        }
+
+        .map {
+            width: 100px;
+            height: 100px;
+            display: grid;
+            border-radius: 50%;
+            overflow: hidden;
+            grid-template-columns: repeat(11, 1fr);
+            grid-template-rows: repeat(11, 1fr);
+        }
+
+        .map>div {
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='app'>
+        <input type="file" name="" id="" @change="onupload">
+        <hr>
+        <canvas ref="cvs" @mousemove="move"></canvas>
+        <div class="color" ref="color">
+            <div class="map">
+                <div v-for="i in 121" ref="boxes"></div>
+            </div>
+            <div>{{rgba}}</div>
+        </div>
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    ctx: null,
+                    rgba: '',
+                };
+            },
+            mounted() {
+                this.ctx = this.$refs.cvs.getContext('2d');
+                this.$refs.boxes[60].style.border = '1px solid red';
+            },
+            methods: {
+                onupload(e) {
+                    const file = e.target.files[0];
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = () => {
+                        const img = new Image();
+                        img.src = reader.result;
+                        img.onload = () => {
+                            this.ctx.canvas.width = img.width;
+                            this.ctx.canvas.height = img.height;
+                            this.ctx.drawImage(img, 0, 0);
+                        }
+                    }
+                },
+                move(e) {
+                    const [x, y] = [e.offsetX, e.offsetY];
+                    this.$refs.color.style.top = y + 40 + 'px';
+                    this.$refs.color.style.left = x + 40 + 'px';
+                    const pixels = this.ctx.getImageData(x - 7, y - 7, 11, 11).data;
+                    for (let i = 0; i < 121; i++) {
+                        const [r, g, b, a] = [
+                            pixels[i * 4],
+                            pixels[i * 4 + 1],
+                            pixels[i * 4 + 2],
+                            pixels[i * 4 + 3],
+                        ]
+                        const rgba = `rgba(${r},${g},${b},${a})`;
+                        this.$refs.boxes[i].style.background = rgba;
+                        if (i == 60) {
+                            this.rgba = rgba;
+                        }
+                    }
+                }
+            },
+        }).mount('#app');
+    </script>
+</body>
+
+</html>
