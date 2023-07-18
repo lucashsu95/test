@@ -23,16 +23,16 @@
     include '../link.php';
 
     $type = $_GET['type'];
-    $database_name = $type === 'learn' ? 'repair' : 'genrepair';
     $page = $_GET['page'] ?? 0;
     $num = $page * 10;
+    $admin = $_SESSION['admin'];
     $isProcess = $_GET['isProcess'] ?? false;
-    $isAdmin = $_SESSION['admin'] ?? false;
+    $isAdmin = isset($_SESSION['admin']) ?? false;
 
     $url = "repairList.php?type=$type";
 
-    $sql = "select * from $database_name order by id asc limit $num,10";
-    $all = $db->query("select * from $database_name")->fetchAll();
+    $sql = "select * from $type order by id desc limit $num,10";
+    $all = $db->query("select * from $type")->fetchAll();
     $query =  $db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     $len = count($all);
     $noProcessingCount = array_sum(array_map(function ($d) {
@@ -85,12 +85,23 @@
                 }
 
             ?>
-                <div class="container-fluid overflow-hidden border border-3 <?php echo $type === 'learn' ? 'border-info' : 'border-success' ?> my-3 rounded-4 shadow">
+                <div class="container-fluid overflow-hidden border border-3 <?php echo $type === 'repair' ? 'border-info' : 'border-success' ?> my-3 rounded-4 shadow">
                     <div class="row row-cols-5 text-center pt-3">
                         <div class="col"><?php echo $data['class'] ?></div>
                         <div class="col"><?php echo $data['repair_name'] ?></div>
                         <div class="col"><?php echo $data['repair_place'] ?></div>
-                        <div class="col <?php echo $data['processing'] === "已處理" ? 'text-success' : 'text-danger' ?>"><?php echo $data['processing'] ?></div>
+                        <?php if ($admin['name'] === $type) { ?>
+                            <form action="setProcessing.php" method="post" id='processing<?php echo $data['id'] ?>'>
+                                <select name="processing" onchange='document.getElementById("processing<?php echo $data["id"] ?>").submit()'>
+                                    <option value="已處理" <?php if ($data['processing'] === '已處理') echo "selected" ?>>已處理</option>
+                                    <option value="未處理" <?php if ($data['processing'] !== '已處理') echo "selected" ?>>未處理</option>
+                                </select>
+                                <input type="hidden" name="id" value='<?php echo $data['id'] ?>'>
+                            </form>
+                        <?php } else { ?>
+                            <div class="col <?php echo $data['processing'] === "已處理" ? 'text-success' : 'text-danger' ?>"><?php echo $data['processing'] ?></div>
+                        <?php } ?>
+
                         <div class='col'><?php echo $data['repair_date'] ?></div>
                     </div>
                     <div class="row m-3 border border-2 rounded-2 overflow-hidden shadow">
@@ -110,9 +121,9 @@
 
         <footer class="row text-center m-5">
             <div class="row d-flex justify-content-center py-3">
-
+                記錄第<?php echo $num + 1 . '-' . (($num + 10 > $len) ? $len : $num + 10) ?>，共<?php echo $len ?>筆
             </div>
-            <div class="row page">
+            <div class="row page my-5">
                 <?php if ($num > 0) { ?>
                     <div class="col">
                         <a class="link-offset-1 link-offset-3-hover" href="<?php echo $url . "&page=0" ?>">
@@ -132,7 +143,7 @@
                         </a>
                     </div>
                     <div class="col">
-                        <a class="link-offset-1 link-offset-3-hover" href="<?php echo $url . "&page=" . $len / 10 - 1 ?>">
+                        <a class="link-offset-1 link-offset-3-hover" href="<?php echo $url . "&page=" . intval($len / 10) ?>">
                             最後一頁
                         </a>
                     </div>
