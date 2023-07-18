@@ -11,7 +11,7 @@
             position: absolute;
         }
 
-        .map {
+        .maf {
             width: 100px;
             height: 100px;
             display: grid;
@@ -21,7 +21,7 @@
             grid-template-rows: repeat(11, 1fr);
         }
 
-        .map>div {
+        .maf>div {
             border: 1px solid #ccc;
         }
     </style>
@@ -33,7 +33,7 @@
         <hr>
         <canvas ref="cvs" @mousemove="move"></canvas>
         <div class="color" ref="color">
-            <div class="map">
+            <div class="maf">
                 <div v-for="i in 121" ref="boxes"></div>
             </div>
             <div>{{rgba}}</div>

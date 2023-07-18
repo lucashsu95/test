@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登入</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+
+</head>
+
+<body>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+        <ul class="navbar-nav mx-auto">
+            <li class="nav-item">
+                <a href="../" class="nav-link">回首頁</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container border p-5 min-vh-100 d-flex align-items-center justify-content-center shadow rounded-2" style="width:500px;">
+        <div class="row text-center">
+            <h1 class="fw-bold">登入</h1>
+            <hr>
+            <form action="loginprocess.php" method="post">
+                <div class="text-start mb-5">
+                    <h3>帳號</h3>
+                    <input type="text" class="form-control" name="account" placeholder="請輸入帳號" />
+                    <h3>密碼</h3>
+                    <input type="password" class="form-control" name="password" placeholder="請輸入密碼" />
+                </div>
+                <button class="btn btn-primary rounded-pill px-4" type="submit">登入</button>
+                <button class="btn btn-outline-secondary rounded-pill px-4" type="reset">重設</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

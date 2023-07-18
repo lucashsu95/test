@@ -5,7 +5,6 @@
     <meta charset='UTF-8' />
     <meta name='viewport' content='width=device-width, initial-scale=1.0' />
     <title>New-Vue</title>
-    <link rel="stylesheet" href="../bootstrap.min.css">
     <script src="../vue.js"></script>
     <style>
         :root {
@@ -20,18 +19,16 @@
 
 <body>
     <div id='app'>
-        <div class="container">
-            <h1>Contents</h1>
-            <p ref="p">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit alias perferendis porro ad veniam
-                autem
-                qui omnis quibusdam voluptate asperiores consequuntur eveniet iure officiis sed, repudiandae enim,
-                aliquid, voluptatum cumque?
-            </p>
-            <div style="width: max-content;" class="d-flex">
-                <input type="text" class="form-control" v-model="keyword">
-                <button class="btn btn-primary" @click="onSearch">Search</button>
-            </div>
+        <h1>Contents</h1>
+        <p ref="p">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit alias perferendis porro ad veniam
+            autem
+            qui omnis quibusdam voluptate asperiores consequuntur eveniet iure officiis sed, repudiandae enim,
+            aliquid, voluptatum cumque?
+        </p>
+        <div>
+            <input type="text" v-model="keyword">
+            <button @click="onSearch">Search</button>
         </div>
     </div>
     <script>
@@ -45,7 +42,6 @@
             mounted() {
                 const text = this.$refs.p.textContent.split('').map(x => `<span>${x}</span>`).join('');
                 this.$refs.p.innerHTML = text;
-
             },
             methods: {
                 onSearch() {
