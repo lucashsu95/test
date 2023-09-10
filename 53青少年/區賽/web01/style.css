@@ -1,0 +1,86 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 微軟正黑體;
+}
+
+a {
+    text-decoration: none;
+}
+
+body {
+    width: 1920px;
+    height: 1080px;
+    overflow-x: hidden;
+}
+
+.navbar {
+    width: 100%;
+    background: #222;
+    padding: 10px 100px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 0 10px black;
+}
+
+.navbar ul {
+    display: flex;
+    gap: 25px;
+    list-style: none;
+}
+
+.navbar a {
+    color: #39f;
+    transition: .5s;
+    font-weight: bold;
+}
+
+.navbar a:hover {
+    color: rgb(156, 205, 255);
+}
+
+button {
+    padding: 5px;
+    background: #333;
+    color: white;
+    cursor: pointer;
+}
+
+h2 {
+    font-weight: bold;
+}
+
+form {
+    margin-top: 50px;
+    display: grid;
+    border: 1px solid gray;
+    padding: 25px;
+    line-height: 2;
+    grid-template-columns: 1fr 1fr;
+}
+
+input {
+    border: 1px solid gray;
+    padding: 3px 10px;
+    border-radius: 6px;
+    outline: none;
+}
+
+input:focus {
+    box-shadow: 0 0 3px 2px rgb(179, 241, 255);
+}
+
+main {
+    min-height: 85vh;
+}
+
+footer {
+    background: #000;
+    color: #39f;
+    padding: 2% 6%;
+    text-align: center;
+    width: 100%;
+}

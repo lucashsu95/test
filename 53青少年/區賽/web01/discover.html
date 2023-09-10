@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>discover</title>
+    <link rel="stylesheet" href="style.css">
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js'
+        integrity='sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=='
+        crossorigin='anonymous'></script>
+    <style>
+        .card {
+            width: 25rem;
+            border: 1px solid #000;
+            margin: auto;
+            margin-top: 50px;
+            padding: 2rem;
+            line-height: 1.5;
+        }
+
+        .hid {
+            margin-top: 50px;
+            height: 0;
+            overflow: hidden;
+            transition: height .5s;
+        }
+
+        .hid.active {
+            height: 350px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <img src="./img/Logo_of_Twitter.svg.png" alt="" style="width:45px">
+        <ul>
+            <li><a href="./home.html">Home</a></li>
+            <li><a href="./news.html">News</a></li>
+            <li><a href="./discover.html">Discover</a></li>
+            <li><a href="./tickets.html">Tickets</a></li>
+        </ul>
+    </nav>
+    <main>
+        <div class="card">
+            <h2>Lorem, ipsum dolor.</h2>
+            <p>
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Possimus quibusdam, iste neque incidunt labore
+                consequuntur reprehenderit maiores tempore voluptatibus molestias.
+            </p>
+            <div class="hid">
+                <h3>
+                    Lorem ipsum dolor sit amet consectetur.
+                </h3>
+                <p>
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Excepturi quo veniam, magni doloremque
+                    maxime dolorum enim dolore eaque autem non fugiat dicta unde natus dolorem. Debitis asperiores
+                    commodi pariatur nisi illo excepturi repudiandae eveniet suscipit, dolores magni corporis! Inventore
+                    voluptates nesciunt sapiente deserunt ex veniam vitae a sed possimus eum?
+                </p>
+            </div>
+            <button class="read">Read more</button>
+        </div>
+    </main>
+
+    <footer>
+        Copyright © 2023 NYICFF All Rights Reserved
+    </footer>
+    <script>
+        $(document).ready(() => {
+            $(".read").on('click', () => {
+                $('.hid').toggleClass('active')
+                const text = $('.read').text() === 'Read more' ? 'Read less' : 'Read more'
+                $('.read').text(text)
+            })
+        })
+    </script>
+</body>
+
+</html>
