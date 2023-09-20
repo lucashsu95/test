@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nav-item</title>
+    <style>
+        * {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .nav-item ul {
+            margin: 0 auto;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+        }
+
+        .nav-item li {
+            width: 25%;
+            text-align: center;
+            border-left: 2px solid #5b8f;
+        }
+
+        .nav-item li:last-child {
+            border-right: 2px solid #5b8f;
+        }
+
+        .nav-item span {
+            color: #5b8f;
+            opacity: 0.65;
+        }
+
+        .nav-item li a {
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            padding: 10px 0;
+            line-height: 1.6;
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="nav-item">
+        <ul>
+            <li><a href="#"><span>About</span>關於我們</a></li>
+            <li><a href="#"><span>Service</span>服務</a></li>
+            <li><a href="#"><span>Price</span>費用</a></li>
+            <li><a href="#"><span>Contact</span>聯絡我們</a></li>
+        </ul>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .boxImg {
+            margin: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div width="280" height="608" style="border:1px solid #999;padding: 0 4px;">
+        <table align="center" style="margin-top:10px;">
+            <tr>
+                <td colspan="2" style="font-size: 16px;font-weight: bold;">
+                    最新消息
+                </td>
+            </tr>
+            <tr align="center" style="background-color: #39f;font-size: 14px;color:#fff">
+                <td>主題</td>
+                <td>發布日期</td>
+            </tr>
+            <tr style="font-size: 12px;line-height: 2;background-color: #ffc;">
+                <td><img src="../images/0201.png" alt="">公告全國技能競賽相關事宜</td>
+                <td>112/08/15</td>
+            </tr>
+            <tr style="font-size: 12px;line-height: 2; background-color: #ddd;">
+                <td><img src="../images/0201.png" alt="">公告即測即評及發證相關事宜</td>
+                <td>112/08/15</td>
+            </tr>
+            <tr style="font-size: 12px;line-height: 2;background-color: #ffc;">
+                <td><img src="../images/0201.png" alt="">公告網頁設計修題相關事宜</td>
+                <td>112/08/15</td>
+            </tr>
+            <tr style="font-size: 12px;line-height: 2; background-color: #ddd;">
+                <td><img src="../images/0201.png" alt="">公告網路架設應檢相關事宜</td>
+                <td>112/08/15</td>
+            </tr>
+        </table>
+    </div>
+    <div width="114"></div>
+    <div width="590">
+        <table style="background-color: #333;font-size: 14px;color: #ff0;">
+            <tr>
+                <td colspan="4">
+                    <img src="../images/0202A.png" alt="" class="bigImg" width="590" height="330">
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <a onclick="change(2)">
+                        <img src="../images/0202B.png" alt="">
+                    </a>
+                    <div>第30屆倫敦奧運</div>
+                </td>
+                <td align="center">
+                    <a onclick="change(3)">
+                        <img src="../images/0203B.png" alt="">
+                    </a>
+                    <div>許淑淨奪舉重銀牌</div>
+                </td>
+                <td align="center">
+                    <a onclick="change(4)">
+                        <img src="../images/0204B.png" alt="">
+                    </a>
+                    <div>第26屆深圳世大運</div>
+                </td>
+                <td align="center">
+                    <a onclick="change(5)">
+                        <img src="../images/0205B.png" alt="">
+                    </a>
+                    <div>第27屆喀山世大運</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        const bigImg = document.querySelector('.bigImg')
+        function change(index) {
+            bigImg.src = `../images/020${index}A.png`
+        }
+    </script>
+</body>
+
+</html>

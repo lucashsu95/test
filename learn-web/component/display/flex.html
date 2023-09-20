@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flex</title>
+    <link rel="stylesheet" href="./style.css">
+    <style>
+        .wrap,
+        .wrap2 {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+
+        /* <---------------wrap---------------> */
+
+        .box {
+            /* flex: 可以放大嗎? 可以縮小嗎? 寬想要多少? */
+            flex: 1 1 200px;
+            /* flex: 0 1 200px; */
+
+            height: 200px;
+        }
+
+        /* <---------------wrap2---------------> */
+
+        aside {
+            /* 7分之1 */
+            flex: 1;
+
+            background: #ccc;
+            padding: 20px;
+        }
+
+        main {
+            /* 7分之5 */
+            flex: 4;
+            background: #ccc;
+            padding: 20px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="wrap" n-for="5">
+        <div class="box"></div>
+    </div>
+
+
+    
+    <div class="wrap2">
+        <aside>Lorem ipsum dolor sit amet consectetur adipisicing elit.</aside>
+
+        <main>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aliquam odit, possimus, est mollitia alias magni
+            sint rerum, numquam cum placeat maiores natus voluptatum quia officiis dolor neque tempore aut eum.
+        </main>
+        
+        <aside>Lorem ipsum dolor sit amet consectetur adipisicing elit.</aside>
+    </div>
+    <script src="https://lucashsu95.github.io/url/file/n-for.js"></script>
+</body>
+
+</html>

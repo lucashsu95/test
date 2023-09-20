@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>card</title>
+    <style>
+        .wrap {
+            gap: 20px;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        .card {
+            width: 320px;
+            border: 2px solid #aaa;
+            border-radius: 25px;
+            overflow: hidden;
+            height: 270px;
+            transition: .5s;
+        }
+
+        .card img {
+            width: 100%;
+        }
+
+        .card-body {
+            padding: 0 20px;
+        }
+
+        .card:hover {
+            height: 350px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap" n-for="5">
+
+        <div class="card">
+            <img src="https://picsum.photos/id/78/300/200">
+            <div class="card-body">
+                <h2>Lorem, ipsum dolor.</h2>
+                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aspernatur, nihil?</p>
+            </div>
+        </div>
+    </div>
+    <script src="https://lucashsu95.github.io/url/file/n-for.js"></script>
+
+</body>
+
+</html>
